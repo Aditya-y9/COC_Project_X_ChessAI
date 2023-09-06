@@ -1,2 +1,2 @@
 # COC_Project_X_ChessAI
-# Author - Aditya & Rohan
+# Authors - Aditya & Rohan
