@@ -29,16 +29,16 @@ GITHUB is a website which allows developers to store and manage their codes usin
 - *git log* : view the commits along with their hashes
 ---
 ### PYTHON OOPS : 
--*Basic Revision*
--**OOPS :**
--*Create a class and its objects*
--*Self parameter*
--*Constructors- dunder method ie (__init__)*
--*types of constructors : default and parametrized*
--*Decorators and its usage*
--*Getters and Setters*
--*Inheritance and its Types*
--*Access Modifiers/Specifiers*
+- *Basic Revision*
+- **OOPS :**
+- *Create a class and its objects*
+- *Self parameter*
+- *Constructors- dunder method ie (__init__)*
+- *types of constructors : default and parametrized*
+- *Decorators and its usage*
+- *Getters and Setters*
+- *Inheritance and its Types*
+- *Access Modifiers/Specifiers*
 
 
 
