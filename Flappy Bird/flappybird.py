@@ -15,7 +15,7 @@ class Game:
         self.scale = 1.5
         # surface screen
         self.screen = p.display.set_mode((self.width, self.height))
-        self.speed = 10
+        self.speed = 1
         self.Bgandground()
 
         # making a clock obj
@@ -23,12 +23,7 @@ class Game:
 
         # ye line 60 fps pe apne loop chalane bolegi computer ko
         # jyada load nahi aayega program run karneka cpu pe
-        self.clock.tick(60)
-
-
-
-
-
+        self.clock.tick(15)
 
         p.display.update()
         self.gameloop()
@@ -60,23 +55,28 @@ class Game:
                     # to stop the program
                     sys.exit()
                     self.running = False
+
+
             self.moves(dt)
             self.draws()
             p.display.update()
 
     
-    def moves(self, dtime):
+    def moves(self, dt):
         # move ground , matlab move uska rectangle
         # which axis, toh x axis
         # jitna do loops ke bich time lagega utna woh khasakte jaayega
-         self.ground1Rect.x -= self.speed*(dtime)
-         self.ground2Rect.x -= self.speed*(dtime)
+         self.ground1Rect.x -= self.speed*(0.6)
+         self.ground2Rect.x -= self.speed*(0.6)
+         
+        
 # jab ye corner right wala bahar gya <0 toh woh screen ka rectangle screen ke bahar gya
          if self.ground1Rect.right < 0:
               # toh uthake wapis rakhdo
               self.ground1Rect.x = self.ground2Rect.right
          if self.ground2Rect.right < 0:
               self.ground2Rect.x = self.ground1Rect.right
+         p.display.update()
          
               
 
@@ -108,7 +108,7 @@ class Game:
         # to adjust surface             # to make surface
         self.bg_img = p.transform.scale(p.image.load("bg.png").convert(), (self.width, self.height))
         # making two grounds to move them as the game is running
-        self.ground1 = p.transform.scale(p.image.load("ground.png").convert(),(self.width,self.height))
+        self.ground1 = p.transform.scale_by(p.image.load("ground.png").convert(),self.scale)
         self.ground2 = p.transform.scale_by(p.image.load("ground.png").convert(),self.scale)
         # loading images and adjusting them to screen
         # setting scale to fit image
@@ -134,7 +134,7 @@ class Game:
         self.ground1Rect.y = 568
         self.ground2Rect.y = 568
 
-
+        p.display.update()
 
 
 game = Game()
