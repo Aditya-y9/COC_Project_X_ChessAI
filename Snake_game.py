@@ -1,8 +1,10 @@
 import pygame
 import random
+import os
 from pygame.locals import *
 from sys import exit
 pygame.init()
+pygame.mixer.init()
 screen = pygame.display.set_mode((640,480),0,32)#create game window
 pygame.display.set_caption("Snakes_With_Rohan")#Set the title
 snake_size = 15 # length & width of snake
@@ -17,15 +19,15 @@ def text_screen(text,color,x,y): # to display txt
     screen.blit(screen_text,(x,y))
 def welcome():
     while True:
-        screen.fill((0,0,255))
-        text_screen("Welcome to Snakes_with_Rohan !!!",(255,255,0),200,200)
-        text_screen("Press Space Bar to Enjoy the Game",(255,255,0),250,260)
+        initial = pygame.image.load(r"C:\Users\parab\OneDrive\Pictures\Saved Pictures\initial.jpg").convert_alpha()
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 exit()
             elif event.type == KEYDOWN:
                 if event.key == K_SPACE:
                     game_loop()
+        screen.blit(initial,(0,0))
         pygame.display.update()
         clock.tick(30)
 def game_loop():
@@ -34,14 +36,19 @@ def game_loop():
     fps = 30  # frame per second
     velocity_x = 0  # velocities of snake in x & y
     velocity_y = 0
-    init_vel = 10  # initial velocity
+    init_vel = 5  # initial velocity
     score = 0  # initial score
     food_x = random.randint(20, 640 // 2)  # init x & y pos of food
     food_y = random.randint(20, 480 // 2)
     snake_length = 1
+    if (not os.path.exists("Highscore.txt")): # Check if the file exists or not
+        file = open("Highscore.txt",'w')
+        file.write("0")
+        file.close()
     file = open("Highscore.txt", 'r')
     highscore = file.read()
     file.close()
+    print("Highscore : ",highscore)
     snake_list = []
     game_over = False
     exit_game = False
@@ -95,8 +102,12 @@ def game_loop():
                 del snake_list[0]
             if head in snake_list[:-1]:
                 game_over = True
+                pygame.mixer.music.load(r"C:\Users\parab\Music\game_over.wav")
+                pygame.mixer.music.play()
             if snake_x < 0 or snake_y < 0 or snake_x > 640 or snake_y > 480:
                 game_over = True
+                pygame.mixer.music.load(r"C:\Users\parab\Music\game_over.wav")
+                pygame.mixer.music.play()
             plot_snake(screen,(0, 0, 0),snake_list,snake_size)  # RGB code for black
         pygame.display.update()
         clock.tick(fps) # to update the game frame with time
