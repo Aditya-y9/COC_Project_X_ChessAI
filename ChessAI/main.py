@@ -27,7 +27,7 @@ def load_images():
 
         images[piece] = p.transform.scale(p.image.load(image_path).convert_alpha(), (sq_size, sq_size))
 
-# pygame.transform.scale to adjust the image
+        # pygame.transform.scale to adjust the image
 
 def main():
     p.init()
@@ -49,13 +49,34 @@ def main():
     # dot operator to call gamestate() in engine
     gs = engine.gamestate()
 
-    # print(gs.board)
 
+    # to store valid moves
+    valid_moves = gs.getvalidmoves()
+
+
+    # print(gs.board)
+    move_made = False
+    # to update valid moves only when a move is made
+    
+    # flag variable for when a move is made
     # loading the images "once"
     load_images()
 
     # running variable to check start and quit
     running = True
+    # tuple to keep the last square selected
+    sq_selected = ()
+    # no square is selected at start
+    # tuple: (row,col)
+    # playerClicks = []
+
+    # list to keep two inputs
+    player_clicks = []
+    # keep track of player clicks (two tuples: [(6, 4), (4, 4)])
+
+
+
+
 
     
     # start of my gameloop
@@ -68,6 +89,60 @@ def main():
             if event.type == p.QUIT:
                 # to exit the whileloop
                 running = False
+            elif event.type == p.MOUSEBUTTONDOWN:
+                # mouse kaha h?
+                mouse_location = p.mouse.get_pos() # (x,y) location of mouse
+                # get x and y from list
+                column = mouse_location[0]//sq_size
+                row  = mouse_location[1]//sq_size
+                
+                
+                # first click is select, second click is undo
+                if sq_selected == (row,column):
+                    # user clicks same sqaure again
+                    sq_selected = () # undo
+                    player_clicks = []
+                else:
+                    # store the square selected by the user now
+                    sq_selected = (row,column)
+                    player_clicks.append(sq_selected)
+                    # first time it will append to empty list then it appends to list[0]
+                    
+
+                    # hume pata karna hai user ka first click hai ya second
+                    if len(player_clicks)==2:
+
+                        # do clicks hogye toh bolenge make move
+                        # so call the move class constructor
+                        move = engine.Move(player_clicks[0],player_clicks[1],gs.board)
+                        # player_clicks[0] is our source
+                        # player_clicks[1] is our piece's destination
+                        if move in valid_moves:
+                            gs.makeMove(move)
+                            move_made = True
+                            # reset the user clicks after making the move each time 
+                            sq_selected = ()
+                    
+                        move = engine.Move(player_clicks[0],player_clicks[1],gs.board)
+                        print(move.getChessNotation())
+                        #gs.makeMove(move)
+                        # to make the move
+                        sq_selected = () # reset user clicks
+                        player_clicks = []
+            elif event.type == p.KEYDOWN:
+                if event.key == p.K_z:
+                    gs.undoMove()
+
+                    move_made = True
+                    # when the user undoes a move the valid moves change
+                    # so change the flag variable to true
+
+                    # to update the valid moves
+        if move_made:
+            valid_moves = gs.getvalidmoves()
+            move_made = False
+    
+
 
         # calling the draw boardand pieces fn
         draw_game_state(screen,gs)
@@ -124,6 +199,7 @@ def drawpieces(screen,board):
                 screen.blit(images[pieces],p.Rect(columns*sq_size,rows*sq_size,sq_size,sq_size))
             # accessing our gs.board multi dim list by using [][]
             # to assign each square a piece
+    
 
 
 
