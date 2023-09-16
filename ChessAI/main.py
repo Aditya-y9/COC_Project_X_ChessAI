@@ -5,7 +5,7 @@ import engine
 # can change screen size from here
 screen_width = screen_height = 550
 screen_caption = "ChessAI"
-icon = p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\icon.png")
+icon = p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\images\icon.png")
 # rows and columns
 dimensions = 8
 
@@ -23,7 +23,7 @@ def load_images():
     # load all images once as it is cpu heavy task
     pieces = ["wp", "wR", "wN", "wB", "wQ", "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
     for piece in pieces:
-        image_path = r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI" + "\\" + piece + ".png"
+        image_path = r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\images" + "\\" + piece + ".png"
 
         images[piece] = p.transform.scale(p.image.load(image_path).convert_alpha(), (sq_size, sq_size))
 
@@ -166,7 +166,7 @@ def drawboard(screen):
     # white and grey alternate
     # make list to store white and grey switch karna easy hoga
     colors = [p.Color("white"), p.Color("dark gray")]
-    images = [p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\ltb.jpg").convert_alpha(),p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\dtb.jpg").convert_alpha()]
+    images = [p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\images\ltb.jpg").convert_alpha(),p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\images\dtb.jpg").convert_alpha()]
 
     for rows in range(dimensions):
         for columns in range(dimensions):
