@@ -166,6 +166,7 @@ def drawboard(screen):
     # white and grey alternate
     # make list to store white and grey switch karna easy hoga
     colors = [p.Color("white"), p.Color("dark gray")]
+    images = [p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\ltb.jpg"),p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\dtb.jpg")]
 
     for rows in range(dimensions):
         for columns in range(dimensions):
@@ -183,13 +184,18 @@ def drawboard(screen):
             # light sqaures are even
 
             color = colors[(rows+columns)%2]
+            image = images[(rows+columns)%2]
             # even --> colors[0] --> white
             # odd --> colors[1] --> black
             
             # smpart
 
             # just draw rectangle (surface,color,)
-            p.draw.rect(screen, color, p.Rect(columns*sq_size,rows*sq_size, sq_size, sq_size))
+            custom_img = p.Surface((sq_size,sq_size))
+            
+            screen.blit(image,p.Rect(columns*sq_size,rows*sq_size,sq_size,sq_size))
+            
+            # p.draw.rect(screen, color, p.Rect(columns*sq_size,rows*sq_size, sq_size, sq_size))
 
 def drawpieces(screen,board):
     for rows in range(dimensions):
