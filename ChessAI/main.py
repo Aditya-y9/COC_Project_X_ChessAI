@@ -166,7 +166,7 @@ def drawboard(screen):
     # white and grey alternate
     # make list to store white and grey switch karna easy hoga
     colors = [p.Color("white"), p.Color("dark gray")]
-    images = [p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\ltb.jpg"),p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\dtb.jpg")]
+    images = [p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\ltb.jpg").convert_alpha(),p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\dtb.jpg").convert_alpha()]
 
     for rows in range(dimensions):
         for columns in range(dimensions):

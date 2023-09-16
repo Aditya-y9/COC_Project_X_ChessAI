@@ -84,9 +84,15 @@ class gamestate():
                 # for pawns first move
                 # we can move two squares ahead
                 # so append move rows-2
+
+                # check two conditions for this
+                # 1. the square two squares ahead is empty
+                # pawn is at row 6 (its starting position)
                 if rows == 6 and self.board[rows-2][columns] == "--":
                     poss_moves.append(Move((rows,columns),(rows-2,columns),self.board))
                     # mark this square by photo
+
+
 
             if columns-1 >= 0:
                 if self.board[rows-1][columns-1][0] == 'b':
@@ -94,6 +100,17 @@ class gamestate():
             if columns+1 <= 7:
                 if self.board[rows-1][columns+1][0] == 'b':
                     poss_moves.append(Move((rows,columns),(rows-1,columns+1),self.board))
+        else:
+            if self.board[rows+1][columns] == "--":
+                poss_moves.append(Move((rows,columns),(rows+1,columns),self.board))
+                if rows == 1 and self.board[rows+2][columns] == "--":
+                    poss_moves.append(Move((rows,columns),(rows+2,columns),self.board))
+            if columns-1 >= 0:
+                if self.board[rows+1][columns-1][0] == 'w':
+                    poss_moves.append(Move((rows,columns),(rows+1,columns-1),self.board))
+            if columns+1 <= 7:
+                if self.board[rows+1][columns+1][0] == 'w':
+                    poss_moves.append(Move((rows,columns),(rows+1,columns+1),self.board))
 
 
 class Move():
