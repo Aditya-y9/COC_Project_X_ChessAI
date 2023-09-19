@@ -19,8 +19,22 @@ class gamestate():
             ["wp","wp","wp","wp","wp","wp","wp","wp"],
             ["wR","wN","wB","wQ","wK","wB","wN","wR"]]
         
+        # dictionary to map pieces to their respective move functions
+        # so that proper function is called for each piece
+
+        self.moveFunctions = {'p':self.getPawnMoves,'R':self.getRookMoves,'N':self.getKnightMoves,
+                              'B':self.getBishopMoves,'Q':self.getQueenMoves,'K':self.getKingMoves}
+        
+
+        # we dont have to write 6 different functions for each piece
+
+
+        
+        
         self.whitemove=True
         self.moveLog = []
+
+    
     
     
 
@@ -67,8 +81,12 @@ class gamestate():
                 if (turn == 'w' and self.whitemove) or (turn == 'b' and not self.whitemove):
                     # if the piece is a pawn
                     # because each piece has its own set of rules
-                    if self.board[rows][columns][1] == 'p':
-                        self.getPawnMoves(rows,columns,poss_moves)
+                    piece = self.board[rows][columns][1]
+                    self.moveFunctions[piece](rows,columns,poss_moves)
+                    # calls the proper function for each piece
+
+
+
         return poss_moves
 
     def getPawnMoves(self,rows,columns,poss_moves):
@@ -111,6 +129,44 @@ class gamestate():
             if columns+1 <= 7:
                 if self.board[rows+1][columns+1][0] == 'w':
                     poss_moves.append(Move((rows,columns),(rows+1,columns+1),self.board))
+    def getRookMoves(self,rows,columns,poss_moves):
+        directions = ((-1,0),(0,-1),(1,0),(0,1))
+        # white rook --> wR
+        # black rook --> bR
+        # so we can use the first character to check the color of the piece
+        # and the second character to check the type of the piece
+        # so we can use the second character to check the type of the piece
+        # so we can use the second character to check the type of the piece
+        enemy_color = "b" if self.whitemove else "w"
+        for d in directions:
+            for i in range(1,8):
+                endRow = rows + d[0]*i
+                endCol = columns + d[1]*i
+                # if the square is on the board
+                if 0 <= endRow < 8 and 0 <= endCol < 8:
+                    endPiece = self.board[endRow][endCol]
+                    # if the square is empty
+                    if endPiece == "--":
+                        poss_moves.append(Move((rows,columns),(endRow,endCol),self.board))
+                    elif endPiece[0] == enemy_color:
+                        poss_moves.append(Move((rows,columns),(endRow,endCol),self.board))
+                        break
+                    else:
+                        break
+                else:
+                    break
+        
+
+    def getKnightMoves(self,rows,columns,poss_moves):
+        pass
+    def getBishopMoves(self,rows,columns,poss_moves):
+        pass
+    def getQueenMoves(self,rows,columns,poss_moves):
+        pass
+    def getKingMoves(self,rows,columns,poss_moves):
+        pass
+
+
 
 
 class Move():
