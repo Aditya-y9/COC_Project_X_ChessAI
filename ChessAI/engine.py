@@ -130,6 +130,9 @@ class gamestate():
                 if self.board[rows+1][columns+1][0] == 'w':
                     poss_moves.append(Move((rows,columns),(rows+1,columns+1),self.board))
     def getRookMoves(self,rows,columns,poss_moves):
+
+        # to get the direction like vector without changing the value of the original tuple
+        # back row,back column,forward row,forward column
         directions = ((-1,0),(0,-1),(1,0),(0,1))
         # white rook --> wR
         # black rook --> bR
@@ -140,12 +143,64 @@ class gamestate():
         enemy_color = "b" if self.whitemove else "w"
         for d in directions:
             for i in range(1,8):
+
+                # direction into magnitude
                 endRow = rows + d[0]*i
+
+                # kaha into kitne se
                 endCol = columns + d[1]*i
                 # if the square is on the board
+
                 if 0 <= endRow < 8 and 0 <= endCol < 8:
+                    # square is on the board
                     endPiece = self.board[endRow][endCol]
                     # if the square is empty
+
+                    # append the moves till the squares are empty
+                    if endPiece == "--":
+                        poss_moves.append(Move((rows,columns),(endRow,endCol),self.board))
+                    elif endPiece[0] == enemy_color:
+                        # move to capture the piece
+                        poss_moves.append(Move((rows,columns),(endRow,endCol),self.board))
+                        break
+                        # cant go over the enemy piece
+                    else:
+                        # cant capture alsi
+                        break
+                        # cant go over your own piece
+                else:
+                    # all squares are out of board
+                    break
+        
+
+    def getKnightMoves(self,rows,columns,poss_moves):
+        knight_moves = ((-2,-1),(-2,1),(-1,-2),(-1,2),(1,-2),(1,2),(2,-1),(2,1))
+        ally_color = "w" if self.whitemove else "b"
+        for m in knight_moves:
+            endRow = rows + m[0]
+            endCol = columns + m[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 8:
+                
+                endPiece = self.board[endRow][endCol]
+                if endPiece[0] != ally_color:
+                    # enemy hai kya
+                    # nahi na
+                    # toh move
+                    poss_moves.append(Move((rows,columns),(endRow,endCol),self.board))
+
+        
+    def getBishopMoves(self,rows,columns,poss_moves):
+        # bishop can move diagonally
+        # left diagonal down, left diagonal up, right diagonal down, right diagonal up
+        directions = ((-1,-1),(-1,1),(1,-1),(1,1))
+        enemy_color = "b" if self.whitemove else "w"
+        for d in directions:
+            # maximum square limit
+            for i in range(1,8):
+                endRow = rows + d[0]*i
+                endCol = columns + d[1]*i
+                if 0 <= endRow < 8 and 0 <= endCol < 8:
+                    endPiece = self.board[endRow][endCol]
                     if endPiece == "--":
                         poss_moves.append(Move((rows,columns),(endRow,endCol),self.board))
                     elif endPiece[0] == enemy_color:
@@ -155,16 +210,40 @@ class gamestate():
                         break
                 else:
                     break
+
+        
+    def getQueenMoves(self,rows,columns,poss_moves):
+
+        self.getBishopMoves(rows,columns,poss_moves)
+        self.getRookMoves(rows,columns,poss_moves)
+       
+    def getKingMoves(self,rows,columns,poss_moves):
+        # all squares surrounding the king
+        directions = ((-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1))
+
+        # but just one move
+
+        ally_color = "w" if self.whitemove else "b"
+    
+        for d in directions:
+            # traversing for all possible moves
+        
+            endRow = rows + d[0]
+            endCol = columns + d[1]
+
+            # filtering out the moves that are out of board
+            if 0 <= endRow < 8 and 0 <= endCol < 8:
+
+                endPiece = self.board[endRow][endCol]
+
+                # not running on a ally piece
+                if endPiece[0] != ally_color:
+                    poss_moves.append(Move((rows,columns),(endRow,endCol),self.board))
+
+
         
 
-    def getKnightMoves(self,rows,columns,poss_moves):
-        pass
-    def getBishopMoves(self,rows,columns,poss_moves):
-        pass
-    def getQueenMoves(self,rows,columns,poss_moves):
-        pass
-    def getKingMoves(self,rows,columns,poss_moves):
-        pass
+        
 
 
 

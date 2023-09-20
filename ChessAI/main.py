@@ -115,20 +115,22 @@ def main():
                         # do clicks hogye toh bolenge make move
                         # so call the move class constructor
                         move = engine.Move(player_clicks[0],player_clicks[1],gs.board)
+                        print(move.getChessNotation())
+
                         # player_clicks[0] is our source
                         # player_clicks[1] is our piece's destination
                         if move in valid_moves:
                             gs.makeMove(move)
                             move_made = True
+                            sq_selected = () # reset user clicks
+                            player_clicks = []
                             # reset the user clicks after making the move each time 
-                            sq_selected = ()
-                    
-                        move = engine.Move(player_clicks[0],player_clicks[1],gs.board)
-                        print(move.getChessNotation())
+                        else:
+                            player_clicks = [sq_selected]
+                            
                         #gs.makeMove(move)
                         # to make the move
-                        sq_selected = () # reset user clicks
-                        player_clicks = []
+                            
             elif event.type == p.KEYDOWN:
                 if event.key == p.K_z:
                     gs.undoMove()
