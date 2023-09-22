@@ -38,6 +38,8 @@ class gamestate():
         self.moveLog = []
         self.whiteKingLocation = (7,4)
         self.blackKingLocation = (0,4)
+        self.checkmate = False
+        self.stalemate = False
 
     
     
@@ -101,6 +103,17 @@ class gamestate():
 
         # 3. generate all possible moves for the opponent
         # 4. for each of your opponent's move, see if they attack your king
+        if len(moves) == 0:
+            if self.inCheck():
+                self.checkmate = True
+            else:
+                self.stalemate = True
+        # if we undo the move, we have to set the checkmate and stalemate to false
+        else:
+            self.checkmate = False
+            self.stalemate = False
+
+
         return moves
     
     def inCheck(self):
