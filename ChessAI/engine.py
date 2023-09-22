@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class gamestate():
     def __init__(self):
         # 2D 8x8 list, each element has 2 characters.
@@ -33,6 +36,8 @@ class gamestate():
         
         self.whitemove=True
         self.moveLog = []
+        self.whiteKingLocation = (7,4)
+        self.blackKingLocation = (0,4)
 
     
     
@@ -45,6 +50,12 @@ class gamestate():
         self.moveLog.append(move)
         # swap turns after move
         self.whitemove = not self.whitemove
+        if move.pieceMoved == 'wK':
+            self.whiteKingLocation = (move.endRow,move.endCol)
+        if move.pieceMoved == 'bK':
+            self.blackKingLocation = (move.endRow,move.endCol)
+
+    
     def undoMove(self):
         # to make sure that there is a move to undo
         if len(self.moveLog) != 0:
@@ -57,10 +68,59 @@ class gamestate():
             # to make sure the piece captured is not empty
             # switch turns back
             self.whitemove = not self.whitemove
+            if move.pieceMoved == 'wK':
+                self.whiteKingLocation = (move.startRow,move.startCol)
+            if move.pieceMoved == 'bK':
+                self.blackKingLocation = (move.startRow,move.startCol)
+
 
     # all moves considering checks
     def getvalidmoves(self):
-        return self.getAllPossibleMoves()
+        # 1. generate all possible moves
+        moves = self.getAllPossibleMoves()
+        # 2. for each move, make the move
+
+        # while removing an element from a list, we have to traverse the list backwards
+        # because the indexes change after removing the element
+
+        
+        
+        for i in range(len(moves)-1,-1,-1):
+
+            # make move
+            self.makeMove(moves[i])
+
+            # 3. generate all possible moves for the opponent
+            # 4. for each of your opponent's move, see if they attack your king
+            self.whitemove = not self.whitemove
+            if self.inCheck():
+                moves.remove(moves[i])
+            self.whitemove = not self.whitemove
+            self.undoMove()
+
+
+        # 3. generate all possible moves for the opponent
+        # 4. for each of your opponent's move, see if they attack your king
+        return moves
+    
+    def inCheck(self):
+        if self.whitemove:
+            return self.squareUnderAttack(self.whiteKingLocation[0],self.whiteKingLocation[1])
+        else:
+            return self.squareUnderAttack(self.blackKingLocation[0],self.blackKingLocation[1])
+        
+    def squareUnderAttack(self,r,c):
+        self.whitemove = not self.whitemove
+        opp_moves = self.getAllPossibleMoves()
+        self.whitemove = not self.whitemove
+        for move in opp_moves:
+            if move.endRow == r and move.endCol == c:
+                return True
+        return False
+
+
+
+
     
     # all moves without considering checks
     def getAllPossibleMoves(self):
@@ -304,7 +364,7 @@ class Move():
 
     def getChessNotation(self):
         # you can add to make this like real chess notation
-        return self.getRankFile(self.startRow,self.startCol) + self.getRankFile(self.endRow,self.endCol)
+        return self.pieceMoved + "to" + self.getRankFile(self.startRow,self.startCol) + self.getRankFile(self.endRow,self.endCol)
     
     def getRankFile(self,rows,columns):
         return self.colsToFiles[columns] + self.rowsToRanks[rows]
