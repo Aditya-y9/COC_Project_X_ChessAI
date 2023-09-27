@@ -1,4 +1,4 @@
-# from typing import Any
+from typing import Any
 
 
 class gamestate():
@@ -40,9 +40,6 @@ class gamestate():
         self.blackKingLocation = (0,4)
         self.checkmate = False
         self.stalemate = False
-        # pawn promotion is if white pawn reaches row 0
-        # or if a black pawn reaches row 7
-
 
     
     
@@ -59,13 +56,6 @@ class gamestate():
             self.whiteKingLocation = (move.endRow,move.endCol)
         if move.pieceMoved == 'bK':
             self.blackKingLocation = (move.endRow,move.endCol)
-
-
-        # pawn promotion
-        if move.pawn_promotion:
-            # place queen of same color at pawn's place
-            self.board[move.endRow][move.endCol] = move.pieceMoved[0] + "Q"
-        
 
     
     def undoMove(self):
@@ -374,17 +364,6 @@ class Move():
         # refers to pos in board
         self.pieceCaptured = board[self.endRow][self.endCol] # piece captured
         self.moveID = self.startRow*1000 + self.startCol*100 + self.endRow*10 + self.endCol
-
-        # default value for flag
-        self.pawn_promotion = False
-
-        # conditions of location and piece for pawn promotion 
-        if (self.pieceMoved == "wp" and self.endRow == 0) or (self.pieceMoved == "bp" and self.endRow == 7):
-            self.pawn_promotion = True
-
-        # self.promotionChoice = "Q"   
-        
-        # we could write pawn promotion flags in the getpawnmoves itself but we chose this because of less new code to be written here
         print(self.moveID)
     
 
