@@ -1,4 +1,4 @@
-# from typing import Any
+
 
 
 class gamestate():
@@ -43,7 +43,10 @@ class gamestate():
         # pawn promotion is if white pawn reaches row 0
         # or if a black pawn reaches row 7
 
-
+    def makePawnPromotion(self,move,user_choice):
+        if move.pawn_promotion:
+            # place queen of same color at pawn's place
+            self.board[move.endRow][move.endCol] = move.pieceMoved[0] + user_choice
     
     
     
@@ -62,9 +65,7 @@ class gamestate():
 
 
         # pawn promotion
-        if move.pawn_promotion:
-            # place queen of same color at pawn's place
-            self.board[move.endRow][move.endCol] = move.pieceMoved[0] + "Q"
+        
         
 
     
