@@ -187,8 +187,8 @@ def main():
         screen.fill(p.Color("black"))
         screen.blit(p.transform.scale_by(p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\Images\chess.jpg"),0.25),p.Rect(200-5*sq_size + 180,200-5*sq_size + 200,10,10))
         screen.blit(p.transform.scale_by(icon,0.5),p.Rect(470-5*sq_size+15,screen_height/2-270,10,10))
-        showtext(screen, "Welcome to ChessAI", (screen_height/2 - 244,screen_height/2 - 10), 70)
-        showtext(screen, "Press any key to start the game", (screen_height/2 - 230,screen_height/2+50),45)
+        showtext(screen, "Welcome to ChessAI", (screen_height/2 - 230,screen_height/2 - 10), 40)
+        showtext(screen, "Press any key to start the game", (screen_height/2 - 220,screen_height/2+50),25)
                 
                 # showtext(screen, predicted_name + " is playing")
 
@@ -386,7 +386,7 @@ def drawpieces(screen,board):
 
 
 def showtext(screen,text,location,fontsize):
-    font = p.font.SysFont("Copperplate gothic bold", fontsize, True, False)
+    font = p.font.SysFont("Copperplate gothic", fontsize, True, False)
     textObject = font.render(text, 0, p.Color('White'))
     location1 = p.Rect(location, location)
     # textLocation = p.Rect(0, 0, screen_width, screen_height).move(screen_width / 2 - textObject.get_width() / 2, screen_height / 2 - textObject.get_height() / 2)
