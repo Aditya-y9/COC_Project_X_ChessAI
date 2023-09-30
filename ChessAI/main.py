@@ -3,7 +3,8 @@ import engine
 import cv2
 import numpy as np
 import os
-# import main1 as m
+import main1 as m
+import tester as tt
 
 # # this function will read all persons' training images, detect face from each image
 # # used to load an image from a file
@@ -189,8 +190,7 @@ def main():
         screen.blit(p.transform.scale_by(icon,0.5),p.Rect(470-5*sq_size+15,screen_height/2-270,10,10))
         showtext(screen, "Welcome to ChessAI", (screen_height/2 - 230,screen_height/2 - 10), 40)
         showtext(screen, "Press any key to start the game", (screen_height/2 - 220,screen_height/2+50),25)
-                
-                # showtext(screen, predicted_name + " is playing")
+        showtext(screen, tt.predicted_name + " is playing", (screen_height/2 - 220,screen_height/2+100),25)
 
         p.display.flip()
         for event in p.event.get():
