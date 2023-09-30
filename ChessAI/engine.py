@@ -65,6 +65,22 @@ class gamestate():
         if move.pieceMoved == 'bK':
             self.blackKingLocation = (move.endRow,move.endCol)
 
+        if move.enpassantPossible:
+            self.board[move.startRow][move.endCol] = "--" 
+            # capturing the pawn
+        #update enpassantPossible variable
+
+        # only if the pawn moves two squares ahead
+        # used abs so that it works for both white and black pawns
+        # both up the board and down the board
+        if move.pieceMoved[1] == 'p' and abs(move.startRow - move.endRow) == 2:
+            self.enpassantPossible = ((move.startRow + move.endRow)//2,move.startCol)
+        else:
+            # reset enpassantPossible
+            self.enpassantPossible = ()
+        
+
+
 
         # pawn promotion
         
@@ -88,9 +104,23 @@ class gamestate():
             if move.pieceMoved == 'bK':
                 self.blackKingLocation = (move.startRow,move.startCol)
 
+            # undo enpassantPossible
+            if move.enpassantPossible:
+                self.board[move.endRow][move.endCol] = "--"
+                # leave the landing square blank
+                self.board[move.startRow][move.endCol] = move.pieceCaptured
+                # redo the enpassant capture
+                # if i undo the move, i have to set the enpassantPossible to the square where the enpassant capture was possible
+                self.enpassantPossible = (move.endRow,move.endCol)
+            # undo 2 square pawn advance
+            if move.pieceMoved[1] == 'p' and abs(move.startRow - move.endRow) == 2:
+                self.enpassantPossible = ()
+
 
     # all moves considering checks
     def getvalidmoves(self):
+        # to store a copy of the enpassantPossible variable
+        temp_enpassantPossible = self.enpassantPossible
         # 1. generate all possible moves
         moves = self.getAllPossibleMoves()
         # 2. for each move, make the move
@@ -125,6 +155,9 @@ class gamestate():
         else:
             self.checkmate = False
             self.stalemate = False
+
+
+        self.enpassantPossible = temp_enpassantPossible
 
 
         return moves
@@ -405,9 +438,12 @@ class Move():
             self.pawn_promotion = True
 
         # flag for en passant move
-        self.isEnpassantMove = False
-        if self.pieceMoved[1] == 'p' and abs(self.startRow - self.endRow) == 2:
-            self.isEnpassantMove = True
+        self.enpassantPossible = enpassantPossible
+        if self.enpassantPossible:
+            self.pieceCaptured = 'wp' if self.pieceMoved == 'bp' else 'bp'
+        # if pawn is moving two squares ahead
+        # if self.pieceMoved[1] == 'p' and abs(self.startRow - self.endRow) == 2:
+        #     self.isEnpassantMove = True
         # if pawn is moving two squares ahead
         # if the pawn moves two squares ahead
 
