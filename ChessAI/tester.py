@@ -57,10 +57,10 @@ face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\trainin
 
 name = {0:"Ranbir", 1:"Aditya", 2:"Akshay"}
 
-# vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\video\Video.mp4")
+vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\video\Video.mp4")
 
 
-vid = cv2.VideoCapture(0)
+# vid = cv2.VideoCapture(0)
 
 
 start_time = time.time()

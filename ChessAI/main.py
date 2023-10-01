@@ -299,15 +299,6 @@ def main():
 
                         # player_clicks[0] is our source
                         # player_clicks[1] is our piece's destination
-<<<<<<< HEAD
-                        if move in valid_moves:
-                            gs.makeMove(move)
-                            move_made = True
-                            sq_selected = () # reset user clicks
-                            player_clicks = []
-                            # reset the user clicks after making the move each time 
-                        else:
-=======
                         for i in range(len(valid_moves)):
 
                         # only get valid move object
@@ -361,7 +352,6 @@ def main():
                                 
                                 # reset the user clicks after making the move each time 
                         if not move_made:
->>>>>>> Aditya
                             player_clicks = [sq_selected]
                         
                             
@@ -404,13 +394,8 @@ def drawboard(screen):
     # lets draw squares
     # white and grey alternate
     # make list to store white and grey switch karna easy hoga
-<<<<<<< HEAD
-    colors = [p.Color("white"), p.Color("dark gray")]
-    images = [p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\images\ltb.jpg").convert_alpha(),p.image.load(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\images\dtb.jpg").convert_alpha()]
-=======
     # colors = [p.Color("white"), p.Color("dark gray")]
     images = [p.image.load(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\ltb.jpg").convert_alpha(),p.image.load(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\dtb.jpg").convert_alpha()]
->>>>>>> Aditya
 
     for rows in range(dimensions):
         for columns in range(dimensions):
@@ -427,7 +412,7 @@ def drawboard(screen):
             # dark sqaures are odd
             # light sqaures are even
 
-            color = colors[(rows+columns)%2]
+            # color = colors[(rows+columns)%2]
             image = images[(rows+columns)%2]
             # even --> colors[0] --> white
             # odd --> colors[1] --> black
