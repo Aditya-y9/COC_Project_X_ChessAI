@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from typing import Any
+=======
+
+>>>>>>> Aditya
 
 
 class gamestate():
@@ -40,7 +44,19 @@ class gamestate():
         self.blackKingLocation = (0,4)
         self.checkmate = False
         self.stalemate = False
+<<<<<<< HEAD
 
+=======
+        self.enpassantPossible = () # coordinates for the square where en passant capture is possible
+
+        # pawn promotion is if white pawn reaches row 0
+        # or if a black pawn reaches row 7
+
+    def makePawnPromotion(self,move,user_choice):
+        if move.pawn_promotion:
+            # place queen of same color at pawn's place
+            self.board[move.endRow][move.endCol] = move.pieceMoved[0] + user_choice
+>>>>>>> Aditya
     
     
     
@@ -57,6 +73,30 @@ class gamestate():
         if move.pieceMoved == 'bK':
             self.blackKingLocation = (move.endRow,move.endCol)
 
+<<<<<<< HEAD
+=======
+        if move.enpassantPossible:
+            self.board[move.startRow][move.endCol] = "--" 
+            # capturing the pawn
+        #update enpassantPossible variable
+
+        # only if the pawn moves two squares ahead
+        # used abs so that it works for both white and black pawns
+        # both up the board and down the board
+        if move.pieceMoved[1] == 'p' and abs(move.startRow - move.endRow) == 2:
+            self.enpassantPossible = ((move.startRow + move.endRow)//2,move.startCol)
+        else:
+            # reset enpassantPossible
+            self.enpassantPossible = ()
+        
+
+
+
+        # pawn promotion
+        
+        
+
+>>>>>>> Aditya
     
     def undoMove(self):
         # to make sure that there is a move to undo
@@ -75,9 +115,23 @@ class gamestate():
             if move.pieceMoved == 'bK':
                 self.blackKingLocation = (move.startRow,move.startCol)
 
+            # undo enpassantPossible
+            if move.enpassantPossible:
+                self.board[move.endRow][move.endCol] = "--"
+                # leave the landing square blank
+                self.board[move.startRow][move.endCol] = move.pieceCaptured
+                # redo the enpassant capture
+                # if i undo the move, i have to set the enpassantPossible to the square where the enpassant capture was possible
+                self.enpassantPossible = (move.endRow,move.endCol)
+            # undo 2 square pawn advance
+            if move.pieceMoved[1] == 'p' and abs(move.startRow - move.endRow) == 2:
+                self.enpassantPossible = ()
+
 
     # all moves considering checks
     def getvalidmoves(self):
+        # to store a copy of the enpassantPossible variable
+        temp_enpassantPossible = self.enpassantPossible
         # 1. generate all possible moves
         moves = self.getAllPossibleMoves()
         # 2. for each move, make the move
@@ -112,6 +166,9 @@ class gamestate():
         else:
             self.checkmate = False
             self.stalemate = False
+
+
+        self.enpassantPossible = temp_enpassantPossible
 
 
         return moves
@@ -188,9 +245,19 @@ class gamestate():
             if columns-1 >= 0:
                 if self.board[rows-1][columns-1][0] == 'b':
                     poss_moves.append(Move((rows,columns),(rows-1,columns-1),self.board))
+                elif (rows-1,columns-1) == self.enpassantPossible:
+                    # if the square is the enpassant square
+                    # then we can capture the pawn
+                    # so we have to add the move
+                    poss_moves.append(Move((rows,columns),(rows-1,columns-1),self.board,enpassantPossible = True))
             if columns+1 <= 7:
                 if self.board[rows-1][columns+1][0] == 'b':
                     poss_moves.append(Move((rows,columns),(rows-1,columns+1),self.board))
+                elif (rows-1,columns+1) == self.enpassantPossible:
+                    # if the square is the enpassant square
+                    # then we can capture the pawn
+                    # so we have to add the move
+                    poss_moves.append(Move((rows,columns),(rows-1,columns+1),self.board,enpassantPossible = True))
         else:
             if self.board[rows+1][columns] == "--":
                 poss_moves.append(Move((rows,columns),(rows+1,columns),self.board))
@@ -199,9 +266,19 @@ class gamestate():
             if columns-1 >= 0:
                 if self.board[rows+1][columns-1][0] == 'w':
                     poss_moves.append(Move((rows,columns),(rows+1,columns-1),self.board))
+                elif (rows+1,columns-1) == self.enpassantPossible:
+                    # if the square is the enpassant square
+                    # then we can capture the pawn
+                    # so we have to add the move
+                    poss_moves.append(Move((rows,columns),(rows+1,columns-1),self.board,enpassantPossible = True))
             if columns+1 <= 7:
                 if self.board[rows+1][columns+1][0] == 'w':
                     poss_moves.append(Move((rows,columns),(rows+1,columns+1),self.board))
+                elif (rows+1,columns+1) == self.enpassantPossible:
+                    # if the square is the enpassant square
+                    # then we can capture the pawn
+                    # so we have to add the move
+                    poss_moves.append(Move((rows,columns),(rows+1,columns+1),self.board,enpassantPossible = True))
     def getRookMoves(self,rows,columns,poss_moves):
 
         # to get the direction like vector without changing the value of the original tuple
@@ -339,8 +416,8 @@ class Move():
     colsToFiles = {v:k for k,v in filesToCols.items()}
 
 
-
-    def __init__(self,start_sq,end_sq,board):
+    # fn with optional parameter
+    def __init__(self,start_sq,end_sq,board,enpassantPossible = False):
         # start_sq
         # source
 
@@ -364,6 +441,33 @@ class Move():
         # refers to pos in board
         self.pieceCaptured = board[self.endRow][self.endCol] # piece captured
         self.moveID = self.startRow*1000 + self.startCol*100 + self.endRow*10 + self.endCol
+<<<<<<< HEAD
+=======
+
+        # default value for flag
+        self.pawn_promotion = False
+        # conditions of location and piece for pawn promotion 
+        if (self.pieceMoved == "wp" and self.endRow == 0) or (self.pieceMoved == "bp" and self.endRow == 7):
+            self.pawn_promotion = True
+
+        # flag for en passant move
+        self.enpassantPossible = enpassantPossible
+        if self.enpassantPossible:
+            self.pieceCaptured = 'wp' if self.pieceMoved == 'bp' else 'bp'
+        # if pawn is moving two squares ahead
+        # if self.pieceMoved[1] == 'p' and abs(self.startRow - self.endRow) == 2:
+        #     self.isEnpassantMove = True
+        # if pawn is moving two squares ahead
+        # if the pawn moves two squares ahead
+
+
+
+
+
+        # self.promotionChoice = "Q"   
+        
+        # we could write pawn promotion flags in the getpawnmoves itself but we chose this because of less new code to be written here
+>>>>>>> Aditya
         print(self.moveID)
     
 
