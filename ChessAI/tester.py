@@ -57,7 +57,11 @@ face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\trainin
 
 name = {0:"Ranbir", 1:"Aditya", 2:"Akshay"}
 
-vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\video\Video.mp4")
+# vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\video\Video.mp4")
+
+
+vid = cv2.VideoCapture(0)
+
 
 start_time = time.time()
 while True:
@@ -68,7 +72,7 @@ while True:
         for(x,y,w,h) in faces_detected:
             cv2.rectangle(test_img, (x,y), (x+w, y+h), (255,102,0), thickness=2, lineType=2, shift=0)
 
-        resized_img = cv2.resize(test_img, (540,720))
+        resized_img = cv2.resize(test_img, (1080,720))
         cv2.imshow("Welcome to ChessAI", resized_img)
 
         cv2.waitKey(1)
@@ -98,13 +102,13 @@ while True:
 
             m.put_text(test_img, predicted_name, x, y)
 
-        resized_img = cv2.resize(test_img, (540,720))
+        resized_img = cv2.resize(test_img, (1080,720))
         cv2.imshow("Welcome to ChessAI", resized_img)
 
         if cv2.waitKey(10) == ord('q'):
             break
             break
-        if time.time() - start_time >= 1:
+        if time.time() - start_time >= 2:
             break
             # break
             # break
