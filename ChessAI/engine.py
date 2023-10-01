@@ -147,6 +147,7 @@ class gamestate():
                 self.enpassantPossible = ()
             self.castleRightsLog.pop()
             self.currentCastlingRights = self.castleRightsLog[-1]
+            self.currentCastlingRights = castleRights(self.currentCastlingRights.wks,self.currentCastlingRights.bks,self.currentCastlingRights.wqs,self.currentCastlingRights.bqs)
             # undo castling rights
             # if a rook or a king moves from its starting position
             # then we have to update the castling rights
