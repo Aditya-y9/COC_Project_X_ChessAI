@@ -233,9 +233,9 @@ def main():
         showtext(screen, "Press any key to start the game", (screen_height/2 - 220,screen_height/2+50),25)
         
         try:
-            showtext(screen, tt.predicted_name + " is playing", (screen_height/2 - 220,screen_height/2+100),25)
+            showtext(screen, tt.predicted_name + " is playing", (screen_height/2 - 111,screen_height/2-240),25)
         except:
-            showtext(screen, "User is playing", (screen_height/2 - 220,screen_height/2+100),25)
+            showtext(screen, "User is playing", (screen_height/2 - 300,screen_height/2-200),25)
         p.display.flip()
         for event in p.event.get():
             if event.type == p.QUIT:
