@@ -1,4 +1,5 @@
 import cv2
+import time
 import os
 import numpy as np
 import main1 as m
@@ -56,9 +57,9 @@ face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\trainin
 
 name = {0:"Ranbir", 1:"Aditya", 2:"Akshay"}
 
-vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\New folder\COC_Project_X_ChessAI\ChessAI\video\Video.mp4")
+vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\video\Video.mp4")
 
-
+start_time = time.time()
 while True:
     try:
         ret, test_img = vid.read()
@@ -68,7 +69,8 @@ while True:
             cv2.rectangle(test_img, (x,y), (x+w, y+h), (255,102,0), thickness=2, lineType=2, shift=0)
 
         resized_img = cv2.resize(test_img, (540,720))
-        cv2.imshow("face detection tutorial", resized_img)
+        cv2.imshow("Welcome to ChessAI", resized_img)
+
         cv2.waitKey(1)
 
         for faces in faces_detected:
@@ -97,15 +99,23 @@ while True:
             m.put_text(test_img, predicted_name, x, y)
 
         resized_img = cv2.resize(test_img, (540,720))
-        cv2.imshow("face detection tutorial", resized_img)
+        cv2.imshow("Welcome to ChessAI", resized_img)
+
         if cv2.waitKey(10) == ord('q'):
             break
+            break
+        if time.time() - start_time >= 1:
+            break
+            # break
+            # break
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
 
     except:
         print("Video is over")
         break
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
 
 
 
