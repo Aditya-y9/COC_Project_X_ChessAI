@@ -40,7 +40,14 @@ class gamestate():
         self.checkmate = False
         self.stalemate = False
         self.enpassantPossible = () # coordinates for the square where en passant capture is possible
+        # (row,col) for the square where en passant capture is possible
+
+
+
+        # for all types of castling
         self.currentCastlingRights = castleRights(True,True,True,True)
+        # queen side castle, king side castle
+        # white king side, black king side, white queen side, black queen side
         self.castleRightsLog = [castleRights(self.currentCastlingRights.wks,self.currentCastlingRights.bks,self.currentCastlingRights.wqs,self.currentCastlingRights.bqs)]
 
         # pawn promotion is if white pawn reaches row 0
@@ -139,9 +146,15 @@ class gamestate():
                 self.board[move.endRow][move.endCol] = "--"
                 # leave the landing square blank
                 self.board[move.startRow][move.endCol] = move.pieceCaptured
+                # restore the pawn
+
                 # redo the enpassant capture
                 # if i undo the move, i have to set the enpassantPossible to the square where the enpassant capture was possible
+
+                # reset the enpassantPossible variable
                 self.enpassantPossible = (move.endRow,move.endCol)
+
+
             # undo 2 square pawn advance
             if move.pieceMoved[1] == 'p' and abs(move.startRow - move.endRow) == 2:
                 self.enpassantPossible = ()
@@ -232,7 +245,10 @@ class gamestate():
             self.checkmate = False
             self.stalemate = False
 
-
+        # because we are not making any move
+        # we have to reset the enpassantPossible variable
+        # to its original value
+        
         self.enpassantPossible = temp_enpassantPossible
 
          
@@ -311,7 +327,7 @@ class gamestate():
                     # mark this square by photo
 
 
-
+            # getting the enpassant moves
             if columns-1 >= 0:
                 if self.board[rows-1][columns-1][0] == 'b':
                     poss_moves.append(Move((rows,columns),(rows-1,columns-1),self.board))
@@ -319,23 +335,35 @@ class gamestate():
                     # if the square is the enpassant square
                     # then we can capture the pawn
                     # so we have to add the move
+
+                    # a special enpassantpossible flag to tell that this is an enpassant move
                     poss_moves.append(Move((rows,columns),(rows-1,columns-1),self.board,enpassantPossible = True))
             if columns+1 <= 7:
+
+                # capture the piece diagonally
                 if self.board[rows-1][columns+1][0] == 'b':
                     poss_moves.append(Move((rows,columns),(rows-1,columns+1),self.board))
+
+                # diagonal swaure is the enpassant square
                 elif (rows-1,columns+1) == self.enpassantPossible:
                     # if the square is the enpassant square
                     # then we can capture the pawn
                     # so we have to add the move
+
+                    
+                    # a special enpassantpossible flag to tell that this is an enpassant move
                     poss_moves.append(Move((rows,columns),(rows-1,columns+1),self.board,enpassantPossible = True))
         else:
             if self.board[rows+1][columns] == "--":
                 poss_moves.append(Move((rows,columns),(rows+1,columns),self.board))
                 if rows == 1 and self.board[rows+2][columns] == "--":
                     poss_moves.append(Move((rows,columns),(rows+2,columns),self.board))
+
             if columns-1 >= 0:
                 if self.board[rows+1][columns-1][0] == 'w':
                     poss_moves.append(Move((rows,columns),(rows+1,columns-1),self.board))
+
+                # same for black pawn
                 elif (rows+1,columns-1) == self.enpassantPossible:
                     # if the square is the enpassant square
                     # then we can capture the pawn
@@ -466,6 +494,9 @@ class gamestate():
     def getCastleMoves(self,rows,columns,poss_moves):
         if self.squareUnderAttack(rows,columns):
             return
+        # if the king is in check
+        # we cant castle
+        # so we have to return
         if (self.whitemove and self.currentCastlingRights.wks) or (not self.whitemove and self.currentCastlingRights.bks):
             self.getKingSideCastleMoves(rows,columns,poss_moves)
         if (self.whitemove and self.currentCastlingRights.wqs) or (not self.whitemove and self.currentCastlingRights.bqs):

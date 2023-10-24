@@ -39,19 +39,19 @@ faces_detected, gray_img = m.faceDetection(test_img)
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
 
-# faces, faceID = m.labels_for_training_data(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\TrainingImages")
+# faces, faceID = m.labels_for_training_data(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\TrainingImages")
 face_recognizer = cv2.face.LBPHFaceRecognizer_create()
-face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\trainingData2.yml")
+# face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\trainingData2.yml")
 # face_recognizer = m.train_classifier(faces, faceID)
 
 # to save the trained model
 # run this only once
 # will save the trained model in trainingData.yml file
-# face_recognizer.save("trainingData2.yml")
+# face_recognizer.save("trainingData3.yml")
 
 
 # face_recognizer=cv2.face.LBPHFaceRecognizer_create()
-# face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\trainingData1.yml")
+face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\trainingData3.yml")
 
 
 
@@ -89,8 +89,6 @@ while True:
             # confidence value lower than its more accurate
             # 35 is the threshold value for confidence
             label, confidence = face_recognizer.predict(roi_gray)
-
-            print("confidence:", confidence)
             print("label:", label)
             m.draw_rect(test_img, faces)
 
@@ -108,7 +106,7 @@ while True:
         if cv2.waitKey(10) == ord('q'):
             break
             break
-        if time.time() - start_time >= 2:
+        if time.time() - start_time >= 1:
             break
             # break
             # break

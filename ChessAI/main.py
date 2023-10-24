@@ -21,7 +21,7 @@ import time
 # #         cv2.rectangle(resized_img, (x,y), (x+w, y+h), (255,102,0), thickness=2, lineType=8, shift=0)
 # #     cv2.imshow("face detection tutorial", resized_img)
 # #     cv2.waitKey(1)
-    
+
 # #     if cv2.waitKey(1) & 0xFF == ord('q'):
 # #         break
 # # vid.release()
@@ -58,7 +58,6 @@ import time
 # # face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\trainingData1.yml")
 
 
-
 # name = {0:"Ranbir", 1:"Aditya", 2:"Akshay"}
 
 # vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\video\Video.mp4")
@@ -87,7 +86,7 @@ import time
 #         # confidence value lower than its more accurate
 #         # 35 is the threshold value for confidence
 #         label, confidence = face_recognizer.predict(roi_gray)
-    
+
 #         print("confidence:", confidence)
 #         print("label:", label)
 #         m.draw_rect(test_img, faces)
@@ -100,9 +99,7 @@ import time
 
 #         m.put_text(test_img, predicted_name, x, y)
 
-    
 
-    
 #     resized_img = cv2.resize(test_img, (540,720))
 #     cv2.imshow("face detection tutorial", resized_img)
 #     if cv2.waitKey(10) == ord('q'):
@@ -115,7 +112,9 @@ import time
 # can change screen size from here
 screen_width = screen_height = 550
 screen_caption = "ChessAI"
-icon = p.image.load(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\icon.png")
+icon = p.image.load(
+    r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\icon.png"
+)
 
 # rows and columns
 
@@ -124,6 +123,8 @@ dimensions = 8
 # making sqaures in the screen to display chess board boxes
 sq_size = screen_height // dimensions
 
+
+
 fps = 30
 # to pass as an argument in clock.tick
 # adjust if game become laggy
@@ -131,58 +132,78 @@ fps = 30
 images = {}
 
 def load_images():
-
+   
     # load all images once as it is cpu heavy task
     pieces = ["wp", "wR", "wN", "wB", "wQ", "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
     for piece in pieces:
-        image_path = r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images" + "\\" + piece + ".png"
-
-        images[piece] = p.transform.scale(p.image.load(image_path).convert_alpha(), (sq_size, sq_size))
+        image_path = (
+            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images"
+            + "\\"
+            + piece
+            + ".png"
+        )
+    
+        images[piece] = p.transform.scale(
+            p.image.load(image_path).convert_alpha(), (sq_size, sq_size)
+        )
 
         # pygame.transform.scale to adjust the image
 
+
 def main():
     p.init()
-    # cv2.waitKey(0)  
+    # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     # initializing the pygame modules
-    text = "We have detected that user" + tt.predicted_name + " is playing. Press any key to start the game"
-    language = 'en'
+    text = (
+        "We have detected that user"
+        + tt.predicted_name
+        + " is playing. Press any key to start the game"
+    )
+    language = "en"
     myobj = gtts.gTTS(text=text, lang=language, slow=False)
     myobj.save("welcome1.mp3")
     # Playing the converted file
     # time.sleep(4)
-    # cv2.waitKey(0)  
+    # cv2.waitKey(0)
     # cv2.destroyAllWindows()
-    
 
     # os.system("welcome.mp3")
-    
 
     # setting screen with sizes
 
     # closing our face detection window
     cv2.destroyAllWindows()
 
-    screen = p.display.set_mode((screen_width,screen_height), p.HWSURFACE | p.DOUBLEBUF)
-    
-    welcome = "Welcome,"+tt.predicted_name +  "to ChessAI"
-    language = 'en'
+    screen = p.display.set_mode(
+        (screen_width, screen_height), p.HWSURFACE | p.DOUBLEBUF
+    )
+
+    welcome = "Welcome," + tt.predicted_name + "to ChessAI"
+    language = "en"
     myobj1 = gtts.gTTS(text=welcome, lang=language, slow=False)
     myobj1.save("welcome.mp3")
     # Playing the converted file
     p.mixer.music.load("welcome.mp3")
 
     invalid = "Invalid move"
-    language = 'en'
+    language = "en"
     myobj2 = gtts.gTTS(text=invalid, lang=language, slow=False)
     myobj2.save("invalid.mp3")
-    
+
+   
+    global highlight 
+    highlight = p.transform.scale(
+        p.image.load(
+            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\Highlight.jpg"
+        ).convert_alpha(),
+        (sq_size, sq_size)
+    )
 
     p.display.set_caption(screen_caption)
     p.display.set_icon(icon)
     p.display.update()
-    # clock object 
+    # clock object
     clock = p.time.Clock()
     # fps change karega to limit CPU in clock.tick(15)
 
@@ -191,18 +212,16 @@ def main():
 
     # creating a gamestate object joh ki constructor ko call karega apne
     # dot operator to call gamestate() in engine
-    
-    gs = engine.gamestate()
 
+    gs = engine.gamestate()
 
     # to store valid moves
     valid_moves = gs.getvalidmoves()
 
-
     # print(gs.board)
     move_made = False
     # to update valid moves only when a move is made
-    
+
     # flag variable for when a move is made
     # loading the images "once"
     load_images()
@@ -219,28 +238,56 @@ def main():
     player_clicks = []
     # keep track of player clicks (two tuples: [(6, 4), (4, 4)])
 
-
     done = True
     try:
-            p.mixer.init()
-            p.mixer.music.load("welcome1.mp3")
-            p.mixer.music.play()
-            time.sleep(5)
+        p.mixer.init()
+        p.mixer.music.load("welcome1.mp3")
+        p.mixer.music.play()
+        # time.sleep(5)
     except:
-            pass
-    chess = p.transform.scale_by(p.image.load(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\Images\chess.jpg"),0.25)
+        pass
+    chess = p.transform.scale_by(
+        p.image.load(
+            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\Images\chess.jpg"
+        ),
+        0.25,
+    )
     screen.fill(p.Color("black"))
     while done:
+        screen.blit(
+            chess, p.Rect(200 - 5 * sq_size + 180, 200 - 5 * sq_size + 200, 10, 10)
+        )
+        screen.blit(
+            p.transform.scale_by(icon, 0.5),
+            p.Rect(470 - 5 * sq_size + 15, screen_height / 2 - 270, 10, 10),
+        )
+        showtext(
+            screen,
+            "Welcome to ChessAI",
+            (screen_height / 2 - 230, screen_height / 2 - 10),
+            40,
+        )
+        showtext(
+            screen,
+            "Press any key to start the game",
+            (screen_height / 2 - 220, screen_height / 2 + 50),
+            25,
+        )
 
-        screen.blit(chess,p.Rect(200-5*sq_size + 180,200-5*sq_size + 200,10,10))
-        screen.blit(p.transform.scale_by(icon,0.5),p.Rect(470-5*sq_size+15,screen_height/2-270,10,10))
-        showtext(screen, "Welcome to ChessAI", (screen_height/2 - 230,screen_height/2 - 10), 40)
-        showtext(screen, "Press any key to start the game", (screen_height/2 - 220,screen_height/2+50),25)
-        
         try:
-            showtext(screen, tt.predicted_name + " is playing", (screen_height/2 - 111,screen_height/2-240),25)
+            showtext(
+                screen,
+                tt.predicted_name + " is playing",
+                (screen_height / 2 - 111, screen_height / 2 - 240),
+                25,
+            )
         except:
-            showtext(screen, "User is playing", (screen_height/2 - 300,screen_height/2-200),25)
+            showtext(
+                screen,
+                "User is playing",
+                (screen_height / 2 - 300, screen_height / 2 - 200),
+                25,
+            )
         p.display.flip()
         for event in p.event.get():
             if event.type == p.QUIT:
@@ -253,111 +300,123 @@ def main():
                     pass
                 done = False
                 # showtext(screen, predicted_name + " is playing")
+    playerone = True
+    playertwo = False
+    # if a human is playing white then playerone = True
+    # if a AI is playing white then playerone = False
+    # if a human is playing black then playertwo = True
+    # if a AI is playing black then playertwo = False
 
-
-
-
-    
     # start of my gameloop
     while running:
+
+        # check if human is playing white and its his turn
+        # or if human is playing black and its his turn
+        HumanTurn = (gs.whitemove and playerone) or (not gs.whitemove and playertwo)
 
         # lets keep a for loop to get events
         for event in p.event.get():
             # print(p.display.Info())
             # if the type of event is this
-            
+
             if event.type == p.QUIT:
                 # to exit the whileloop
                 running = False
             elif event.type == p.MOUSEBUTTONDOWN:
+            #   if not gameOver and HumanTurn:
+            #         # to check if the game is over or not
+            #         # to check if its the human's turn or not
+
                 # mouse kaha h?
-                mouse_location = p.mouse.get_pos() # (x,y) location of mouse
+                mouse_location = p.mouse.get_pos()  # (x,y) location of mouse
                 # get x and y from list
-                column = mouse_location[0]//sq_size
-                row  = mouse_location[1]//sq_size
-                
-                
+                column = mouse_location[0] // sq_size
+                row = mouse_location[1] // sq_size
+
                 # first click is select, second click is undo
-                if sq_selected == (row,column):
+                if sq_selected == (row, column):
                     # user clicks same sqaure again
-                    sq_selected = () # undo
+                    sq_selected = ()  # undo
                     player_clicks = []
                 else:
                     # store the square selected by the user now
-                    sq_selected = (row,column)
+                    sq_selected = (row, column)
                     player_clicks.append(sq_selected)
                     # first time it will append to empty list then it appends to list[0]
-                    
 
                     # hume pata karna hai user ka first click hai ya second
-                    if len(player_clicks)==2:
-
+                    if len(player_clicks) == 2:
                         # do clicks hogye toh bolenge make move
                         # so call the move class constructor
-                        move = engine.Move(player_clicks[0],player_clicks[1],gs.board)
+                        move = engine.Move(player_clicks[0], player_clicks[1], gs.board)
                         print(move.getChessNotation())
 
                         # player_clicks[0] is our source
                         # player_clicks[1] is our piece's destination
                         for i in range(len(valid_moves)):
-
-                        # only get valid move object
-                        # so check for it
+                            # only get valid move object
+                            # so check for it
 
                             if move == valid_moves[i]:
-                                
                                 gs.makeMove(valid_moves[i])
                                 user_choice = "Q"
                                 while move.pawn_promotion:
-                                    p.display.set_caption("Choose a piece to promote to")
+                                    p.display.set_caption(
+                                        "Choose a piece to promote to"
+                                    )
                                     screen.fill(p.Color("black"))
-                                    screen.blit(p.transform.scale_by(p.image.load(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\Images\PromotionMenu.jpg"),0.2),p.Rect(200-sq_size,200-sq_size,10,10))
-                                    showtext(screen, "Enter the corresponding character of the piece you want to promote to :", (200,200),12)
+                                    screen.blit(
+                                        p.transform.scale_by(
+                                            p.image.load(
+                                                r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\Images\PromotionMenu.jpg"
+                                            ),
+                                            0.2,
+                                        ),
+                                        p.Rect(200 - sq_size, 200 - sq_size, 10, 10),
+                                    )
+                                    showtext(
+                                        screen,
+                                        "Enter the corresponding character of the piece you want to promote to :",
+                                        (200, 200),
+                                        12,
+                                    )
                                     p.display.flip()
                                     user_choice = ""
                                     for event in p.event.get():
                                         if event.type == p.KEYDOWN:
                                             if event.key == p.K_q:
-                                                gs.makePawnPromotion(move,"Q")
-                                                move.pawn_promotion=False
-                                                
+                                                gs.makePawnPromotion(move, "Q")
+                                                move.pawn_promotion = False
+
                                             elif event.key == p.K_r:
-                                                gs.makePawnPromotion(move,"R")
-                                                move.pawn_promotion=False
-                                                
+                                                gs.makePawnPromotion(move, "R")
+                                                move.pawn_promotion = False
+
                                             elif event.key == p.K_b:
-                                                gs.makePawnPromotion(move,"B")
-                                                move.pawn_promotion=False
+                                                gs.makePawnPromotion(move, "B")
+                                                move.pawn_promotion = False
                                             elif event.key == p.K_n:
-                                                gs.makePawnPromotion(move,"N")
-                                                move.pawn_promotion=False
+                                                gs.makePawnPromotion(move, "N")
+                                                move.pawn_promotion = False
                                             else:
-                                                gs.makePawnPromotion(move,"Q")
-                                                move.pawn_promotion=False
+                                                gs.makePawnPromotion(move, "Q")
+                                                move.pawn_promotion = False
                                             p.display.set_caption("ChessAI")
-                            
-                                
-                                
-                                    
+
                                 # argument to makemove is generated by the engine
-                            
-                                
 
                                 move_made = True
-                               
-                                sq_selected = () # reset user clicks
+
+                                sq_selected = ()  # reset user clicks
                                 player_clicks = []
-                            
-                            
-                                
-                                # reset the user clicks after making the move each time 
+
+                                # reset the user clicks after making the move each time
                         if not move_made:
                             player_clicks = [sq_selected]
-                        
-                            
-                        #gs.makeMove(move)
+
+                        # gs.makeMove(move)
                         # to make the move
-                            
+
             elif event.type == p.KEYDOWN:
                 if event.key == p.K_z:
                     gs.undoMove()
@@ -368,34 +427,146 @@ def main():
 
                     # to update the valid moves
         if move_made:
+            animateMove(gs.moveLog[-1], screen, gs.board, clock)
             valid_moves = gs.getvalidmoves()
             move_made = False
-    
-
 
         # calling the draw boardand pieces fn
-        draw_game_state(screen,gs)
+        draw_game_state(screen, gs, valid_moves, sq_selected)
         clock.tick(fps)
         p.display.flip()
         # to update the display
 
-# method to draw sqs on board and graphics of a current gamestate
-def draw_game_state(screen,gs):
 
+def HighlightSquares(screen, gs, valid_moves, sq_selected, moveLog):
+    # to highlight the square selected by the user
+    # to highlight the last move made by the user
+
+    # highlight karne ke liye square h na?
+    # toh select kiya ki nahi check karna padega
+    if sq_selected != ():
+        # get row column from tuple
+        row, column = sq_selected
+
+        # so if it is white's turn and the piece selected by the user is white
+        # then first element of the piece is w
+        # else the first element of the piece is b  
+        if gs.board[row][column][0] == ("w" if gs.whitemove else "b"):
+            # if the piece selected by the user is of the same color as the player's turn
+            # then highlight the square
+
+            # surface takes a (x,y) tuple
+            s = p.Surface((sq_size, sq_size))
+
+            s.set_alpha(100)  # transparency value --> 0 is transparent, 255 is opaque
+            s.fill(p.Color("blue"))
+            screen.blit(s, (column * sq_size, row * sq_size))
+            # highlight the moves from that square
+            s.fill(p.Color("yellow"))
+
+            # highlight all the valid moves from that square
+            for moves in valid_moves:
+                # move start square se start hota hai
+                if moves.startRow == row and moves.startCol == column:
+                    # toh end square ko highlight karenge
+                    screen.blit(highlight, (moves.endCol * sq_size, moves.endRow * sq_size))
+
+    # highlight the last move made by the user
+    if len(gs.moveLog) > 0:
+        # so if the moveLog is not empty
+        # then highlight the last move made by the user
+        # get the last move from the moveLog
+        move = gs.moveLog[-1]
+        # now we have the move
+        # now we have to highlight the move
+        # so we will highlight the start square and the end square
+        # so we will highlight the start square and the end square
+        # surface takes a (x,y) tuple
+        s = p.Surface((sq_size, sq_size))
+
+        s.set_alpha(150)  # transparency value --> 0 is transparent, 255 is opaque
+        s.fill(p.Color(255, 255, 0))
+        screen.blit(s, (move.startCol * sq_size, move.startRow * sq_size))
+        # highlight the moves from that square
+        s.fill(p.Color(0, 255, 0))
+        screen.blit(s, (move.endCol * sq_size, move.endRow * sq_size))
+
+
+# method to draw sqs on board and graphics of a current gamestate
+def draw_game_state(screen, gs, valid_moves, sq_selected):
     # to draw squares on the board
     drawboard(screen)
 
-    #board-->pieces order ofc matter karega nhi toh pieces piche chip jayenge 
+    # board-->pieces order ofc matter karega nhi toh pieces piche chip jayenge
 
+    # to highlight the squares
+    HighlightSquares(screen, gs, valid_moves, sq_selected, moveLog=gs.moveLog)
+
+    # uske pehle ya baad bhi kar sakte hai
     # to draw pieces
-    drawpieces(screen,gs.board) # board from engine gamestate ka object gs , isliye dot
+    drawpieces(
+        screen, gs.board
+    )  # board from engine gamestate ka object gs , isliye dot
+
+def animateMove(move, screen, board, clock):
+    global colors
+    colors = [p.Color("white"), p.Color("dark gray")]
+    # colors = [p.Color("white"), p.Color("dark gray")]
+    # colors = [p.Color("white"), p.Color("dark gray")]
+    coords = []  # to store the coordinates of the move
+
+    # change in row and column
+    dR = move.endRow - move.startRow
+    dC = move.endCol - move.startCol
+
+
+    # frames per square
+    framesPerSquare = 15
+    # animation speed control karega
+
+
+    # toh hume 10 frames me move karna hai
+    frameCount = (abs(dR) + abs(dC)) * framesPerSquare
+    for frame in range(frameCount + 1):
+        # toh hume 10 frames me move karna hai
+        # so 10 baar loop chalayenge
+        # so hume 10 baar move karna hai
+        r, c = (move.startRow + dR * frame / frameCount, move.startCol + dC * frame / frameCount)
+        drawboard(screen)
+        drawpieces(screen, board)
+        # erase the piece moved from its ending square
+        color = colors[(move.endRow + move.endCol) % 2]
+
+        endSquare = p.Rect(move.endCol * sq_size, move.endRow * sq_size, sq_size, sq_size)
+        p.draw.rect(screen, color, endSquare)
+        # draw captured piece onto rectangle
+        if move.pieceCaptured != "--":
+            screen.blit(
+                images[move.pieceCaptured],
+                p.Rect(move.endCol * sq_size, move.endRow * sq_size, sq_size, sq_size),
+            )
+        # draw moving piece
+        screen.blit(
+            images[move.pieceMoved],
+            p.Rect(c * sq_size, r * sq_size, sq_size, sq_size),
+        )
+        p.display.flip()
+        clock.tick(60)
+
 
 def drawboard(screen):
     # lets draw squares
     # white and grey alternate
     # make list to store white and grey switch karna easy hoga
     # colors = [p.Color("white"), p.Color("dark gray")]
-    images = [p.image.load(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\ltb.jpg").convert_alpha(),p.image.load(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\dtb.jpg").convert_alpha()]
+    images = [
+        p.image.load(
+            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\ltb.jpg"
+        ).convert_alpha(),
+        p.image.load(
+            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\dtb.jpg"
+        ).convert_alpha(),
+    ]
 
     for rows in range(dimensions):
         for columns in range(dimensions):
@@ -413,58 +584,53 @@ def drawboard(screen):
             # light sqaures are even
 
             # color = colors[(rows+columns)%2]
-            image = images[(rows+columns)%2]
+            image = images[(rows + columns) % 2]
             # even --> colors[0] --> white
             # odd --> colors[1] --> black
-            
+
             # smpart
 
             # just draw rectangle (surface,color,)
-            custom_img = p.Surface((sq_size,sq_size))
-            
-            screen.blit(image,p.Rect(columns*sq_size,rows*sq_size,sq_size,sq_size))
-            
+            custom_img = p.Surface((sq_size, sq_size))
+
+            screen.blit(
+                image, p.Rect(columns * sq_size, rows * sq_size, sq_size, sq_size)
+            )
+
             # p.draw.rect(screen, color, p.Rect(columns*sq_size,rows*sq_size, sq_size, sq_size))
 
-def drawpieces(screen,board):
+
+def drawpieces(screen, board):
     for rows in range(dimensions):
         for columns in range(dimensions):
             pieces = board[rows][columns]
             if pieces != "--":
-                screen.blit(images[pieces],p.Rect(columns*sq_size,rows*sq_size,sq_size,sq_size))
+                screen.blit(
+                    images[pieces],
+                    p.Rect(columns * sq_size, rows * sq_size, sq_size, sq_size),
+                )
             # accessing our gs.board multi dim list by using [][]
             # to assign each square a piece
+
 
 # function to show a menu an ask the user the piece to promote to in pawn promotion
 
 
-
-    
-            
-    
-
-
-def showtext(screen,text,location,fontsize):
+def showtext(screen, text, location, fontsize):
     font = p.font.SysFont("Copperplate gothic", fontsize, True, False)
-    textObject = font.render(text, 0, p.Color('White'))
+    textObject = font.render(text, 0, p.Color("White"))
     location1 = p.Rect(location, location)
     # textLocation = p.Rect(0, 0, screen_width, screen_height).move(screen_width / 2 - textObject.get_width() / 2, screen_height / 2 - textObject.get_height() / 2)
     # white = p.Color("black")
     # screen.blit(white,p.rect(textLocation,textLocation,200,200))
     screen.blit(textObject, location1)
 
-    
-
-
-
-
-
 
 # if we import something in the main code we need to do this cause it wont run otherwise
 # THIS CODE WE HAVE TO RUN AS THIS IS OUR MAIN CODE AND WE IMPORT OTHER MODULES IN THIS CODE
 # SO WE WRITE THIS
-# The if __name__ == "__main__": construct is used to 
+# The if __name__ == "__main__": construct is used to
 # ensure that a specific block of code only runs when the Python script is executed directly,
 # not when it's imported as a module in another script.
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
