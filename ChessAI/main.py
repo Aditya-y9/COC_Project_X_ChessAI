@@ -155,6 +155,8 @@ def main():
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     # initializing the pygame modules
+    animate = False
+
     text = (
         "We have detected that user"
         + tt.predicted_name
@@ -359,6 +361,7 @@ def main():
 
                             if move == valid_moves[i]:
                                 gs.makeMove(valid_moves[i])
+                                animate = True
                                 user_choice = "Q"
                                 while move.pawn_promotion:
                                     p.display.set_caption(
@@ -418,18 +421,21 @@ def main():
                         # to make the move
 
             elif event.type == p.KEYDOWN:
+
                 if event.key == p.K_z:
                     gs.undoMove()
-
                     move_made = True
+                    animate = False
                     # when the user undoes a move the valid moves change
                     # so change the flag variable to true
 
                     # to update the valid moves
         if move_made:
-            animateMove(gs.moveLog[-1], screen, gs.board, clock)
+            if animate:
+                animateMove(gs.moveLog[-1], screen, gs.board, clock)
             valid_moves = gs.getvalidmoves()
             move_made = False
+            animate = False
 
         # calling the draw boardand pieces fn
         draw_game_state(screen, gs, valid_moves, sq_selected)
