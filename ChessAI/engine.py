@@ -40,6 +40,7 @@ class gamestate():
         self.checkmate = False
         self.stalemate = False
         self.enpassantPossible = () # coordinates for the square where en passant capture is possible
+        
         # (row,col) for the square where en passant capture is possible
 
 

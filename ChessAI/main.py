@@ -310,6 +310,11 @@ def main():
     # if a AI is playing black then playertwo = False
 
     # start of my gameloop
+
+
+
+    gameOver = False
+
     while running:
 
         # check if human is playing white and its his turn
@@ -326,8 +331,8 @@ def main():
                 running = False
             elif event.type == p.MOUSEBUTTONDOWN:
             #   if not gameOver and HumanTurn:
-            #         # to check if the game is over or not
-            #         # to check if its the human's turn or not
+                    # to check if the game is over or not
+                    # to check if its the human's turn or not
 
                 # mouse kaha h?
                 mouse_location = p.mouse.get_pos()  # (x,y) location of mouse
@@ -430,6 +435,16 @@ def main():
                     # so change the flag variable to true
 
                     # to update the valid moves
+                
+
+
+                if event.key == p.K_r:
+                    gs = engine.gamestate()
+                    valid_moves = gs.getvalidmoves()
+                    sq_selected = ()
+                    player_clicks = []
+                    move_made = False
+                    animate = False
         if move_made:
             if animate:
                 animateMove(gs.moveLog[-1], screen, gs.board, clock)
@@ -439,6 +454,15 @@ def main():
 
         # calling the draw boardand pieces fn
         draw_game_state(screen, gs, valid_moves, sq_selected)
+        if gs.checkmate:
+            gameOver = True
+            if gs.whitemove:
+                showtext(screen, "Black wins by checkmate", (screen_width / 2 - 100, screen_height / 2 - 10), 25)
+            else:
+                showtext(screen, "White wins by checkmate", (screen_width / 2 - 100, screen_height / 2 - 10), 25)
+        elif gs.stalemate:
+            gameOver = True
+            showtext(screen, "Stalemate", (screen_width / 2 - 100, screen_height / 2 - 10), 25)
         clock.tick(fps)
         p.display.flip()
         # to update the display
@@ -527,12 +551,14 @@ def animateMove(move, screen, board, clock):
 
 
     # frames per square
-    framesPerSquare = 15
+    framesPerSquare = 10
+    animationTime = 2  # in seconds
     # animation speed control karega
 
 
     # toh hume 10 frames me move karna hai
     frameCount = (abs(dR) + abs(dC)) * framesPerSquare
+    speed = 1 / frameCount  # speed of animation
     for frame in range(frameCount + 1):
         # toh hume 10 frames me move karna hai
         # so 10 baar loop chalayenge
@@ -541,10 +567,12 @@ def animateMove(move, screen, board, clock):
         drawboard(screen)
         drawpieces(screen, board)
         # erase the piece moved from its ending square
-        color = colors[(move.endRow + move.endCol) % 2]
+        # print(images)
+        # image = images[(move.endRow + move.endCol) % 2]
 
         endSquare = p.Rect(move.endCol * sq_size, move.endRow * sq_size, sq_size, sq_size)
-        p.draw.rect(screen, color, endSquare)
+        p.draw.rect(screen, (255,255,0,20), endSquare)
+        # screen.blit(image, endSquare)
         # draw captured piece onto rectangle
         if move.pieceCaptured != "--":
             screen.blit(
@@ -624,11 +652,8 @@ def drawpieces(screen, board):
 
 def showtext(screen, text, location, fontsize):
     font = p.font.SysFont("Copperplate gothic", fontsize, True, False)
-    textObject = font.render(text, 0, p.Color("White"))
+    textObject = font.render(text, False, p.Color("White"))
     location1 = p.Rect(location, location)
-    # textLocation = p.Rect(0, 0, screen_width, screen_height).move(screen_width / 2 - textObject.get_width() / 2, screen_height / 2 - textObject.get_height() / 2)
-    # white = p.Color("black")
-    # screen.blit(white,p.rect(textLocation,textLocation,200,200))
     screen.blit(textObject, location1)
 
 
