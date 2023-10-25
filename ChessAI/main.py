@@ -356,7 +356,7 @@ def main():
                         # do clicks hogye toh bolenge make move
                         # so call the move class constructor
                         move = engine.Move(player_clicks[0], player_clicks[1], gs.board)
-                        # print(move.getChessNotation())
+                        print(move.getChessNotation())
 
                         # player_clicks[0] is our source
                         # player_clicks[1] is our piece's destination
@@ -448,14 +448,7 @@ def main():
                     animate = False
 
         if not gameOver and not HumanTurn:
-            # generate and store the AI move
-            AIMove = AI.findBestMove(gs, valid_moves)
-            if AIMove is None:
-                # if the AI has no valid moves
-                # certain engines make random moves then
-                # checkmate and stalemate will be handled by the engine
-                AIMove = AI.findRandomMOve(valid_moves)
-            # give it to our engine
+            AIMove = AI.findRandomMOve(valid_moves)
             gs.makeMove(AIMove)
             move_made = True
             animate = True
