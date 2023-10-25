@@ -1,5 +1,5 @@
 import pygame as p
-import engine
+import engine , AI
 import cv2
 import numpy as np
 import os
@@ -366,6 +366,7 @@ def main():
 
                             if move == valid_moves[i]:
                                 gs.makeMove(valid_moves[i])
+                                move_made = True
                                 animate = True
                                 user_choice = "Q"
                                 while move.pawn_promotion:
@@ -445,6 +446,12 @@ def main():
                     player_clicks = []
                     move_made = False
                     animate = False
+
+        if not gameOver and not HumanTurn:
+            AIMove = AI.findRandomMOve(valid_moves)
+            gs.makeMove(AIMove)
+            move_made = True
+            animate = True
         if move_made:
             if animate:
                 animateMove(gs.moveLog[-1], screen, gs.board, clock)
@@ -499,6 +506,7 @@ def HighlightSquares(screen, gs, valid_moves, sq_selected, moveLog):
                 # move start square se start hota hai
                 if moves.startRow == row and moves.startCol == column:
                     # toh end square ko highlight karenge
+                    highlight.set_alpha(220)
                     screen.blit(highlight, (moves.endCol * sq_size, moves.endRow * sq_size))
 
     # highlight the last move made by the user
