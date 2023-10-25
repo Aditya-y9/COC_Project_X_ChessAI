@@ -199,8 +199,8 @@ class gamestate():
                 elif move.startCol == 7:
                     self.currentCastlingRights.bks = False
     def getvalidmoves(self):
-        for log in self.moveLog:
-            print(log.getChessNotation())
+        # for log in self.moveLog:
+            # print(log.getChessNotation())
         # to store a copy of the enpassantPossible variable
         temp_enpassantPossible = self.enpassantPossible
         tempCastleRights = castleRights(self.currentCastlingRights.wks,self.currentCastlingRights.bks,self.currentCastlingRights.wqs,self.currentCastlingRights.bqs)
@@ -601,7 +601,7 @@ class Move():
         # self.promotionChoice = "Q"   
         
         # we could write pawn promotion flags in the getpawnmoves itself but we chose this because of less new code to be written here
-        print(self.moveID)
+        # print(self.moveID)
     
 
     def __eq__(self, other):
