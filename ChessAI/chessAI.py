@@ -139,6 +139,28 @@ def findBestMoveMinMax(gs,valid_moves):
     return nextMove
 
 
+def findBestNegaMax(gs,valid_moves):
+
+    # helper method used to make the initial(first) recursive call
+
+    global nextMove,counter
+    nextMove = None
+
+    random.shuffle(valid_moves)
+    counter = 0 # counts number of times method is called(gamestate)
+    findMoveNegaMaxAlphaBeta(gs,valid_moves,DEPTH,-CHECKMATE, CHECKMATE, 1 if gs.whitemove else -1)
+    # if white turn turnMultiplier --> 1
+    # if black turn turnMultiplier --> -1
+    # since alpha is technically max value
+    # we initialize it to min value
+    # since beta is technically min value
+    # we initialize it to max value
+
+    # And whenever both of these cross cond each other it breaks
+    # cross the cond ie break case alpha>=beta
+    print(counter)
+    return nextMove
+
 def findMoveMinMax(gs,valid_moves,depth,whitemove):
 
     # using MinMax algorithm Recursively
@@ -216,6 +238,118 @@ def findMoveMinMax(gs,valid_moves,depth,whitemove):
             gs.undoMove()
             # undo the move made previously
         return minScore    
+
+
+def findMoveNegaMax(gs,valid_moves,depth,turnMultiplier):
+    
+    # Here instead of whiteMove boolean var
+    # use turnMultiplier to identify the turn :
+    # +1 --> white turn to move
+    # -1 --> black turn to move
+    # always select max value & multiply by turnMultiplier(ie -1 --> black)
+
+    global nextMove
+    if depth==0:
+        return turnMultiplier*scoreBoard(gs)
+    
+    # using only 1 for loop and if statement
+    # No need to check whose turn it is 
+    # Algorithm works the same
+    # call method recursively
+    maxScore = -CHECKMATE
+    for move in valid_moves:
+        gs.makeMove(move)
+        # generate next set of values
+        nextMove = gs.getvalidmoves()
+
+        # calc score
+        score = -findMoveNegaMax(gs,nextMove,depth-1,-turnMultiplier)
+
+        if score > maxScore:
+            maxScore = score
+            if depth == DEPTH:
+                nextMove = move
+
+        # call this method for opponent
+        # so whatever their best score is that will be our worst score
+        # -ve sign highlights switching from ply to ply
+
+        gs.undoMove()
+    return maxScore
+
+
+
+def findMoveNegaMaxAlphaBeta(gs,valid_moves,depth,alpha,beta,turnMultiplier):
+    
+    # Here instead of whiteMove boolean var
+    # use turnMultiplier to identify the turn :
+    # +1 --> white turn to move
+    # -1 --> black turn to move
+    # always select max value & multiply by turnMultiplier(ie -1 --> black)
+
+    
+    # ****// ALPHA BETA PRUNING //*****
+    # alpha --> upper bound val ie max possible score overall
+    # beta --> lower bound val ie min possible score overall
+    # if maxScore > alpha ---> alpha = maxScore
+    # if at any pt alpha >= beta --> break out of tree
+    # found a score that is better 
+    # than any possible game state at that position we get 
+
+    # to perform alpha beta pruning efficiently
+    # use move ordering
+    # want to evaluate best move first
+    # then by knowing this we avoid looking into worst branches
+    # move ordering - implement later
+
+    global nextMove,counter
+    counter+=1
+    if depth==0:
+        return turnMultiplier*scoreBoard(gs)
+    
+    # using only 1 for loop and if statement
+    # No need to check whose turn it is 
+    # Algorithm works the same
+    # call method recursively
+    maxScore = -CHECKMATE
+    for playerMove in valid_moves:
+        gs.makeMove(playerMove)
+        # generate next set of values
+        nextMove = gs.getvalidmoves()
+
+        # calc score
+        score = -findMoveNegaMaxAlphaBeta(gs,nextMove,depth-1,-beta,-alpha,-turnMultiplier)
+        
+        # switch alpha & beta through each frame
+        # -ve beta becomes new alpha(max)
+        # -ve alpha becomes new beta(min)
+        # it is min that becomes opponents new max
+        # it is max that becomes opponents new min
+        # max & min passed lvl by lvl
+
+        if score > maxScore:
+            maxScore = score
+            if depth == DEPTH:
+                nextMove = playerMove
+
+        # call this method for opponent
+        # so whatever their best score is that will be our worst score
+        # -ve sign highlights switching from ply to ply
+
+        gs.undoMove()
+
+        # actual pruning happens
+        if maxScore > alpha:
+            alpha = maxScore
+        if alpha >= beta: 
+            # break case no need to evaluate further
+            # it isimpossible or the worst case
+            break
+
+    return maxScore
+
+
+
 
 
 

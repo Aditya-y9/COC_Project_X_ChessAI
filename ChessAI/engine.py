@@ -504,6 +504,7 @@ class castleRights():
 class Move():
     # map position from rows and columns to ranks and files in chess
 
+    
 
     # so using dictionaries to map
     ranksToRows = {"1":7,"2":6,"3":5,"4":4,

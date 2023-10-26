@@ -169,7 +169,7 @@ def main():
     
     welcome = "Welcome,"+tt.predicted_name +  "to ChessAI"
     language = 'en'
-    myobj1 = gtts.gTTS(text=welcome,tld='co.in',lang=language, slow=False)
+    myobj1 = gtts.gTTS(text=welcome,lang=language, slow=False)
     myobj1.save("welcome.mp3")
     # Playing the converted file
     p.mixer.music.load("welcome.mp3")
@@ -403,10 +403,11 @@ def main():
                     # animate = False
                     gameOver = False
 
+
         # AI move finder 
         if not gameOver and not isHumanTurn:
             # if the game is not over and AI turn
-            AIMove = chessAI.findBestMoveMinMax(gs,valid_moves)
+            AIMove = chessAI.findBestNegaMax(gs,valid_moves)
 
             # random move is made only if its known that the next move is ultimately checkmate
             # there is no opt of best move and it does some move randomly
@@ -421,7 +422,7 @@ def main():
 
             valid_moves = gs.getvalidmoves()
             move_made = False
-    
+            #animate = False
 
 
         # calling the draw board and pieces fn
@@ -477,7 +478,8 @@ def highlightSquares(screen,gs,valid_moves,sq_selected):
 
             # highlighting the  move from that square
             # check for all the moves from valid_moves list
-            # match all the moves wrt selected sq by consider startrow and startcol 
+            # match all the moves wrt selected sq by consider 
+            #  and startcol 
             # then endrow and endcol of all these moves highlighted
             s.fill(p.Color(255,255,0))
             for move in valid_moves:
