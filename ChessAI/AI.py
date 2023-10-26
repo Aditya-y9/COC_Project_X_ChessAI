@@ -14,7 +14,7 @@
 # the score will be based on the checkmate and stalemate
 # the score will be based on the check
 import random
-
+import engine
 # to store material values of the pieces
 pieceScore = {'K': 0, 'Q': 9, 'R': 5, 'B': 3, 'N': 3, 'p': 1}
 
@@ -48,64 +48,243 @@ def findRandomMOve(validMoves):
     return validMoves[random.randint(0, len(validMoves) - 1)]
 
 
-def findBestMove(gs, validMoves):
-    # Return a valid move that is the best move
-    # get a random move from the list of valid moves
-    # random.shuffle(validMoves)
-    # return validMoves[0]
+# def findBestMove1(gs, validMoves):
+#     # Return a valid move that is the best move
+#     # get a random move from the list of valid moves
+#     # random.shuffle(validMoves)
+#     # return validMoves[0]
     
-    # to be able to return the best move for both white and black
-    turnMultiplier = 1 if gs.whitemove else -1
+#     # to be able to return the best move for both white and black
+#     turnMultiplier = 1 if gs.whitemove else -1
 
-    # assuming the opponent make a move which makes him best
-    # opponent makes his best move
-    # we look one branch in the future to get this move
-    opponentMinMaxScore = float('inf')
-    bestPlayerMove = None
+#     # assuming the opponent make a move which makes him best
+#     # opponent makes his best move
+#     # we look one branch in the future to get this move
+#     opponentMinMaxScore = float('inf')
+#     bestPlayerMove = None
+#     random.shuffle(validMoves)
+
+#     # player is making the next move
+#     # first layer
+#     for playerMove in validMoves:
+
+#         gs.makeMove(playerMove)
+#         # opponent is making the next move
+
+#         # so lets get the valid moves for the opponent
+#         opponentMoves = gs.getvalidmoves()
+
+
+#         if gs.checkmate:
+#             # we traversed two layers
+#             # so we invert the score
+#             score = -CHECKMATE
+#         elif gs.stalemate:
+#             # minimize my opponents best move
+#             score = STALEMATE
+#         else:
+#             opponentMaxScore = float('inf')
+#         # second layer
+#             for opponentMove in opponentMoves:
+
+#                 # make every move and check the score
+#                 gs.makeMove(opponentMove)
+#                 gs.getvalidmoves()
+#                 if gs.checkmate:
+#                     # we traversed two layers
+#                     # so we invert the score
+#                     score = CHECKMATE
+#                 elif gs.stalemate:
+#                     # minimize my opponents best move
+#                     score = STALEMATE
+#                 else:
+#                     score = -turnMultiplier * Score_By_Material(gs.board)
+
+#                 # while traversing store the max score
+#                 if score > opponentMaxScore:
+#                     opponentMaxScore = score
+
+#                 # undo moves karo nahi toh saare moves ho jayenge!
+#                 gs.undoMove()
+#                 print(score)
+#             if opponentMaxScore < opponentMinMaxScore:
+#                 opponentMinMaxScore = opponentMaxScore
+#                 bestPlayerMove = playerMove
+
+#             # undo moves karo nahi toh saare moves ho jayenge!
+#             gs.undoMove()
+#     return bestPlayerMove
+
+
+# method to travel tree recursively
+'''
+    This function will evaluate the board and give it a score
+    for the opponent, the score will be negative
+    args: gs: gamestate
+          validMoves: valid moves for the player
+          depth: depth of the tree
+          whiteToMove: boolean to check if white is to move or not
+    return: bestMove: best move for the player
+            bestMoveScore: best move score for the player
+    '''
+
+
+'''
+Helper method to make the first recursive call
+'''
+
+def findBestMove(gs, validMoves):
+    global nextMove , counter
+    # if we dont have next move
+    # we will find the next move by random
+    nextMove = None
     random.shuffle(validMoves)
-
-    # player is making the next move
-    # first layer
-    for playerMove in validMoves:
-
-        gs.makeMove(playerMove)
-        # opponent is making the next move
-
-        # so lets get the valid moves for the opponent
-        opponentMoves = gs.getvalidmoves()
+    counter = 0
+    # findMoveNegaMax(gs, validMoves, DEPTH, 1 if gs.whitemove else -1)
+    findMoveNegaMaxAlphaBeta(gs, validMoves, DEPTH,-CHECKMATE,CHECKMATE, 1 if gs.whitemove else -1)
+    print(counter)
+    return nextMove
 
 
-        opponentMaxScore = -float('inf')
+def findMoveMinMax(gs, validMoves, depth, whiteToMove):
+    global nextMove
+    # if we are at the depth 0
+    if depth == 0:
+        return Score_By_Material(gs.board)
+    if whiteToMove:
+        # start with worst possible score
+        maxScore = -CHECKMATE
 
-        # second layer
-        for opponentMove in opponentMoves:
-
-            # make every move and check the score
-            gs.makeMove(opponentMove)
-            if gs.checkmate:
-                # we traversed two layers
-                # so we invert the score
-                score = -turnMultiplier * 10000
-            elif gs.stalemate:
-                # minimize my opponents best move
-                score = -turnMultiplier * 5000
-            else:
-                score = -turnMultiplier * Score_By_Material(gs.board)
-
-            # while traversing store the max score
-            if score > opponentMaxScore:
-                opponentMaxScore = score
-
-            # undo moves karo nahi toh saare moves ho jayenge!
+        # traverse the tree
+        for move in validMoves:
+            gs.makeMove(move)
+            nextMoves = gs.getvalidmoves()
+            score = findMoveMinMax(gs, nextMoves, depth - 1, False)
+            if score > maxScore:
+                maxScore = score
+                if depth == DEPTH:
+                    nextMove = move
             gs.undoMove()
-            print(score)
-        if opponentMaxScore < opponentMinMaxScore:
-            opponentMinMaxScore = opponentMaxScore
-            bestPlayerMove = playerMove
+        return maxScore
+    else:
+        # start with worst possible score
+        minScore = CHECKMATE
+        for move in validMoves:
+            gs.makeMove(move)
+            nextMoves = gs.getvalidmoves()
+            score = findMoveMinMax(gs, nextMoves, depth - 1, True)
+            if score < minScore:
+                minScore = score
+                if depth == DEPTH:
+                    nextMove = move
+            gs.undoMove()
+        return minScore
 
-        # undo moves karo nahi toh saare moves ho jayenge!
+def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier):
+    # alpha beta pruning
+    global counter
+    counter += 1
+    global nextMove
+    # if we are at the depth 0
+    if depth == 0:
+        return turnMultiplier * ScoreBoard(gs)
+    # start with worst possible score
+    # algorithm will work for both white and black
+    maxScore = -CHECKMATE
+    for move in validMoves:
+        gs.makeMove(move)
+        # for recursion
+        nextMoves = gs.getvalidmoves()
+
+        # negative sign to change the perspective
+        # during recursion
+
+                                                    # because for our opponent alpha and beta will be inverted
+        score = -findMoveNegaMaxAlphaBeta(gs, nextMoves, depth - 1,-beta,-alpha,-turnMultiplier)
+        # if maxScore is greater than beta
+        # we will prune the tree
+        # if we get better move evlauation score
+        if score > maxScore:
+            maxScore = score
+            if depth == DEPTH:
+                # the opponent will make the best move
+                # we will see this at the root node
+                nextMove = move
         gs.undoMove()
-    return bestPlayerMove
+        if maxScore > alpha:
+            # pruning
+            alpha = maxScore
+        if alpha >= beta:
+            break
+        # we stop looking at the next moves
+    return maxScore
+
+def findMoveNegaMax(gs, validMoves, depth, turnMultiplier):
+    global nextMove , counter
+    counter += 1
+    # if we are at the depth 0
+    if depth == 0:
+        return turnMultiplier * Score_By_Material(gs.board)
+    # start with worst possible score
+    # algorithm will work for both white and black
+    maxScore = -CHECKMATE
+    for move in validMoves:
+        gs.makeMove(move)
+        # for recursion
+        nextMoves = gs.getvalidmoves()
+
+        # negative sign to change the perspective
+        # during recursion
+        score = -findMoveNegaMax(gs, nextMoves, depth - 1, -turnMultiplier)
+
+        # if we get better move evlauation score
+        if score > maxScore:
+            maxScore = score
+            if depth == DEPTH:
+                # the opponent will make the best move
+                # we will see this at the root node
+                nextMove = move
+        gs.undoMove()
+    return maxScore
+
+
+
+
+
+'''
+    This function will evaluate the board and give it a score
+    TO check the surroundings
+    Protecting and attacking pieces
+    args: gs: gamestate
+          validMoves: valid moves for the player
+          depth: depth of the tree
+          whiteToMove: boolean to check if white is to move or not
+
+    return: bestMove: best move for the player
+            bestMoveScore: best move score for the player
+    '''
+def ScoreBoard(gs):
+    
+    if gs.checkmate:
+        if gs.whitemove:
+            return -CHECKMATE
+        else:
+            return CHECKMATE
+    elif gs.stalemate:
+        return STALEMATE
+
+    score = 0
+    for row in gs.board:
+        for square in row:
+            # assuming that the white pieces are primary
+            if square[0] == 'w':
+                score += pieceScore[square[1]]
+            elif square[0] == 'b':
+                score -= pieceScore[square[1]]
+    return score
+
+
+
 
 
 '''

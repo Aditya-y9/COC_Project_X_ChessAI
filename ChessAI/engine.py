@@ -40,6 +40,7 @@ class gamestate():
         self.checkmate = False
         self.stalemate = False
         self.enpassantPossible = () # coordinates for the square where en passant capture is possible
+        self.enpassantPossibleLog = [self.enpassantPossible] 
         
         # (row,col) for the square where en passant capture is possible
 
@@ -176,8 +177,8 @@ class gamestate():
                     # queen side castle move
                     self.board[move.endRow][move.endCol-2] = self.board[move.endRow][move.endCol+1]
                     self.board[move.endRow][move.endCol+1] = "--"
-                self.checkmate = False
-                self.stalemate = False
+            self.checkmate = False
+            self.stalemate = False
 
     def updateCastleRights(self,move):
         if move.pieceMoved == 'wK':

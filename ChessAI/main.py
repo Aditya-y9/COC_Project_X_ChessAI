@@ -303,7 +303,7 @@ def main():
                 done = False
                 # showtext(screen, predicted_name + " is playing")
     playerone = True
-    playertwo = False
+    playertwo = True
     # if a human is playing white then playerone = True
     # if a AI is playing white then playerone = False
     # if a human is playing black then playertwo = True
@@ -432,10 +432,13 @@ def main():
                     gs.undoMove()
                     move_made = True
                     animate = False
+                    gameOver = False
                     # when the user undoes a move the valid moves change
                     # so change the flag variable to true
 
                     # to update the valid moves
+
+
                 
 
 
@@ -446,6 +449,7 @@ def main():
                     player_clicks = []
                     move_made = False
                     animate = False
+                    gameOver = False
 
         if not gameOver and not HumanTurn:
             # generate and store the AI move
