@@ -18,12 +18,94 @@ import engine
 # to store material values of the pieces
 pieceScore = {'K': 0, 'Q': 9, 'R': 5, 'B': 3, 'N': 3, 'p': 1}
 
+# top row to bottom row
+# value of knight at different positions on the board
+knightScores = [[1, 1, 1, 1, 1, 1, 1, 1],
+                [1.5, 2, 2, 2, 2, 2, 2, 1.5],
+                [1, 1.5, 2, 2.5, 2.5, 2, 1.5, 1],
+                [0.5, 1, 1.5, 2, 2, 1.5, 1, 0.5],
+                [0.5, 1, 1.5, 2, 2, 1.5, 1, 0.5],
+                [1, 1.5, 2, 2.5, 2.5, 2, 1.5, 1],
+                [1.5, 2, 2, 2, 2, 2, 2, 1.5],
+                [1, 1, 1, 0.5, 0.5, 1, 1, 1]]
+
+# map  to assign the values to the pieces
+
+piecepositionScores = {'N': knightScores} # for knight
+
+# for bishop
+bishopScores = [[1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1],
+                [1, 1.5, 2, 2, 2, 2, 1.5, 1],
+                [1, 1.5, 2, 2.5, 2.5, 2, 1.5, 1],
+                [1, 1.5, 2.5, 2.5, 2.5, 2.5, 1.5, 1],
+                [1, 1.5, 2, 2.5, 2.5, 2, 1.5, 1],
+                [1, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1]]
+
+piecepositionScores['B'] = bishopScores
+
+# for rook
+rookScores = [[1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 2, 2, 2, 1],
+                [1, 2, 3, 3, 3, 3, 2, 1],
+                [1, 2, 3, 4, 4, 3, 2, 1],
+                [1, 2, 3, 4, 4, 3, 2, 1],
+                [1, 2, 3, 3, 3, 3, 2, 1],
+                [1, 2, 2, 2, 2, 2, 2, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1]]
+
+piecepositionScores['R'] = rookScores
+
+# for queen
+queenScores = [[1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 2, 2, 2, 1],
+                [1, 2, 3, 3, 3, 3, 2, 1],
+                [1, 2, 3, 4, 4, 3, 2, 1],
+                [1, 2, 3, 4, 4, 3, 2, 1],
+                [1, 2, 3, 3, 3, 3, 2, 1],
+                [1, 2, 2, 2, 2, 2, 2, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1]]
+
+piecepositionScores['Q'] = queenScores
+
+
+
+whitepawnScores = [[0, 0, 0, 0, 0, 0, 0, 0],
+                [5, 5, 5, 5, 5, 5, 5, 5],
+                [1, 1, 2, 3, 3, 2, 1, 1],
+                [0.5, 0.5, 1, 2.5, 2.5, 1, 0.5, 0.5],
+                [0, 0, 0, 2, 2, 0, 0, 0],
+                [0.5, -0.5, -1, 0, 0, -1, -0.5, 0.5],
+                [0.5, 1, 1, -2, -2, 1, 1, 0.5],
+                [0, 0, 0, 0, 0, 0, 0, 0]]
+
+piecepositionScores['p'] = whitepawnScores
+
+blackpawnScores = [[0, 0, 0, 0, 0, 0, 0, 0],
+                [0.5, 1, 1, -2, -2, 1, 1, 0.5],
+                [0.5, -0.5, -1, 0, 0, -1, -0.5, 0.5],
+                [0, 0, 0, 2, 2, 0, 0, 0],
+                [0.5, 0.5, 1, 2.5, 2.5, 1, 0.5, 0.5],
+                [1, 1, 2, 3, 3, 2, 1, 1],
+                [5, 5, 5, 5, 5, 5, 5, 5],
+                [0, 0, 0, 0, 0, 0, 0, 0]]
+
+piecepositionScores['P'] = blackpawnScores
+
+# improvements
+
+# you can make an 2d array for the king positional weights by check if their are friendly pieces around the king
+
+
+
 # High values for check, checkmate and stalemate
 CHECKMATE = 1000
 
 STALEMATE = 0
 
 DEPTH = 3
+
 
 
 
@@ -276,13 +358,24 @@ def ScoreBoard(gs):
         return STALEMATE
 
     score = 0
-    for row in gs.board:
-        for square in row:
+    for row in range(len(gs.board)):
+        for col in range(len(gs.board[row])):
             # assuming that the white pieces are primary
-            if square[0] == 'w':
-                score += pieceScore[square[1]]
-            elif square[0] == 'b':
-                score -= pieceScore[square[1]]
+            square = gs.board[row][col]
+            # square is the piece
+            if square!='--':
+                piecePositionScore=0
+                if square[1] != 'K':
+                    # if it is not a king
+                    if square[1] == 'p':
+                        piecePositionScore = piecepositionScores[square[1]][row][col]
+                    else:
+                        piecePositionScore = piecepositionScores[square[1]][row][col]
+                        
+                if square[0] == 'w':
+                    score += pieceScore[square[1]] + piecePositionScore * 0.1
+                elif square[0] == 'b':
+                    score -= pieceScore[square[1]] + piecePositionScore * 0.1
     return score
 
 
