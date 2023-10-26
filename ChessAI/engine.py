@@ -586,7 +586,7 @@ class Move():
         # flag for en passant move
         self.enpassantPossible = enpassantPossible
         if self.enpassantPossible:
-            self.pieceCaptured = 'wp' if self.pieceMoved == 'bp' else 'bp'
+            self.pieceCaptured = 'bp' if self.pieceMoved == 'wp' else 'wp'
 
         self.isCastleMove = isCastleMove
         # if pawn is moving two squares ahead

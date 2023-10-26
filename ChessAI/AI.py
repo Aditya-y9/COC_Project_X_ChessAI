@@ -48,6 +48,8 @@ def findRandomMOve(validMoves):
     return validMoves[random.randint(0, len(validMoves) - 1)]
 
 
+
+
 # def findBestMove1(gs, validMoves):
 #     # Return a valid move that is the best move
 #     # get a random move from the list of valid moves
