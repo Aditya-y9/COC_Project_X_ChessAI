@@ -306,7 +306,7 @@ def main():
                 done = False
                 # showtext(screen, predicted_name + " is playing")
     playerone = True
-    playertwo = True
+    playertwo = False
     # if a human is playing white then playerone = True
     # if a AI is playing white then playerone = False
     # if a human is playing black then playertwo = True
