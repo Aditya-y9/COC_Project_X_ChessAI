@@ -16,83 +16,64 @@
 import random
 import engine
 # to store material values of the pieces
-pieceScore = {'K': 0, 'Q': 9, 'R': 5, 'B': 3, 'N': 3, 'p': 1}
+pieceScore = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 1}
 
-# top row to bottom row
-# value of knight at different positions on the board
-knightScores = [[1, 1, 1, 1, 1, 1, 1, 1],
-                [1.5, 2, 2, 2, 2, 2, 2, 1.5],
-                [1, 1.5, 2, 2.5, 2.5, 2, 1.5, 1],
-                [0.5, 1, 1.5, 2, 2, 1.5, 1, 0.5],
-                [0.5, 1, 1.5, 2, 2, 1.5, 1, 0.5],
-                [1, 1.5, 2, 2.5, 2.5, 2, 1.5, 1],
-                [1.5, 2, 2, 2, 2, 2, 2, 1.5],
-                [1, 1, 1, 0.5, 0.5, 1, 1, 1]]
+knightScores = [[0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0],
+                 [0.1, 0.3, 0.5, 0.5, 0.5, 0.5, 0.3, 0.1],
+                 [0.2, 0.5, 0.6, 0.65, 0.65, 0.6, 0.5, 0.2],
+                 [0.2, 0.55, 0.65, 0.7, 0.7, 0.65, 0.55, 0.2],
+                 [0.2, 0.5, 0.65, 0.7, 0.7, 0.65, 0.5, 0.2],
+                 [0.2, 0.55, 0.6, 0.65, 0.65, 0.6, 0.55, 0.2],
+                 [0.1, 0.3, 0.5, 0.55, 0.55, 0.5, 0.3, 0.1],
+                 [0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0]]
 
-# map  to assign the values to the pieces
+bishopScores = [[0.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.0],
+                 [0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.2],
+                 [0.2, 0.4, 0.5, 0.6, 0.6, 0.5, 0.4, 0.2],
+                 [0.2, 0.5, 0.5, 0.6, 0.6, 0.5, 0.5, 0.2],
+                 [0.2, 0.4, 0.6, 0.6, 0.6, 0.6, 0.4, 0.2],
+                 [0.2, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.2],
+                 [0.2, 0.5, 0.4, 0.4, 0.4, 0.4, 0.5, 0.2],
+                 [0.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.0]]
 
-piecepositionScores = {'N': knightScores} # for knight
+rookScores = [[0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
+               [0.5, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.5],
+               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
+               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
+               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
+               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
+               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
+               [0.25, 0.25, 0.25, 0.5, 0.5, 0.25, 0.25, 0.25]]
 
-# for bishop
-bishopScores = [[1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1],
-                [1, 1.5, 2, 2, 2, 2, 1.5, 1],
-                [1, 1.5, 2, 2.5, 2.5, 2, 1.5, 1],
-                [1, 1.5, 2.5, 2.5, 2.5, 2.5, 1.5, 1],
-                [1, 1.5, 2, 2.5, 2.5, 2, 1.5, 1],
-                [1, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1]]
+queenScores = [[0.0, 0.2, 0.2, 0.3, 0.3, 0.2, 0.2, 0.0],
+                [0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.2],
+                [0.2, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.2],
+                [0.3, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.3],
+                [0.4, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.3],
+                [0.2, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.2],
+                [0.2, 0.4, 0.5, 0.4, 0.4, 0.4, 0.4, 0.2],
+                [0.0, 0.2, 0.2, 0.3, 0.3, 0.2, 0.2, 0.0]]
 
-piecepositionScores['B'] = bishopScores
+pawnScores = [[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+               [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
+               [0.3, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.3],
+               [0.25, 0.25, 0.3, 0.45, 0.45, 0.3, 0.25, 0.25],
+               [0.2, 0.2, 0.2, 0.4, 0.4, 0.2, 0.2, 0.2],
+               [0.25, 0.15, 0.1, 0.2, 0.2, 0.1, 0.15, 0.25],
+               [0.25, 0.3, 0.3, 0.0, 0.0, 0.3, 0.3, 0.25],
+               [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]]
 
-# for rook
-rookScores = [[1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 2, 2, 2, 2, 2, 2, 1],
-                [1, 2, 3, 3, 3, 3, 2, 1],
-                [1, 2, 3, 4, 4, 3, 2, 1],
-                [1, 2, 3, 4, 4, 3, 2, 1],
-                [1, 2, 3, 3, 3, 3, 2, 1],
-                [1, 2, 2, 2, 2, 2, 2, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1]]
-
-piecepositionScores['R'] = rookScores
-
-# for queen
-queenScores = [[1, 1, 1, 1, 1, 1, 1, 1],
-                [1, 2, 2, 2, 2, 2, 2, 1],
-                [1, 2, 3, 3, 3, 3, 2, 1],
-                [1, 2, 3, 4, 4, 3, 2, 1],
-                [1, 2, 3, 4, 4, 3, 2, 1],
-                [1, 2, 3, 3, 3, 3, 2, 1],
-                [1, 2, 2, 2, 2, 2, 2, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1]]
-
-piecepositionScores['Q'] = queenScores
-
-
-
-whitepawnScores = [[0, 0, 0, 0, 0, 0, 0, 0],
-                [5, 5, 5, 5, 5, 5, 5, 5],
-                [1, 1, 2, 3, 3, 2, 1, 1],
-                [0.5, 0.5, 1, 2.5, 2.5, 1, 0.5, 0.5],
-                [0, 0, 0, 2, 2, 0, 0, 0],
-                [0.5, -0.5, -1, 0, 0, -1, -0.5, 0.5],
-                [0.5, 1, 1, -2, -2, 1, 1, 0.5],
-                [0, 0, 0, 0, 0, 0, 0, 0]]
-
-piecepositionScores['p'] = whitepawnScores
-
-blackpawnScores = [[0, 0, 0, 0, 0, 0, 0, 0],
-                [0.5, 1, 1, -2, -2, 1, 1, 0.5],
-                [0.5, -0.5, -1, 0, 0, -1, -0.5, 0.5],
-                [0, 0, 0, 2, 2, 0, 0, 0],
-                [0.5, 0.5, 1, 2.5, 2.5, 1, 0.5, 0.5],
-                [1, 1, 2, 3, 3, 2, 1, 1],
-                [5, 5, 5, 5, 5, 5, 5, 5],
-                [0, 0, 0, 0, 0, 0, 0, 0]]
-
-piecepositionScores['P'] = blackpawnScores
-
+piecePositionScores = {"wN": knightScores,
+                         "bN": knightScores[::-1],
+                         "wB": bishopScores,
+                         "bB": bishopScores[::-1],
+                         "wQ": queenScores,
+                         "bQ": queenScores[::-1],
+                         "wR": rookScores,
+                         "bR": rookScores[::-1],
+                         "wp": pawnScores,
+                         "bp": pawnScores[::-1]}
+# for the position of the pieces
 # improvements
 
 # you can make an 2d array for the king positional weights by check if their are friendly pieces around the king
@@ -104,7 +85,7 @@ CHECKMATE = 1000
 
 STALEMATE = 0
 
-DEPTH = 3
+DEPTH = 4
 
 
 
@@ -364,18 +345,14 @@ def ScoreBoard(gs):
             square = gs.board[row][col]
             # square is the piece
             if square!='--':
-                piecePositionScore=0
-                if square[1] != 'K':
-                    # if it is not a king
-                    if square[1] == 'p':
-                        piecePositionScore = piecepositionScores[square[1]][row][col]
-                    else:
-                        piecePositionScore = piecepositionScores[square[1]][row][col]
-                        
-                if square[0] == 'w':
-                    score += pieceScore[square[1]] + piecePositionScore * 0.1
-                elif square[0] == 'b':
-                    score -= pieceScore[square[1]] + piecePositionScore * 0.1
+                piece_position_score = 0
+                if square[1] != "K":
+                    piece_position_score = piecePositionScores[square][row][col]
+                if square[0] == "w":
+                    score += pieceScore[square[1]] + piece_position_score
+                if square[0] == "b":
+                    score -= pieceScore[square[1]] + piece_position_score
+
     return score
 
 
