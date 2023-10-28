@@ -40,6 +40,9 @@ class gamestate():
         self.checkmate = False
         self.stalemate = False
         self.enpassantPossible = () # coordinates for the square where en passant capture is possible
+        self.enpassantPossibleLog = [self.enpassantPossible]
+        # enpassantPossibleLog --> adds enpassant move made to list
+        # when undo the move, we remove it and grab the last one
         self.currentCastlingRights = castleRights(True,True,True,True)
         self.castleRightsLog = [castleRights(self.currentCastlingRights.wks,self.currentCastlingRights.bks,self.currentCastlingRights.wqs,self.currentCastlingRights.bqs)]
 
@@ -93,6 +96,7 @@ class gamestate():
                 self.board[move.endRow][move.endCol+1] = self.board[move.endRow][move.endCol-2]
                 self.board[move.endRow][move.endCol-2] = "--"
         
+        self.enpassantPossibleLog.append(self.enpassantPossible)
 
         # castling
         # if king moves two squares to the right
@@ -141,10 +145,17 @@ class gamestate():
                 self.board[move.startRow][move.endCol] = move.pieceCaptured
                 # redo the enpassant capture
                 # if i undo the move, i have to set the enpassantPossible to the square where the enpassant capture was possible
-                self.enpassantPossible = (move.endRow,move.endCol)
+                # self.enpassantPossible = (move.endRow,move.endCol)
             # undo 2 square pawn advance
-            if move.pieceMoved[1] == 'p' and abs(move.startRow - move.endRow) == 2:
-                self.enpassantPossible = ()
+            # if move.pieceMoved[1] == 'p' and abs(move.startRow - move.endRow) == 2:
+                # self.enpassantPossible = ()
+            self.enpassantPossibleLog.pop()
+            # if the undo move is done 
+            # then it removes the enpassant move from log
+            # holds the previous enpassantPossible into enpassantPossibleLog
+            self.enpassantPossible = self.enpassantPossibleLog[-1]
+
+
             self.castleRightsLog.pop()
             self.currentCastlingRights = self.castleRightsLog[-1]
             # undo castling rights
@@ -185,9 +196,25 @@ class gamestate():
                     self.currentCastlingRights.bqs = False
                 elif move.startCol == 7:
                     self.currentCastlingRights.bks = False
+        
+        # if a rook is captured then castling rights will be False
+        if move.pieceCaptured == 'wR' : # white rook captured
+            if move.endRow == 7:
+                if move.endCol == 0: # if its wqs rook ie captured so its pos
+                    self.currentCastlingRights.wqs = False
+                elif move.endCol == 7: # if its wks rook ie captured so its pos
+                    self.currentCastlingRights.wks = False
+        elif move.pieceCaptured == 'bR' : # black rook captured
+            if move.endRow == 0:
+                if move.endCol == 0: # if its bqs rook ie captured so its pos
+                    self.currentCastlingRights.bqs = False
+                elif move.endCol == 7: # if its bks rook ie captured so its pos
+                    self.currentCastlingRights.bks = False
+
+
     def getvalidmoves(self):
-        for log in self.moveLog:
-            print(log.getChessNotation())
+        #for log in self.moveLog:
+            #print(log.getChessNotation())
         # to store a copy of the enpassantPossible variable
         temp_enpassantPossible = self.enpassantPossible
         tempCastleRights = castleRights(self.currentCastlingRights.wks,self.currentCastlingRights.bks,self.currentCastlingRights.wqs,self.currentCastlingRights.bqs)
@@ -571,7 +598,7 @@ class Move():
         # self.promotionChoice = "Q"   
         
         # we could write pawn promotion flags in the getpawnmoves itself but we chose this because of less new code to be written here
-        print(self.moveID)
+        # print(self.moveID)
     
 
     def __eq__(self, other):

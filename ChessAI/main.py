@@ -115,6 +115,8 @@ import time
 # square window for our game.
 # can change screen size from here
 screen_width = screen_height = 550
+move_log_panel_width = 200
+move_log_panel_height = screen_height
 screen_caption = "ChessAI"
 icon = p.image.load(r"C:\Users\parab\OneDrive\Desktop\GITDEMO\COC_Project_X_ChessAI\ChessAI\Images\icon.png")
 
@@ -190,6 +192,9 @@ def main():
 
     screen.fill(p.Color("white"))
     # aise hi
+
+    moveLogFont = p.font.SysFont(None,12)
+
 
     # creating a gamestate object joh ki constructor ko call karega apne
     # dot operator to call gamestate() in engine
@@ -327,6 +332,8 @@ def main():
                                 if move == valid_moves[i]:
                                     
                                     gs.makeMove(valid_moves[i])
+                                    move_made = True
+                                    # animate = True
                                     user_choice = "Q"
                                     while move.pawn_promotion:
                                         p.display.set_caption("Choose a piece to promote to")
@@ -426,68 +433,20 @@ def main():
 
 
         # calling the draw board and pieces fn
-        draw_game_state(screen,gs,valid_moves,sq_selected)
+        draw_game_state(screen,gs,valid_moves,sq_selected,moveLogFont)
 
-        if gs.checkmate: # if its checkmate
+        if gs.checkmate or gs.stalemate : # if its checkmate/stalemate
             gameOver = True
-            if gs.whitemove:
-                drawText(screen,"Black Wins by Checkmate")
-            else:
-                drawText(screen,"White Wins by Checkmate")
-        elif gs.stalemate: # if its stalemate
-            gameOver = True
-            drawText(screen,"Stalemate")
-
+            drawEndGameText(screen,'Stalemate' if gs.stalemate else 'Black wins by Checkmate' if gs.whitemove else 'White wins by Checkmate')
+            
         clock.tick(fps)
         p.display.flip()
         # to update the display
 
-def drawText(screen,text): # to render a text onto screen
-    font = p.font.SysFont(None,32)
 
-    # to render the text with color & style
-    textObject = font.render(text,0,p.Color(0,0,0))
-    # text location
 
-    textLocation = p.Rect(0,0,screen_width,screen_height).move(screen_width//2 - textObject.get_width()//2,screen_height//2-textObject.get_height()//2)
-    # blitting textObject
-    screen.blit(textObject,textLocation)
-    
-    # to create a shadow effect again rendering offsetting the text 
-    textObject = font.render(text,0,p.Color('gray'))
-    screen.blit(textObject,textLocation.move(2,2)) # to just move so as offset
-
-# Highlight the square selected and the possible moves for that piece
-def highlightSquares(screen,gs,valid_moves,sq_selected):
-    
-    # some square is selected ; its row and column locations
-    if sq_selected != ():
-        r , c = sq_selected
-        # the sq selected is white/black compared to w/b to determine white/black move
-        if gs.board[r][c][0] == ("w" if gs.whitemove else 'b'):
-            # highlighting selected square
-            # transparent surface generated
-            s = p.Surface((sq_size,sq_size))
-
-            # transparency value --> if 0 transparent; 255 opaque
-            s.set_alpha(100)
-            # picking of colour
-            s.fill(p.Color(0,0,255))
-            # drawing/bliting on surface the highlight depending on loc
-            screen.blit(s,(c*sq_size,r*sq_size))
-
-            # highlighting the  move from that square
-            # check for all the moves from valid_moves list
-            # match all the moves wrt selected sq by consider 
-            #  and startcol 
-            # then endrow and endcol of all these moves highlighted
-            s.fill(p.Color(255,255,0))
-            for move in valid_moves:
-                if move.startRow == r and move.startCol == c:
-                    # loc of the sq to get highlight
-                    screen.blit(s,(move.endCol*sq_size,move.endRow*sq_size))
 # method to draw sqs on board and graphics of a current gamestate
-def draw_game_state(screen,gs,valid_moves,sq_selected):
+def draw_game_state(screen,gs,valid_moves,sq_selected,moveLogFont):
 
     # to draw squares on the board
     drawboard(screen)
@@ -503,7 +462,11 @@ def draw_game_state(screen,gs,valid_moves,sq_selected):
     drawpieces(screen,gs.board) # board from engine gamestate ka object gs , isliye dot
     
     # highlightSquares(screen,gs,valid_moves,sq_selected)
-    # if put after drawing pieces , even they get highlighted
+    # if put after drawing pieces , even pieces get highlighted along with sq
+
+    drawMoveLog(screen,gs,moveLogFont)
+    # to draw a movelog after the pieces are drawn
+
 
 def drawboard(screen):
     # lets draw squares
@@ -541,6 +504,40 @@ def drawboard(screen):
             
             # p.draw.rect(screen, color, p.Rect(columns*sq_size,rows*sq_size, sq_size, sq_size))
 
+
+
+# Highlight the square selected and the possible moves for that piece
+def highlightSquares(screen,gs,valid_moves,sq_selected):
+    
+    # some square is selected ; its row and column locations
+    if sq_selected != ():
+        r , c = sq_selected
+        # the sq selected is white/black compared to w/b to determine white/black move
+        if gs.board[r][c][0] == ("w" if gs.whitemove else 'b'):
+            # highlighting selected square
+            # transparent surface generated
+            s = p.Surface((sq_size,sq_size))
+
+            # transparency value --> if 0 transparent; 255 opaque
+            s.set_alpha(100)
+            # picking of colour
+            s.fill(p.Color(0,0,255))
+            # drawing/bliting on surface the highlight depending on loc
+            screen.blit(s,(c*sq_size,r*sq_size))
+
+            # highlighting the  move from that square
+            # check for all the moves from valid_moves list
+            # match all the moves wrt selected sq by consider 
+            #  and startcol 
+            # then endrow and endcol of all these moves highlighted
+            s.fill(p.Color(255,255,0))
+            for move in valid_moves:
+                if move.startRow == r and move.startCol == c:
+                    # loc of the sq to get highlight
+                    screen.blit(s,(move.endCol*sq_size,move.endRow*sq_size))
+
+
+
 def drawpieces(screen,board):
     for rows in range(dimensions):
         for columns in range(dimensions):
@@ -553,12 +550,55 @@ def drawpieces(screen,board):
 # function to show a menu an ask the user the piece to promote to in pawn promotion
 
 
+
+def drawMoveLog(screen,gs,font):
+    # font = p.font.SysFont(None,32)
+    # instead of loading font for each frame
+    # pass it as parameter to draw_game_state
+    # define font outside the while loop
+
+    # moveLog Location
+    # moveLogRect = p.Rect()
+
+    # to render the text with color & style
+    # textObject = font.render(text,0,p.Color(0,0,0))
+    # text location
+
+    # textLocation = p.Rect(0,0,screen_width,screen_height).move(screen_width//2 - textObject.get_width()//2,screen_height//2-textObject.get_height()//2)
+    # blitting textObject
+    # screen.blit(textObject,textLocation)
+    
+    # to create a shadow effect again rendering offsetting the text 
+    # textObject = font.render(text,0,p.Color('gray'))
+    # screen.blit(textObject,textLocation.move(2,2)) # to just move so as offset           
+    pass
+
+
+
+
 # Animating a move 
 
 def animationMove(move,screen,board,clock):
+
+
+
+
     pass
     
-            
+def drawEndGameText(screen,text): # to render a text onto screen
+    font = p.font.SysFont(None,32)
+
+    # to render the text with color & style
+    textObject = font.render(text,0,p.Color(0,0,0))
+    # text location
+
+    textLocation = p.Rect(0,0,screen_width,screen_height).move(screen_width//2 - textObject.get_width()//2,screen_height//2-textObject.get_height()//2)
+    # blitting textObject
+    screen.blit(textObject,textLocation)
+    
+    # to create a shadow effect again rendering offsetting the text 
+    textObject = font.render(text,0,p.Color('gray'))
+    screen.blit(textObject,textLocation.move(2,2)) # to just move so as offset           
     
 
 

@@ -1,15 +1,93 @@
 # implement AI part in chess to find the best move
 import random
+import engine
 
 # dic to assign piece values to all pieces except king as can't captured
 pieceScore = {'K':0,'Q':10,'R':5,'B':3,'N':3,'p':1}
+
+
+# parameters that influence positional chess
+# achieved using 2d arrays
+# mapping these positional scores with the respective pieces using dict
+
+# for knights --> knights at centre are better than those at corners/edges
+# attacking sq increases
+# AI analyses it as better position 
+knightScore = [[1,1,1,1,1,1,1,1],
+               [1,2,2,2,2,2,2,1],
+               [1,2,3,3,3,3,2,1],
+               [1,2,3,4,4,3,2,1],
+               [1,2,3,4,4,3,2,1],
+               [1,2,3,3,3,3,2,1],
+               [1,2,2,2,2,2,2,1],
+               [1,1,1,1,1,1,1,1]]
+
+# for bishops --> to get onto major diagonal better attacker
+bishopScore = [[4,3,2,1,1,2,3,4],
+               [3,4,3,2,2,3,4,3],
+               [2,3,4,3,3,4,3,2],
+               [1,2,3,4,4,3,2,1],
+               [1,2,3,4,4,3,2,1],
+               [2,3,4,3,3,4,3,2],
+               [3,4,3,2,2,3,4,3],
+               [4,3,2,1,1,2,3,4]]
+
+# for queens(its not symmetrical) --> centralizing it quite good 
+# queens moving directly diagonally from original pos
+# to row 2 & 5 are more efficient(large influence)
+queenScore =  [[1,1,1,3,1,1,1,1],
+               [1,2,3,3,3,1,1,1],
+               [1,4,3,3,3,4,2,1],
+               [1,2,3,3,3,2,2,1],
+               [1,2,3,3,3,2,2,1],
+               [1,4,3,3,3,4,2,1],
+               [1,1,2,3,3,1,1,1],
+               [1,1,1,3,1,1,1,1]]
+
+# for rooks --> rooks rather better on back ranks & row 1 & 6 
+# quite active if centralized
+rookScore =   [[4,3,4,4,4,4,3,4],
+               [4,4,4,4,4,4,4,4],
+               [1,1,2,3,3,2,1,1],
+               [1,2,3,4,4,3,2,1],
+               [1,2,3,4,4,3,2,1],
+               [1,1,2,3,3,2,1,1],
+               [4,4,4,4,4,4,4,4],
+               [4,3,4,4,4,4,3,4]]
+
+# for pawns --> it will work separately for w & b
+# for wp --> moving towards row 0 is good & at also centralized are efficient
+# for bp --> moving towards row 7 is good & at also centralized are efficient
+# d ane e pawns ie col 3 & 4 should get centralized compulsory
+# otherwise they act like just extra pawns
+whitePawnScore = [[8,8,8,8,8,8,8,8],
+                  [8,8,8,8,8,8,8,8],
+                  [5,6,6,7,7,6,6,5],
+                  [2,3,3,5,5,3,3,2],
+                  [1,2,3,4,4,3,2,1],
+                  [1,1,2,3,3,2,1,1],
+                  [1,1,1,0,0,1,1,1],
+                  [0,0,0,0,0,0,0,0]]
+
+blackPawnScore = [[0,0,0,0,0,0,0,0],
+                  [1,1,1,0,0,1,1,1],
+                  [1,1,2,3,3,2,1,1],
+                  [1,2,3,4,4,3,2,1],
+                  [2,3,3,5,5,3,3,2],
+                  [5,6,6,7,7,6,6,5],
+                  [8,8,8,8,8,8,8,8],
+                  [8,8,8,8,8,8,8,8]]
+
+
+
+piecePositionScores = {'N':knightScore,'B':bishopScore, 'Q' :queenScore, 'R':rookScore,'bp': blackPawnScore,'wp':whitePawnScore}
 
 # Assigning highest value to checkmate(desire)
 CHECKMATE = 1000
 # Assigning least value to stalemate(not desire)
 STALEMATE = 0
 
-DEPTH = 2 # depth of game tree
+DEPTH = 3 # depth of game tree
 
 # Goal to find best move
 # So wrt white jyada se jyada +ve score --> best
@@ -331,6 +409,7 @@ def findMoveNegaMaxAlphaBeta(gs,valid_moves,depth,alpha,beta,turnMultiplier):
             maxScore = score
             if depth == DEPTH:
                 nextMove = playerMove
+                print(playerMove,score)
 
         # call this method for opponent
         # so whatever their best score is that will be our worst score
@@ -371,14 +450,28 @@ def scoreBoard(gs):
         return STALEMATE
 
     score = 0
-    for r in gs.board:
-        for square in r:
-            if square[0] == 'w':
-                score += pieceScore[square[1]]
-                # sq has white piece add pieceScore 
-            elif square[0] == 'b':
-                score -= pieceScore[square[1]]
-                # sq has black piece sub pieceScore
+    for r in range(len(gs.board)): # r : 0 --> 8
+        for c in range(len(gs.board[r])): # c : 0 --> 8
+            square = gs.board[r][c]
+            # piece & its color
+
+            if square != '--': # if sq consists of piece
+                
+                # scoring positionally ie weights
+                # significance of weights should be determined by own
+                # finding piece and mapping with its positional score by dict & r,c
+                piecePositionScore = 0
+                if square[1] != 'K': # pieces other than king for position score
+                    if square[1] == 'p': # for pawn position score
+                        piecePositionScore = piecePositionScores[square][r][c]
+                    else : # for other pieces position score
+                        piecePositionScore = piecePositionScores[square[1]][r][c]
+                if square[0] == 'w':
+                    score += pieceScore[square[1]] + piecePositionScore*0.1
+                    # sq has white piece add pieceScore 
+                elif square[0] == 'b':
+                    score -= pieceScore[square[1]] + piecePositionScore*0.1
+                    # sq has black piece sub pieceScore
     return score
 
 
