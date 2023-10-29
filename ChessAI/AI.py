@@ -85,7 +85,7 @@ CHECKMATE = 1000
 
 STALEMATE = 0
 
-DEPTH = 2
+DEPTH = 3
 
 
 
@@ -104,11 +104,9 @@ DEPTH = 2
     the score will be based on the check
     
 '''
-def findRandomMOve(validMoves):
-    # Return a random valid move
-    # get an index to get a random move from the list of valid moves
-    random.randint(0, len(validMoves) - 1)
-    return validMoves[random.randint(0, len(validMoves) - 1)]
+def findRandomMove(validMoves):
+    return validMoves[random.randint(0,len(validMoves)-1)]
+
 
 
 

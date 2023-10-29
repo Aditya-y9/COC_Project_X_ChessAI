@@ -4,8 +4,8 @@ import engine , AI
 import numpy as np
 import os
 # import main1 as m
-import tester as tt
-import gtts
+# import tester as tt
+# import gtts
 import time
 
 # # this function will read all persons' training images, detect face from each image
@@ -279,20 +279,20 @@ def main():
             25,
         )
 
-        try:
-            showtext(
-                screen,
-                tt.predicted_name + " is playing",
-                (screen_height / 2 - 111, screen_height / 2 - 240),
-                25,
-            )
-        except:
-            showtext(
-                screen,
-                "User is playing",
-                (screen_height / 2 - 300, screen_height / 2 - 200),
-                25,
-            )
+        # try:
+        #     showtext(
+        #         screen,
+        #         tt.predicted_name + " is playing",
+        #         (screen_height / 2 - 111, screen_height / 2 - 240),
+        #         25,
+        #     )
+        # except:
+        #     showtext(
+        #         screen,
+        #         "User is playing",
+        #         (screen_height / 2 - 300, screen_height / 2 - 200),
+        #         25,
+        #     )
         p.display.flip()
         for event in p.event.get():
             if event.type == p.QUIT:
@@ -462,7 +462,7 @@ def main():
                 # if the AI has no valid moves
                 # certain engines make random moves then
                 # checkmate and stalemate will be handled by the engine
-                AIMove = AI.findRandomMOve(valid_moves)
+                AIMove = AI.findRandomMove(valid_moves)
             # give it to our engine
             gs.makeMove(AIMove)
             move_made = True
@@ -602,7 +602,7 @@ def animateMove(move, screen, board, clock,gs,moveLogFont):
         # screen.blit(image, endSquare)
         # draw captured piece onto rectangle
         if move.pieceCaptured != "--":
-            if move.enpassantPossible:
+            if move.isEnpassantMove:
                 enpassantRow = move.endRow + 1 if move.pieceCaptured[0] == "b" else move.endRow - 1
                 endSquare = p.Rect(move.endCol * sq_size, enpassantRow * sq_size, sq_size, sq_size)
             screen.blit(
