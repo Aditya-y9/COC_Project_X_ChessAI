@@ -85,7 +85,7 @@ CHECKMATE = 1000
 
 STALEMATE = 0
 
-DEPTH = 4
+DEPTH = 2
 
 
 
