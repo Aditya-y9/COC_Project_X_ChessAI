@@ -1,11 +1,11 @@
 import pygame as p
 import engine , AI
-import cv2
+# import cv2
 import numpy as np
 import os
-import main1 as m
-import tester as tt
-import gtts
+# import main1 as m
+# import tester as tt
+# import gtts
 import time
 
 # # this function will read all persons' training images, detect face from each image
@@ -111,6 +111,8 @@ import time
 # square window for our game.
 # can change screen size from here
 screen_width = screen_height = 550
+Move_log_panel_width = 250
+Move_log_panel_height = screen_height
 screen_caption = "ChessAI"
 icon = p.image.load(
     r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\icon.png"
@@ -157,14 +159,14 @@ def main():
     # initializing the pygame modules
     animate = False
 
-    text = (
-        "We have detected that user"
-        + tt.predicted_name
-        + " is playing. Press any key to start the game"
-    )
-    language = "en"
-    myobj = gtts.gTTS(text=text, lang=language, slow=False)
-    myobj.save("welcome1.mp3")
+    # text = (
+    #     "We have detected that user"
+    #     + tt.predicted_name
+    #     + " is playing. Press any key to start the game"
+    # )
+    # language = "en"
+    # myobj = gtts.gTTS(text=text, lang=language, slow=False)
+    # myobj.save("welcome1.mp3")
     # Playing the converted file
     # time.sleep(4)
     # cv2.waitKey(0)
@@ -175,24 +177,25 @@ def main():
     # setting screen with sizes
 
     # closing our face detection window
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
 
     screen = p.display.set_mode(
-        (screen_width, screen_height), p.HWSURFACE | p.DOUBLEBUF
+        (screen_width + Move_log_panel_width, screen_height), p.HWSURFACE | p.DOUBLEBUF
     )
 
-    welcome = "Welcome," + tt.predicted_name + "to ChessAI"
-    language = "en"
-    myobj1 = gtts.gTTS(text=welcome, lang=language, slow=False)
-    myobj1.save("welcome.mp3")
-    # Playing the converted file
-    p.mixer.music.load("welcome.mp3")
+    # welcome = "Welcome," + tt.predicted_name + "to ChessAI"
+    # language = "en"
+    # myobj1 = gtts.gTTS(text=welcome, lang=language, slow=False)
+    # myobj1.save("welcome.mp3")
+    # # Playing the converted file
+    # p.mixer.music.load("welcome.mp3")
 
-    invalid = "Invalid move"
-    language = "en"
-    myobj2 = gtts.gTTS(text=invalid, lang=language, slow=False)
-    myobj2.save("invalid.mp3")
+    # invalid = "Invalid move"
+    # language = "en"
+    # myobj2 = gtts.gTTS(text=invalid, lang=language, slow=False)
+    # myobj2.save("invalid.mp3")
 
+    moveLogFont  = p.font.SysFont("Roboto", 14, False, False)
    
     global highlight 
     highlight = p.transform.scale(
@@ -276,20 +279,20 @@ def main():
             25,
         )
 
-        try:
-            showtext(
-                screen,
-                tt.predicted_name + " is playing",
-                (screen_height / 2 - 111, screen_height / 2 - 240),
-                25,
-            )
-        except:
-            showtext(
-                screen,
-                "User is playing",
-                (screen_height / 2 - 300, screen_height / 2 - 200),
-                25,
-            )
+        # try:
+        #     showtext(
+        #         screen,
+        #         tt.predicted_name + " is playing",
+        #         (screen_height / 2 - 111, screen_height / 2 - 240),
+        #         25,
+        #     )
+        # except:
+        #     showtext(
+        #         screen,
+        #         "User is playing",
+        #         (screen_height / 2 - 300, screen_height / 2 - 200),
+        #         25,
+        #     )
         p.display.flip()
         for event in p.event.get():
             if event.type == p.QUIT:
@@ -341,7 +344,8 @@ def main():
                 row = mouse_location[1] // sq_size
 
                 # first click is select, second click is undo
-                if sq_selected == (row, column):
+                if sq_selected == (row, column) or column >= 8 or row >= 8:
+                    # user clicks move log panel or outside the board
                     # user clicks same sqaure again
                     sq_selected = ()  # undo
                     player_clicks = []
@@ -356,7 +360,7 @@ def main():
                         # do clicks hogye toh bolenge make move
                         # so call the move class constructor
                         move = engine.Move(player_clicks[0], player_clicks[1], gs.board)
-                        print(move.getChessNotation())
+                        # print(move.getChessNotation())
 
                         # player_clicks[0] is our source
                         # player_clicks[1] is our piece's destination
@@ -432,10 +436,13 @@ def main():
                     gs.undoMove()
                     move_made = True
                     animate = False
+                    gameOver = False
                     # when the user undoes a move the valid moves change
                     # so change the flag variable to true
 
                     # to update the valid moves
+
+
                 
 
 
@@ -446,21 +453,29 @@ def main():
                     player_clicks = []
                     move_made = False
                     animate = False
+                    gameOver = False
 
         if not gameOver and not HumanTurn:
-            AIMove = AI.findRandomMOve(valid_moves)
+            # generate and store the AI move
+            AIMove = AI.findBestMove(gs, valid_moves)
+            if AIMove is None:
+                # if the AI has no valid moves
+                # certain engines make random moves then
+                # checkmate and stalemate will be handled by the engine
+                AIMove = AI.findRandomMove(valid_moves)
+            # give it to our engine
             gs.makeMove(AIMove)
             move_made = True
             animate = True
         if move_made:
             if animate:
-                animateMove(gs.moveLog[-1], screen, gs.board, clock)
+                animateMove(gs.moveLog[-1], screen, gs.board, clock, gs,moveLogFont)
             valid_moves = gs.getvalidmoves()
             move_made = False
             animate = False
 
         # calling the draw boardand pieces fn
-        draw_game_state(screen, gs, valid_moves, sq_selected)
+        draw_game_state(screen, gs, valid_moves, sq_selected, moveLogFont)
         if gs.checkmate:
             gameOver = True
             if gs.whitemove:
@@ -531,7 +546,8 @@ def HighlightSquares(screen, gs, valid_moves, sq_selected, moveLog):
 
 
 # method to draw sqs on board and graphics of a current gamestate
-def draw_game_state(screen, gs, valid_moves, sq_selected):
+def draw_game_state(screen, gs, valid_moves, sq_selected, moveLogFont):
+
     # to draw squares on the board
     drawboard(screen)
 
@@ -546,7 +562,9 @@ def draw_game_state(screen, gs, valid_moves, sq_selected):
         screen, gs.board
     )  # board from engine gamestate ka object gs , isliye dot
 
-def animateMove(move, screen, board, clock):
+    drawMoveLog(screen, gs, moveLogFont)
+
+def animateMove(move, screen, board, clock,gs,moveLogFont):
     global colors
     colors = [p.Color("white"), p.Color("dark gray")]
     # colors = [p.Color("white"), p.Color("dark gray")]
@@ -574,6 +592,7 @@ def animateMove(move, screen, board, clock):
         r, c = (move.startRow + dR * frame / frameCount, move.startCol + dC * frame / frameCount)
         drawboard(screen)
         drawpieces(screen, board)
+        drawMoveLog(screen, gs,moveLogFont)
         # erase the piece moved from its ending square
         # print(images)
         # image = images[(move.endRow + move.endCol) % 2]
@@ -583,6 +602,9 @@ def animateMove(move, screen, board, clock):
         # screen.blit(image, endSquare)
         # draw captured piece onto rectangle
         if move.pieceCaptured != "--":
+            if move.isEnpassantMove:
+                enpassantRow = move.endRow + 1 if move.pieceCaptured[0] == "b" else move.endRow - 1
+                endSquare = p.Rect(move.endCol * sq_size, enpassantRow * sq_size, sq_size, sq_size)
             screen.blit(
                 images[move.pieceCaptured],
                 p.Rect(move.endCol * sq_size, move.endRow * sq_size, sq_size, sq_size),
@@ -634,7 +656,6 @@ def drawboard(screen):
 
             # just draw rectangle (surface,color,)
             custom_img = p.Surface((sq_size, sq_size))
-
             screen.blit(
                 image, p.Rect(columns * sq_size, rows * sq_size, sq_size, sq_size)
             )
@@ -654,7 +675,20 @@ def drawpieces(screen, board):
             # accessing our gs.board multi dim list by using [][]
             # to assign each square a piece
 
+def drawMoveLog(screen, gs, font):
+    moveLogRect = p.Rect(550, 0, 250, 550)
+    p.draw.rect(screen, p.Color("black"), moveLogRect)
+    moveLog = gs.moveLog
+    moveTexts = gs.moveLog
+    padding = 5
+    textY = padding
 
+    for i in range(len(moveTexts)):
+        text = moveTexts[i].getChessNotation()
+        textObject = font.render(text, True, p.Color("white"))
+        textLocation = moveLogRect.move(padding, textY)
+        screen.blit(textObject, textLocation)
+        textY += textObject.get_height() + padding * 2
 # function to show a menu an ask the user the piece to promote to in pawn promotion
 
 
