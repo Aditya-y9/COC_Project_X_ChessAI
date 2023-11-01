@@ -408,11 +408,3 @@ def KingMobililty(engine):
 def KingCastled(gs):
     print("White King Castled",gs.wcastled)
     print("Black King Castled",gs.bcastled)
-
-def NumberofPawns(gs):
-    count =0
-    for square in gs.board:
-        if square[1] == "p":
-            count+=1 
-    return count
-        

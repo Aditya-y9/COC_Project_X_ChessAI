@@ -29,7 +29,9 @@ class gamestate:
         self.incheck = False
         self.pins = []
         self.checks = []
-        self.enpassantPossible = ()  # coordinates for the square where en-passant capture is possible
+        self.enpassantPossible = ()
+        self.bPawns = 8
+        self.wPawns = 8  # coordinates for the square where en-passant capture is possible
         self.enpassantPossibleLog = [self.enpassantPossible]
         self.currentCastlingRights = CastleRights(True, True, True, True)
         self.castleRightsLog = [CastleRights(self.currentCastlingRights.wks, self.currentCastlingRights.bks,
@@ -51,6 +53,10 @@ class gamestate:
             self.whiteKingLocation = (move.endRow,move.endCol)
         if move.pieceMoved == 'bK':
             self.blackKingLocation = (move.endRow,move.endCol)
+        if move.pieceCaptured == 'wp':
+            self.wPawns -= 1
+        if move.pieceCaptured == 'bp':
+            self.bPawns -= 1
 
         if move.isEnpassantMove:
             self.board[move.startRow][move.endCol] = "--" 
@@ -124,6 +130,10 @@ class gamestate:
             self.board[move.startRow][move.startCol] = move.pieceMoved
             # undoing the move
             self.board[move.endRow][move.endCol] = move.pieceCaptured
+            if move.pieceCaptured == 'wp':
+                self.wPawns += 1
+            if move.pieceCaptured == 'bp':
+                self.bPawns += 1
             # to make sure the piece captured is not empty
             # switch turns back
             self.whitemove = not self.whitemove
