@@ -16,6 +16,9 @@
 import random
 import engine
 from engine import gamestate
+
+global KingNeighbourPawns
+KingNeighbourPawns = 0
 # to store material values of the pieces
 pieceScore = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 1}
 
@@ -245,6 +248,7 @@ def findMoveMinMax(gs, validMoves, depth, whiteToMove):
         return minScore
 
 def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier):
+    KingPawnShield(gs)
     # alpha beta pruning
     global counter
     counter += 1
@@ -328,6 +332,7 @@ def findMoveNegaMax(gs, validMoves, depth, turnMultiplier):
             bestMoveScore: best move score for the player
     '''
 def ScoreBoard(gs):
+    # print("king pawn shield",KingPawnShield(gs))
     
     if gs.checkmate:
         if gs.whitemove:
@@ -374,3 +379,32 @@ def Score_By_Material(board):
 
 def QueenMobililty(engine):
     return len(engine.Queen_squares)
+
+def KingPawnShield(gs):
+    global KingNeighbourPawns
+    KingNeighbourPawns = 0
+    rows, cols = len(gs.board), len(gs.board[0])
+    if gs.whitemove:
+        kingRow = gs.whiteKingLocation[0]
+        kingCol = gs.whiteKingLocation[1]
+        directions = [(0, -1), (0, 1), (-1, 0), (-1, -1), (-1, 1), (1, 0), (1, -1), (1, 1)]
+        for dr, dc in directions:
+            new_row, new_col = kingRow + dr, kingCol + dc
+            if 0 <= new_row < rows and 0 <= new_col < cols and gs.board[new_row][new_col] == "wp":
+                KingNeighbourPawns += 1
+    else:
+        kingRow = gs.blackKingLocation[0]
+        kingCol = gs.blackKingLocation[1]
+        directions = [(0, -1), (0, 1), (-1, 0), (-1, -1), (-1, 1), (1, 0), (1, -1), (1, 1)]
+        for dr, dc in directions:
+            new_row, new_col = kingRow + dr, kingCol + dc
+            if 0 <= new_row < rows and 0 <= new_col < cols and gs.board[new_row][new_col] == "bp":
+                KingNeighbourPawns += 1
+    return KingNeighbourPawns
+
+def KingMobililty(engine):
+    return len(engine.King_squares)
+
+def KingCastled(gs):
+    return gs.castled 
+        

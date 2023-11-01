@@ -371,6 +371,7 @@ def main():
 
                             if move == valid_moves[i]:
                                 gs.makeMove(valid_moves[i])
+                                print("King castled",AI.KingCastled(gs))
                                 move_made = True
                                 animate = True
                                 user_choice = "Q"
@@ -459,6 +460,9 @@ def main():
         if not gameOver and not HumanTurn:
             # generate and store the AI move
             print("Queen",AI.QueenMobililty(engine))
+            print("King",AI.KingMobililty(engine))
+            print("King castled",AI.KingCastled(gs))
+            print("King Neighbour Pawns",AI.KingPawnShield(gs))
             print("AI's turn")
             AIMove = AI.findBestMove(gs, valid_moves)
             if AIMove is None:
@@ -490,6 +494,7 @@ def main():
             showtext(screen, "Stalemate", (screen_width / 2 - 100, screen_height / 2 - 10), 25)
         clock.tick(fps)
         p.display.flip()
+        AI.KingNeighbourPawns=0
         # to update the display
 
 

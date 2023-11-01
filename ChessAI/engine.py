@@ -3,6 +3,7 @@ Storing all the information about the current state of chess game.
 Determining valid moves at current state.
 It will keep move log.
 """
+# import AI
 
 
 class gamestate:
@@ -33,6 +34,7 @@ class gamestate:
         self.currentCastlingRights = CastleRights(True, True, True, True)
         self.castleRightsLog = [CastleRights(self.currentCastlingRights.wks, self.currentCastlingRights.bks,
                                                self.currentCastlingRights.wqs, self.currentCastlingRights.bqs)]
+        self.castled = False
     def makePawnPromotion(self,move,user_choice):
         if move.pawn_promotion:
             self.board[move.endRow][move.endCol] = move.pieceMoved[0] + user_choice
@@ -75,6 +77,7 @@ class gamestate:
                 # queen side castle move
                 self.board[move.endRow][move.endCol+1] = self.board[move.endRow][move.endCol-2]
                 self.board[move.endRow][move.endCol-2] = "--"
+            self.castled = True
         
 
         # castling
@@ -553,6 +556,8 @@ class gamestate:
         """
         Get all the king moves for the king located at row col and add the moves to the list.
         """
+        global King_squares
+        King_squares = []
         row_moves = (-1, -1, -1, 0, 0, 1, 1, 1)
         col_moves = (-1, 0, 1, -1, 1, -1, 0, 1)
         ally_color = "w" if self.whitemove else "b"
@@ -569,6 +574,7 @@ class gamestate:
                         self.blackKingLocation = (endRow, endCol)
                     incheck, pins, checks = self.checkForPinsAndChecks()
                     if not incheck:
+                        King_squares.append((endRow, endCol))
                         moves.append(Move((row, col), (endRow, endCol), self.board))
                     # place king back on original location
                     if ally_color == "w":
@@ -646,6 +652,7 @@ class Move:
         if isinstance(other, Move):
             return self.moveID == other.moveID
         return False
+    
 
     def getChessNotation(self):
         if self.pawn_promotion:
@@ -657,6 +664,7 @@ class Move:
                 return "0-0"
         if self.isEnpassantMove:
             return self.getRankFile(self.startRow, self.startCol)[0] + "x" + self.getRankFile(self.endRow,
+                                                                                    
                                                                                                 self.endCol) + " e.p."
         if self.pieceCaptured != "--":
             if self.pieceMoved[1] == "p":
