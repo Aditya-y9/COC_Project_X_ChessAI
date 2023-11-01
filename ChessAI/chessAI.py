@@ -516,6 +516,30 @@ def knightPeriphery0(gs):
             kp0-=1
     return kp0
 
+# determines whether knight is on sq b2 to b7,b7 to g7,b2 to g2,g2 to g7
+def knightPeriphery1(gs):
+    kp1 = 0
+    kp1list = [(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(6,2),(6,3),(6,4),(6,5),
+               (6,6),(5,6),(4,6),(3,6),(2,6),(1,6),(1,5),(1,4),(1,3),(1,2)]
+    for sq in kp1list:
+        if gs.board[sq[0]][sq[1]] == 'wN' :
+            kp1+=1
+        elif gs.board[sq[0]][sq[1]] == "bN" :
+            kp1-=1
+    return kp1
+
+# determines whether knight is on sq c3 to c6,c6 to f6,c3 to f3,f3 to f6
+def knightPeriphery2(gs):
+    kp2 = 0
+    kp2list = [(2,2),(3,2),(4,2),(5,2),(5,3),(5,4),
+               (5,5),(4,5),(3,5),(2,5),(2,4),(2,3)]
+    for sq in kp2list:
+        if gs.board[sq[0]][sq[1]] == 'wN' :
+            kp2+=1
+        elif gs.board[sq[0]][sq[1]] == "bN" :
+            kp2-=1
+    return kp2
+
 # determines whether knight is on sq e4,d4,e5,d5
 def knightPeriphery3(gs):
     kp3 = 0
@@ -526,6 +550,24 @@ def knightPeriphery3(gs):
         elif gs.board[sq[0]][sq[1]] == "bN" :
             kp3-=1
     return kp3
+
+# determines existence of double pawns
+def doublePawns(gs):
+    doublepawn = 0
+    for r in range(8):
+        for c in range(8):
+            if gs.board[r][c] == 'wp':
+                row = r
+                for rows in range(row-1,0):
+                    if gs.board[rows][c] == 'wp':
+                        doublepawn+=1
+            elif gs.board[r][c] == 'bp':
+                row = r
+                for rows in range(row+1,7):
+                    if gs.board[rows][c] == 'bp':
+                        doublepawn-=1
+    return doublepawn
+
 
 # determines whether the bishop pair exists
 def bishopPair(gs):
@@ -567,7 +609,17 @@ def bishopOnLarge(gs):
             bishopLarge+=1 
     return bishopLarge
 
-
+# determines whether knight is supported by a pawn ahead
+def knightSupport(gs):
+    knightsupport = 0
+    for r in range(8):
+        for c in range(8):
+            if gs.board[r][c] == 'wN' and  (gs.board[r-1][c-1] == 'wp' or gs.board[r-1][c+1] == 'wp'):
+                knightsupport+=1
+            elif gs.board[r][c] == 'bN' and  (gs.board[r+1][c-1] == 'bp' or gs.board[r+1][c+1] == 'bp'):
+                knightsupport-=1
+    return knightsupport
+            
 def rookBehindPassPawn(gs):
     for r in range(len(gs.board)):
         for c in range(len(gs.board[r])):

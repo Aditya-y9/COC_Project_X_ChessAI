@@ -37,6 +37,9 @@ class gamestate():
         self.moveLog = []
         self.whiteKingLocation = (7,4)
         self.blackKingLocation = (0,4)
+        self.inChecks = False
+        self.pins = []
+        self.checks = []
         self.checkmate = False
         self.stalemate = False
         self.enpassantPossible = () # coordinates for the square where en passant capture is possible
@@ -286,16 +289,63 @@ class gamestate():
         return False
 
 
+    def checkForPinAndChecks(self):
+        pins = [] # sq where allied pinned piece is & dir pinned from
+        checks = [] # sq where enemy piece is giving check
+        inChecks = False
+
+        if self.whitemove: # white move
+            enemyColor = 'b'
+            allyColor = 'w'
+            # starting loc of white king
+            startRow = self.whiteKingLocation[0]
+            startCol = self.whiteKingLocation[1]
+        else : # black move
+            enemyColor = 'w'
+            allyColor = 'b'
+            # starting loc of black king
+            startRow = self.blackKingLocation[0]
+            startCol = self.blackKingLocation[1]
+
+        # check outward from king's sq for pins and checks
+        # keep track of pins
+        # diff dir considering piece movement
+        directions = ((1,1),(1,-1),(-1,1),(-1,-1),(1,0),(0,1),(-1,0),(0,-1))
+        for j in range(len(directions)):
+            d = directions[j]
+            possiblePin = () # reset this possible pins
+            for i in range(1,8): # to check for all sq in a dir
+                endRow = startRow + d[0]*i
+                endCol = startCol + d[1]*i
+            if 0 <= endRow < 8 and 0 <= endCol < 8:
+                endPiece = self.board[endRow][endCol]
+                if endPiece[0] == allyColor: # if piece is an ally piece
+                    if possiblePin == (): # 1st ally piece ie could be pinned
+                        possiblePin = (endRow,endCol,d[0],d[1])
+                    else : 
+                        # if its 2nd allied piece
+                        # so no check or pin is possible in that dir
+                        break
+                elif endPiece[0] == enemyColor: # its an enemy piece
+                    type = endPiece[1] # which enemy piece it is 
+                    # 5 possibilities within this case for a king
+                    # 1) horizontally/vertically away from king & piece rook
+                    # 2) diagonally away & piece is bishop
+                    # 3) 1 sq away from king diagonally & piece is pawn
+                    # 4) in any dir & piece is queen
+                    # 5) in any dir 1 sq away & piece is king
+                    # to avoid direct contact btwn 2 kings
+                    
+                    if ( 4<=j<=7 and type=='R') or (0<=j<=3 and type=='B') or (type=='Q' ) or (i==1 and type=='K') or \
+                            (i==1 and type=='p' and ((enemyColor == 'b' and 2<=j<=3) or (enemyColor=='w' and 0<=j<=1))):
+                        if possiblePin == () : # no ally piece is blocking 
+                            pass
 
 
 
-    
+
     # all moves without considering checks
     def getAllPossibleMoves(self):
-
-        # 
-        
-
 
         # empty list for storing all possible moves 
         poss_moves = []
