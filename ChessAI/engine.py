@@ -1,4 +1,4 @@
-
+import chessAI
 
 class gamestate():
     def __init__(self):

@@ -87,7 +87,8 @@ CHECKMATE = 1000
 # Assigning least value to stalemate(not desire)
 STALEMATE = 0
 
-DEPTH = 3 # depth of game tree
+DEPTH = 3
+ # depth of game tree
 
 # Goal to find best move
 # So wrt white jyada se jyada +ve score --> best
@@ -381,8 +382,8 @@ def findMoveNegaMaxAlphaBeta(gs,valid_moves,depth,alpha,beta,turnMultiplier):
     # move ordering - implement later
 
     global nextMove,counter
-    counter+=1
-    if depth==0:
+    counter += 1
+    if depth == 0:
         return turnMultiplier*scoreBoard(gs)
     
     # using only 1 for loop and if statement
@@ -393,10 +394,10 @@ def findMoveNegaMaxAlphaBeta(gs,valid_moves,depth,alpha,beta,turnMultiplier):
     for playerMove in valid_moves:
         gs.makeMove(playerMove)
         # generate next set of values
-        nextMove = gs.getvalidmoves()
+        nextMoves = gs.getvalidmoves()
 
         # calc score
-        score = -findMoveNegaMaxAlphaBeta(gs,nextMove,depth-1,-beta,-alpha,-turnMultiplier)
+        score = -findMoveNegaMaxAlphaBeta(gs,nextMoves,depth-1,-beta,-alpha,-turnMultiplier)
         
         # switch alpha & beta through each frame
         # -ve beta becomes new alpha(max)
@@ -491,3 +492,91 @@ def scoreMaterial(board):
                 score -= pieceScore[square[1]]
                 # sq has black piece sub pieceScore
     return score
+
+# determines the centre-pawn count at sq e4,d4,e5,d5
+def centrePawnCount(gs):
+    pawn = 0
+    centerPawn = [(3,3),(3,4),(4,3),(4,4)] # list of tuples for row-col of sq d5,e5,d4,e4 resp
+    for sq in centerPawn:
+        if gs.board[sq[0]][sq[1]] == 'wp' :
+            pawn+=1
+        elif gs.board[sq[0]][sq[1]] == "bp" :
+            pawn-=1
+    return pawn
+
+# determines whether knight is on sq a1 to a8,a8 to h8,a1 to h1 or h1 to h8
+def knightPeriphery0(gs):
+    kp0 = 0
+    kp0list = [(0,0),(1,0),(2,0),(3,0),(4,0),(5,0),(6,0),(7,0),(7,1),(7,2),(7,3),(7,4),(7,5),(7,6),
+               (7,7),(6,7),(5,7),(4,7),(3,7),(2,7),(1,7),(0,7),(0,6),(0,5),(0,4),(0,3),(0,2),(0,1)]
+    for sq in kp0list:
+        if gs.board[sq[0]][sq[1]] == 'wN' :
+            kp0+=1
+        elif gs.board[sq[0]][sq[1]] == "bN" :
+            kp0-=1
+    return kp0
+
+# determines whether knight is on sq e4,d4,e5,d5
+def knightPeriphery3(gs):
+    kp3 = 0
+    kp3list = [(3,3),(3,4),(4,3),(4,4)] # list of tuples for row-col of sq d5,e5,d4,e4 resp
+    for sq in kp3list:
+        if gs.board[sq[0]][sq[1]] == 'wN' :
+            kp3+=1
+        elif gs.board[sq[0]][sq[1]] == "bN" :
+            kp3-=1
+    return kp3
+
+# determines whether the bishop pair exists
+def bishopPair(gs):
+    wbishop = 0
+    bbishop = 0
+    for r in range(8):
+        for c in range(8):
+            if gs.board[r][c] == 'wB': # counts no. of wB
+                wbishop+=1
+            elif gs.board[r][c] == 'bB': # counts no. of bB
+                bbishop+=1
+    if wbishop>1 or bbishop>1:
+        return 1  
+
+# determines whether rook is on Seventh rank wrt player
+def rookOnSeventh(gs):
+    rookSeventh = 0
+    for col in range(8):
+        if gs.board[1][col] == 'wR': # rank 7 for white
+            rookSeventh+=1
+        elif gs.board[6][col] == 'bR': # rank 2 for black
+            rookSeventh-=1
+    return rookSeventh
+
+# determines whether bishop is on large diagonal
+def bishopOnLarge(gs):
+    bishopLarge = 0
+    for r in range(8):
+        # bishop on diagonal h1-a8  
+        if gs.board[r][r] == "wB": 
+            bishopLarge+=1
+        elif gs.board[r][r] == "bB":
+            bishopLarge-=1
+        
+        # bishop on diagonal a1-h8
+        if gs.board[r][7-r] == "wB":
+            bishopLarge+=1
+        elif gs.board[r][7-r] == "bB":
+            bishopLarge+=1 
+    return bishopLarge
+
+
+def rookBehindPassPawn(gs):
+    for r in range(len(gs.board)):
+        for c in range(len(gs.board[r])):
+            if gs.board[r][c] == 'wp':
+                row = r
+                
+
+# determine the score for a gamestate/board 
+# using evaluation function parameters
+
+def evaluationFunction():
+    pass

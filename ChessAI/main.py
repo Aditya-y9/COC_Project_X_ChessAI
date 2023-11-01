@@ -320,7 +320,7 @@ def main():
                             # do clicks hogye toh bolenge make move
                             # so call the move class constructor
                             move = engine.Move(player_clicks[0],player_clicks[1],gs.board)
-                            print(move.getChessNotation())
+                            # print(move.getChessNotation())
 
                             # player_clicks[0] is our source
                             # player_clicks[1] is our piece's destination
@@ -400,7 +400,7 @@ def main():
             
             # resetting board when 'r' is pressed
             
-                elif event.key == p.K_r:
+                if event.key == p.K_r:
                     # reinitialize the gamestate
                     gs = engine.gamestate()
                     valid_moves = gs.getvalidmoves()
@@ -604,7 +604,7 @@ def drawEndGameText(screen,text): # to render a text onto screen
 
 def showtext(screen,text,location,fontsize):
     font = p.font.SysFont(None, fontsize)
-    textObject = font.render(text, 0, p.Color('White'))
+    textObject = font.render(text,False, p.Color('White'))
     location1 = p.Rect(location, location)
     # textLocation = p.Rect(0, 0, screen_width, screen_height).move(screen_width / 2 - textObject.get_width() / 2, screen_height / 2 - textObject.get_height() / 2)
     # white = p.Color("black")
