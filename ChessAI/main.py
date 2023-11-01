@@ -371,7 +371,9 @@ def main():
 
                             if move == valid_moves[i]:
                                 gs.makeMove(valid_moves[i])
-                                print("King castled",AI.KingCastled(gs))
+                                print("pawns=",AI.NumberofPawns(gs))
+                                AI.KingCastled(gs)
+                                # print("King castled",AI.KingCastled(gs))
                                 move_made = True
                                 animate = True
                                 user_choice = "Q"

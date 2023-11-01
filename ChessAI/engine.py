@@ -34,7 +34,8 @@ class gamestate:
         self.currentCastlingRights = CastleRights(True, True, True, True)
         self.castleRightsLog = [CastleRights(self.currentCastlingRights.wks, self.currentCastlingRights.bks,
                                                self.currentCastlingRights.wqs, self.currentCastlingRights.bqs)]
-        self.castled = False
+        self.wcastled = False
+        self.bcastled = False
     def makePawnPromotion(self,move,user_choice):
         if move.pawn_promotion:
             self.board[move.endRow][move.endCol] = move.pieceMoved[0] + user_choice
@@ -73,12 +74,22 @@ class gamestate:
                 # king side castle move
                 self.board[move.endRow][move.endCol-1] = self.board[move.endRow][move.endCol+1]
                 self.board[move.endRow][move.endCol+1] = "--"
+                if self.whitemove:
+                    self.bcastled = True
+                else:
+                    self.wcastled = True
             else:
                 # queen side castle move
                 self.board[move.endRow][move.endCol+1] = self.board[move.endRow][move.endCol-2]
                 self.board[move.endRow][move.endCol-2] = "--"
-            self.castled = True
-        
+                if self.whitemove:
+                    self.bcastled = True
+                else:
+                    self.wcastled = True
+                
+
+
+
 
         # castling
         # if king moves two squares to the right

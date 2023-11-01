@@ -406,5 +406,13 @@ def KingMobililty(engine):
     return len(engine.King_squares)
 
 def KingCastled(gs):
-    return gs.castled 
+    print("White King Castled",gs.wcastled)
+    print("Black King Castled",gs.bcastled)
+
+def NumberofPawns(gs):
+    count =0
+    for square in gs.board:
+        if square[1] == "p":
+            count+=1 
+    return count
         
