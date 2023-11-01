@@ -439,9 +439,12 @@ class gamestate:
         """
         piece_pinned = False
         pin_direction = ()
+        global rook_squares
+        rook_squares = []
         for i in range(len(self.pins) - 1, -1, -1):
             if self.pins[i][0] == row and self.pins[i][1] == col:
                 piece_pinned = True
+
                 pin_direction = (self.pins[i][2], self.pins[i][3])
                 if self.board[row][col][
                     1] != "Q":  # can't remove queen from pin on rook moves, only remove it on bishop moves
@@ -459,14 +462,17 @@ class gamestate:
                             -direction[0], -direction[1]):
                         end_piece = self.board[endRow][endCol]
                         if end_piece == "--":  # empty space is valid
+                            rook_squares.append((endRow, endCol))
                             moves.append(Move((row, col), (endRow, endCol), self.board))
                         elif end_piece[0] == enemy_color:  # capture enemy piece
+                            rook_squares.append((endRow, endCol))
                             moves.append(Move((row, col), (endRow, endCol), self.board))
                             break
                         else:  # friendly piece
                             break
                 else:  # off board
                     break
+  
 
     def getKnightMoves(self, row, col, moves):
         """
@@ -506,6 +512,8 @@ class gamestate:
 
         directions = ((-1, -1), (-1, 1), (1, 1), (1, -1))  # diagonals: up/left up/right down/right down/left
         enemy_color = "b" if self.whitemove else "w"
+        global bishop_squares
+        bishop_squares= []
         for direction in directions:
             for i in range(1, 8):
                 endRow = row + direction[0] * i
@@ -515,8 +523,10 @@ class gamestate:
                             -direction[0], -direction[1]):
                         end_piece = self.board[endRow][endCol]
                         if end_piece == "--":  # empty space is valid
+                            bishop_squares.append((endRow, endCol))
                             moves.append(Move((row, col), (endRow, endCol), self.board))
                         elif end_piece[0] == enemy_color:  # capture enemy piece
+                            bishop_squares.append((endRow, endCol))
                             moves.append(Move((row, col), (endRow, endCol), self.board))
                             break
                         else:  # friendly piece
@@ -528,8 +538,16 @@ class gamestate:
         """
         Get all the queen moves for the queen located at row col and add the moves to the list.
         """
+        global Queen_squares
+        Queen_squares = []
+
         self.getBishopMoves(row, col, moves)
         self.getRookMoves(row, col, moves)
+        for square in rook_squares:
+            Queen_squares.append(square)
+        for square in bishop_squares:
+            Queen_squares.append(square)
+        
 
     def getKingMoves(self, row, col, moves):
         """

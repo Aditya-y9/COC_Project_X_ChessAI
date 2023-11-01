@@ -319,6 +319,7 @@ def main():
     gameOver = False
 
     while running:
+        
 
         # check if human is playing white and its his turn
         # or if human is playing black and its his turn
@@ -457,6 +458,8 @@ def main():
 
         if not gameOver and not HumanTurn:
             # generate and store the AI move
+            print("Queen",AI.QueenMobililty(engine))
+            print("AI's turn")
             AIMove = AI.findBestMove(gs, valid_moves)
             if AIMove is None:
                 # if the AI has no valid moves

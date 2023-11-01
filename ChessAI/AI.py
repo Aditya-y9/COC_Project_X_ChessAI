@@ -15,6 +15,7 @@
 # the score will be based on the check
 import random
 import engine
+from engine import gamestate
 # to store material values of the pieces
 pieceScore = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 1}
 
@@ -370,3 +371,6 @@ def Score_By_Material(board):
             elif square[0] == 'b':
                 score -= pieceScore[square[1]]
     return score
+
+def QueenMobililty(engine):
+    return len(engine.Queen_squares)
