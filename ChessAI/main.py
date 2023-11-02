@@ -371,8 +371,12 @@ def main():
 
                             if move == valid_moves[i]:
                                 gs.makeMove(valid_moves[i])
-                                print("Wpawns",gs.wPawns,gs.bPawns)
-                                AI.KingCastled(gs)
+                                # print("Wpawns",gs.wPawns,gs.bPawns)
+                                # a = gs.KingShield()
+                                # print("King Shield",a)
+                                print("Knight",gs.Knight_squares)
+                                # print("rook",gs.whiteRooksquares," ",gs.blackRooksquares)
+                                print("bishop",gs.bishop_squares)
                                 # print("King castled",AI.KingCastled(gs))
                                 move_made = True
                                 animate = True
@@ -461,11 +465,11 @@ def main():
 
         if not gameOver and not HumanTurn:
             # generate and store the AI move
-            print("Queen",AI.QueenMobililty(engine))
-            print("King",AI.KingMobililty(engine))
-            print("King castled",AI.KingCastled(gs))
-            print("King Neighbour Pawns",AI.KingPawnShield(gs))
-            print("AI's turn")
+            # print("Queen",AI.QueenMobililty(engine))
+            # print("King",AI.KingMobililty(engine))
+            # print("King castled",AI.KingCastled(gs))
+            # print("King Neighbour Pawns",AI.KingPawnShield(gs))
+            # print("AI's turn")
             AIMove = AI.findBestMove(gs, valid_moves)
             if AIMove is None:
                 # if the AI has no valid moves
