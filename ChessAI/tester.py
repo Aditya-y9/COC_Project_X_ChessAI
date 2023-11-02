@@ -6,7 +6,7 @@ import main1 as m
 
 # this function will read all persons' training images, detect face from each image
 # used to load an image from a file
-test_img = cv2.imread(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\Images\Akshay.jpg")
+# test_img = cv2.imread(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\Images\Akshay.jpg")
 # vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\video\Video.mp4")
 # running = True
 # while running:
@@ -51,13 +51,13 @@ face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 
 
 # face_recognizer=cv2.face.LBPHFaceRecognizer_create()
-face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\trainingData3.yml")
+face_recognizer.read(r"C:\Users\parab\OneDrive\Documents\GitHub\COC_Project_X_ChessAI\ChessAI\trainingData3.yml")
 
 
 
-name = {0:"Ranbir", 1:"Aditya", 2:"Akshay"}
+name = {0:"Ranbir", 1:"Rohan", 2:"Akshay"}
 
-vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\video\Video.mp4")
+vid = cv2.VideoCapture(r"C:\Users\parab\OneDrive\Documents\GitHub\COC_Project_X_ChessAI\ChessAI\video\Video.mp4")
 
 
 # vid = cv2.VideoCapture(0)

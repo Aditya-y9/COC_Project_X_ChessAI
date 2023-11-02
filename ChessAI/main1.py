@@ -17,7 +17,7 @@ def faceDetection(test_img):
     # haar classifier is a machine learning based approach
     # where a cascade function is trained from a lot of positive and negative images
     # to detect faces
-    face_haar_cascade = cv2.CascadeClassifier(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\HaarCascade\haarcascade_frontalface_default.xml")
+    face_haar_cascade = cv2.CascadeClassifier(r"C:\Users\parab\OneDrive\Documents\GitHub\COC_Project_X_ChessAI\ChessAI\haarcascade_frontalface_default.xml")
     # detect multiscale images
     # classifier is loaded and image is passed to detectMultiScale function
 
