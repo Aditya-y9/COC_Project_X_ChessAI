@@ -413,3 +413,22 @@ def freedom(gs):
     #     return len(gs.getvalidmoves())
     # else:
         return len(gs.getvalidmoves())
+
+def KingPawnShield(gs):
+    global KingNeighbourPawns
+    KingNeighbourPawns = 0
+    # get the king's position
+    if gs.whitemove:
+        king_row, king_col = gs.blackKingLocation
+    else:
+        king_row, king_col = gs.whiteKingLocation
+    
+    # check the 8 surrounding squares
+    for row in range(king_row-1, king_row+2):
+        for col in range(king_col-1, king_col+2):
+            if isOnBoard(row, col):
+                piece = gs.board[row][col]
+                if piece[0] == 'w' and piece[1] == 'p':
+                    KingNeighbourPawns += 1
+    print("King Neighbour Pawns",KingNeighbourPawns)
+    return KingNeighbourPawns
