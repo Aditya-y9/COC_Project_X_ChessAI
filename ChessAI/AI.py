@@ -20,52 +20,52 @@ from engine import gamestate
 global KingNeighbourPawns
 KingNeighbourPawns = 0
 # to store material values of the pieces
-pieceScore = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 1}
+pieceScore = {"K": 0, "Q": 911, "R": 530, "B": 374, "N": 342, "p": 80}
 
-knightScores = [[0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0],
-                 [0.1, 0.3, 0.5, 0.5, 0.5, 0.5, 0.3, 0.1],
-                 [0.2, 0.5, 0.6, 0.65, 0.65, 0.6, 0.5, 0.2],
-                 [0.2, 0.55, 0.65, 0.7, 0.7, 0.65, 0.55, 0.2],
-                 [0.2, 0.5, 0.65, 0.7, 0.7, 0.65, 0.5, 0.2],
-                 [0.2, 0.55, 0.6, 0.65, 0.65, 0.6, 0.55, 0.2],
-                 [0.1, 0.3, 0.5, 0.55, 0.55, 0.5, 0.3, 0.1],
-                 [0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0]]
+knightScores = [[0.0, 10.0, 20.0, 20.0, 20.0, 20.0, 10.0, 0.0],
+                 [10.0, 30.0, 50.0, 50.0, 50.0, 50.0, 30.0, 10.0],
+                 [20.0, 50.0, 60.0, 65.0, 65.0, 60.0, 50.0, 20.0],
+                 [20.0, 55.0, 65.0, 70.0, 70.0, 65.0, 55.0, 20.0],
+                 [20.0, 50.0, 65.0, 70.0, 70.0, 65.0, 50.0, 20.0],
+                 [20.0, 55.0, 60.0, 65.0, 65.0, 60.0, 55.0, 20.0],
+                 [10.0, 30.0, 50.0, 55.0, 55.0, 50.0, 30.0, 10.0],
+                 [0.0, 10.0, 20.0, 20.0, 20.0, 20.0, 10.0, 0.0]]
 
-bishopScores = [[0.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.0],
-                 [0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.2],
-                 [0.2, 0.4, 0.5, 0.6, 0.6, 0.5, 0.4, 0.2],
-                 [0.2, 0.5, 0.5, 0.6, 0.6, 0.5, 0.5, 0.2],
-                 [0.2, 0.4, 0.6, 0.6, 0.6, 0.6, 0.4, 0.2],
-                 [0.2, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.2],
-                 [0.2, 0.5, 0.4, 0.4, 0.4, 0.4, 0.5, 0.2],
-                 [0.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.0]]
+bishopScores = [[0.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 0.0],
+                 [20.0, 40.0, 40.0, 40.0, 40.0, 40.0, 40.0, 20.0],
+                 [20.0, 40.0, 50.0, 60.0, 60.0, 50.0, 40.0, 20.0],
+                 [20.0, 50.0, 50.0, 60.0, 60.0, 50.0, 50.0, 20.0],
+                 [20.0, 40.0, 60.0, 60.0, 60.0, 60.0, 40.0, 20.0],
+                 [20.0, 60.0, 60.0, 60.0, 60.0, 60.0, 60.0, 20.0],
+                 [20.0, 50.0, 40.0, 40.0, 40.0, 40.0, 50.0, 20.0],
+                 [0.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 0.0]]
 
-rookScores = [[0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
-               [0.5, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.5],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.25, 0.25, 0.25, 0.5, 0.5, 0.25, 0.25, 0.25]]
+rookScores = [[25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0],
+               [50.0, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 50.0],
+               [0.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 0.0],
+               [0.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 0.0],
+               [0.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 0.0],
+               [0.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 0.0],
+               [0.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 0.0],
+               [25.0, 25.0, 25.0, 50.0, 50.0, 25.0, 25.0, 25.0]]
 
-queenScores = [[0.0, 0.2, 0.2, 0.3, 0.3, 0.2, 0.2, 0.0],
-                [0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.2],
-                [0.2, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.2],
-                [0.3, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.3],
-                [0.4, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.3],
-                [0.2, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.2],
-                [0.2, 0.4, 0.5, 0.4, 0.4, 0.4, 0.4, 0.2],
-                [0.0, 0.2, 0.2, 0.3, 0.3, 0.2, 0.2, 0.0]]
+queenScores = [[0.0, 20.0, 20.0, 30.0, 30.0, 20.0, 20.0, 0.0],
+                [20.0, 40.0, 40.0, 40.0, 40.0, 40.0, 40.0, 20.0],
+                [20.0, 40.0, 50.0, 50.0, 50.0, 50.0, 40.0, 20.0],
+                [30.0, 40.0, 50.0, 50.0, 50.0, 50.0, 40.0, 30.0],
+                [40.0, 40.0, 50.0, 50.0, 50.0, 50.0, 40.0, 30.0],
+                [20.0, 50.0, 50.0, 50.0, 50.0, 50.0, 40.0, 20.0],
+                [20.0, 40.0, 50.0, 40.0, 40.0, 40.0, 40.0, 20.0],
+                [0.0, 20.0, 20.0, 30.0, 30.0, 20.0, 20.0, 0.0]]
 
-pawnScores = [[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
-               [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
-               [0.3, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.3],
-               [0.25, 0.25, 0.3, 0.45, 0.45, 0.3, 0.25, 0.25],
-               [0.2, 0.2, 0.2, 0.4, 0.4, 0.2, 0.2, 0.2],
-               [0.25, 0.15, 0.1, 0.2, 0.2, 0.1, 0.15, 0.25],
-               [0.25, 0.3, 0.3, 0.0, 0.0, 0.3, 0.3, 0.25],
-               [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]]
+pawnScores = [[80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0],
+               [70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0],
+               [30.0, 30.0, 40.0, 50.0, 50.0, 40.0, 30.0, 30.0],
+               [25.0, 25.0, 30.0, 45.0, 45.0, 30.0, 25.0, 25.0],
+               [20.0, 20.0, 20.0, 40.0, 40.0, 20.0, 20.0, 20.0],
+               [25.0, 15.0, 10.0, 20.0, 20.0, 10.0, 15.0, 25.0],
+               [25.0, 30.0, 30.0, 0.0, 0.0, 30.0, 30.0, 25.0],
+               [20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0]]
 
 piecePositionScores = {"wN": knightScores,
                          "bN": knightScores[::-1],
@@ -252,6 +252,8 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
     global counter
     counter += 1
     global nextMove
+    maxScore = -CHECKMATE
+    bestmove = None
     # if we are at the depth 0
     if depth == 0:
         return turnMultiplier * ScoreBoard(gs)
@@ -277,6 +279,7 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
                 # the opponent will make the best move
                 # we will see this at the root node
                 nextMove = move
+
         gs.undoMove()
         if maxScore > alpha:
             # pruning
@@ -284,6 +287,9 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
         if alpha >= beta:
             break
         # we stop looking at the next moves
+    if depth == DEPTH:
+        nextMove = bestmove
+        print(f"Best move: {bestmove}, Score: {maxScore}")  # print the score of the best move
     return maxScore
 
 def findMoveNegaMax(gs, validMoves, depth, turnMultiplier):
@@ -352,9 +358,9 @@ def ScoreBoard(gs):
                 if square[1] != "K":
                     piece_position_score = piecePositionScores[square][row][col]
                 if square[0] == "w":
-                    score += pieceScore[square[1]] + piece_position_score
+                    score += pieceScore[square[1]] + piece_position_score+60*int(gs.wcastled)+20*int(freedom(gs))+0*int(KingPawnShield(gs))+(-7)*int(doublePawns(gs))+3*int(QueenMobililty(engine))+30*int(countWhitePiecesOnKingSurroundingSquares(gs))+30*int(KingMobililty(engine))
                 if square[0] == "b":
-                    score -= pieceScore[square[1]] + piece_position_score
+                    score -= pieceScore[square[1]] + piece_position_score+60*int(gs.wcastled)+20*int(freedom(gs))+30*int(KingPawnShield(gs))+(-7)*int(doublePawns(gs))+3*int(QueenMobililty(engine))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+30*int(KingMobililty(engine))
 
     return score
 
@@ -395,7 +401,7 @@ def countWhitePiecesOnKingSurroundingSquares(gs):
                 piece = gs.board[row][col]
                 if piece[0] == 'w':
                     count += 1
-    print("White pieces on king surrounding squares",count)
+    # print("White pieces on king surrounding squares",count)
     return count
 
 def isOnBoard(row, col):
@@ -404,9 +410,9 @@ def isOnBoard(row, col):
 def KingMobililty(engine):
     return len(engine.King_squares)
 
-def KingCastled(gs):
-    print("White King Castled",gs.wcastled)
-    print("Black King Castled",gs.bcastled)
+# def KingCastled(gs):
+    # print("White King Castled",gs.wcastled)
+    # print("Black King Castled",gs.bcastled)
 
 def freedom(gs):
     # if gs.whitemove:
@@ -430,7 +436,7 @@ def KingPawnShield(gs):
                 piece = gs.board[row][col]
                 if piece[0] == 'w' and piece[1] == 'p':
                     KingNeighbourPawns += 1
-    print("King Neighbour Pawns",KingNeighbourPawns)
+    # print("King Neighbour Pawns",KingNeighbourPawns)
     return KingNeighbourPawns
 
 # determines the centre-pawn count at sq e4,d4,e5,d5
@@ -554,10 +560,11 @@ def knightSupport(gs):
     knightsupport = 0
     for r in range(8):
         for c in range(8):
-            if gs.board[r][c] == 'wN' and  (gs.board[r-1][c-1] == 'wp' or gs.board[r-1][c+1] == 'wp'):
-                knightsupport+=1
-            elif gs.board[r][c] == 'bN' and  (gs.board[r+1][c-1] == 'bp' or gs.board[r+1][c+1] == 'bp'):
-                knightsupport-=1
+            if r>0 and r<7 and c>0 and c<7:
+                if gs.board[r][c] == 'wN' and  (gs.board[r-1][c-1] == 'wp' or gs.board[r-1][c+1] == 'wp'):
+                    knightsupport+=1
+                elif gs.board[r][c] == 'bN' and  (gs.board[r+1][c-1] == 'bp' or gs.board[r+1][c+1] == 'bp'):
+                    knightsupport-=1
     return knightsupport
 
 # determine the score for a gamestate/board 
