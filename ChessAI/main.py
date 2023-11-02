@@ -451,7 +451,6 @@ def main():
 
                 
 
-
                 if event.key == p.K_r:
                     gs = engine.gamestate()
                     valid_moves = gs.getvalidmoves()

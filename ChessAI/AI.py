@@ -432,3 +432,136 @@ def KingPawnShield(gs):
                     KingNeighbourPawns += 1
     print("King Neighbour Pawns",KingNeighbourPawns)
     return KingNeighbourPawns
+
+# determines the centre-pawn count at sq e4,d4,e5,d5
+def centrePawnCount(gs):
+    pawn = 0
+    centerPawn = [(3,3),(3,4),(4,3),(4,4)] # list of tuples for row-col of sq d5,e5,d4,e4 resp
+    for sq in centerPawn:
+        if gs.board[sq[0]][sq[1]] == 'wp' :
+            pawn+=1
+        elif gs.board[sq[0]][sq[1]] == "bp" :
+            pawn-=1
+    return pawn
+
+# determines whether knight is on sq a1 to a8,a8 to h8,a1 to h1 or h1 to h8
+def knightPeriphery0(gs):
+    kp0 = 0
+    kp0list = [(0,0),(1,0),(2,0),(3,0),(4,0),(5,0),(6,0),(7,0),(7,1),(7,2),(7,3),(7,4),(7,5),(7,6),
+               (7,7),(6,7),(5,7),(4,7),(3,7),(2,7),(1,7),(0,7),(0,6),(0,5),(0,4),(0,3),(0,2),(0,1)]
+    for sq in kp0list:
+        if gs.board[sq[0]][sq[1]] == 'wN' :
+            kp0+=1
+        elif gs.board[sq[0]][sq[1]] == "bN" :
+            kp0-=1
+    return kp0
+
+# determines whether knight is on sq b2 to b7,b7 to g7,b2 to g2,g2 to g7
+def knightPeriphery1(gs):
+    kp1 = 0
+    kp1list = [(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(6,2),(6,3),(6,4),(6,5),
+               (6,6),(5,6),(4,6),(3,6),(2,6),(1,6),(1,5),(1,4),(1,3),(1,2)]
+    for sq in kp1list:
+        if gs.board[sq[0]][sq[1]] == 'wN' :
+            kp1+=1
+        elif gs.board[sq[0]][sq[1]] == "bN" :
+            kp1-=1
+    return kp1
+
+# determines whether knight is on sq c3 to c6,c6 to f6,c3 to f3,f3 to f6
+def knightPeriphery2(gs):
+    kp2 = 0
+    kp2list = [(2,2),(3,2),(4,2),(5,2),(5,3),(5,4),
+               (5,5),(4,5),(3,5),(2,5),(2,4),(2,3)]
+    for sq in kp2list:
+        if gs.board[sq[0]][sq[1]] == 'wN' :
+            kp2+=1
+        elif gs.board[sq[0]][sq[1]] == "bN" :
+            kp2-=1
+    return kp2
+
+# determines whether knight is on sq e4,d4,e5,d5
+def knightPeriphery3(gs):
+    kp3 = 0
+    kp3list = [(3,3),(3,4),(4,3),(4,4)] # list of tuples for row-col of sq d5,e5,d4,e4 resp
+    for sq in kp3list:
+        if gs.board[sq[0]][sq[1]] == 'wN' :
+            kp3+=1
+        elif gs.board[sq[0]][sq[1]] == "bN" :
+            kp3-=1
+    return kp3
+
+# determines existence of double pawns
+def doublePawns(gs):
+    doublepawn = 0
+    for r in range(8):
+        for c in range(8):
+            if gs.board[r][c] == 'wp':
+                row = r
+                for rows in range(row-1,0):
+                    if gs.board[rows][c] == 'wp':
+                        doublepawn+=1
+            elif gs.board[r][c] == 'bp':
+                row = r
+                for rows in range(row+1,7):
+                    if gs.board[rows][c] == 'bp':
+                        doublepawn-=1
+    return doublepawn
+
+
+# determines whether the bishop pair exists
+def bishopPair(gs):
+    wbishop = 0
+    bbishop = 0
+    for r in range(8):
+        for c in range(8):
+            if gs.board[r][c] == 'wB': # counts no. of wB
+                wbishop+=1
+            elif gs.board[r][c] == 'bB': # counts no. of bB
+                bbishop+=1
+    if wbishop>1 or bbishop>1:
+        return 1  
+
+# determines whether rook is on Seventh rank wrt player
+def rookOnSeventh(gs):
+    rookSeventh = 0
+    for col in range(8):
+        if gs.board[1][col] == 'wR': # rank 7 for white
+            rookSeventh+=1
+        elif gs.board[6][col] == 'bR': # rank 2 for black
+            rookSeventh-=1
+    return rookSeventh
+
+# determines whether bishop is on large diagonal
+def bishopOnLarge(gs):
+    bishopLarge = 0
+    for r in range(8):
+        # bishop on diagonal h1-a8  
+        if gs.board[r][r] == "wB": 
+            bishopLarge+=1
+        elif gs.board[r][r] == "bB":
+            bishopLarge-=1
+        
+        # bishop on diagonal a1-h8
+        if gs.board[r][7-r] == "wB":
+            bishopLarge+=1
+        elif gs.board[r][7-r] == "bB":
+            bishopLarge+=1 
+    return bishopLarge
+
+# determines whether knight is supported by a pawn ahead
+def knightSupport(gs):
+    knightsupport = 0
+    for r in range(8):
+        for c in range(8):
+            if gs.board[r][c] == 'wN' and  (gs.board[r-1][c-1] == 'wp' or gs.board[r-1][c+1] == 'wp'):
+                knightsupport+=1
+            elif gs.board[r][c] == 'bN' and  (gs.board[r+1][c-1] == 'bp' or gs.board[r+1][c+1] == 'bp'):
+                knightsupport-=1
+    return knightsupport
+
+# determine the score for a gamestate/board 
+# using evaluation function parameters
+
+def evaluationFunction():
+    pass
