@@ -1,11 +1,11 @@
 import pygame as p
 import engine , AI
-# import cv2
+import cv2
 import numpy as np
 import os
-# import main1 as m
-# import tester as tt
-# import gtts
+import main1 as m
+import tester as tt
+import gtts
 import time
 
 # # this function will read all persons' training images, detect face from each image
@@ -159,14 +159,10 @@ def main():
     # initializing the pygame modules
     animate = False
 
-    # text = (
-    #     "We have detected that user"
-    #     + tt.predicted_name
-    #     + " is playing. Press any key to start the game"
-    # )
-    # language = "en"
-    # myobj = gtts.gTTS(text=text, lang=language, slow=False)
-    # myobj.save("welcome1.mp3")
+    text = ("We have detected that user"+ tt.predicted_name + " is playing. Press any key to start the game")
+    language = "en"
+    myobj = gtts.gTTS(text=text, lang=language, slow=False)
+    myobj.save("welcome1.mp3")
     # Playing the converted file
     # time.sleep(4)
     # cv2.waitKey(0)
@@ -183,17 +179,17 @@ def main():
         (screen_width + Move_log_panel_width, screen_height), p.HWSURFACE | p.DOUBLEBUF
     )
 
-    # welcome = "Welcome," + tt.predicted_name + "to ChessAI"
-    # language = "en"
-    # myobj1 = gtts.gTTS(text=welcome, lang=language, slow=False)
-    # myobj1.save("welcome.mp3")
+    welcome = "Welcome," + tt.predicted_name + "to ChessAI"
+    language = "en"
+    myobj1 = gtts.gTTS(text=welcome, lang=language, slow=False)
+    myobj1.save("welcome.mp3")
     # # Playing the converted file
-    # p.mixer.music.load("welcome.mp3")
+    p.mixer.music.load("welcome.mp3")
 
-    # invalid = "Invalid move"
-    # language = "en"
-    # myobj2 = gtts.gTTS(text=invalid, lang=language, slow=False)
-    # myobj2.save("invalid.mp3")
+    invalid = "Invalid move"
+    language = "en"
+    myobj2 = gtts.gTTS(text=invalid, lang=language, slow=False)
+    myobj2.save("invalid.mp3")
 
     moveLogFont  = p.font.SysFont(None, 14, False, False)
    
@@ -279,20 +275,10 @@ def main():
             25,
         )
 
-        # try:
-        #     showtext(
-        #         screen,
-        #         tt.predicted_name + " is playing",
-        #         (screen_height / 2 - 111, screen_height / 2 - 240),
-        #         25,
-        #     )
-        # except:
-        #     showtext(
-        #         screen,
-        #         "User is playing",
-        #         (screen_height / 2 - 300, screen_height / 2 - 200),
-        #         25,
-        #     )
+        try:
+            showtext(screen,tt.predicted_name + " is playing",(screen_height / 2 - 111, screen_height / 2 - 240),25,)
+        except:
+            showtext(screen,"User is playing",(screen_height / 2 - 300, screen_height / 2 - 200),25,)
         p.display.flip()
         for event in p.event.get():
             if event.type == p.QUIT:

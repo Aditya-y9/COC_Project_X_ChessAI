@@ -27,7 +27,7 @@ import main1 as m
 
 # collect the rectangles returned by faceDetection function
 # # collect the gray image returned by faceDetection function
-faces_detected, gray_img = m.faceDetection(test_img)
+# faces_detected, gray_img = m.faceDetection(test_img)
 
 # print("faces_detected:", faces_detected)
 
