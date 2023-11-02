@@ -248,7 +248,6 @@ def findMoveMinMax(gs, validMoves, depth, whiteToMove):
         return minScore
 
 def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier):
-    KingPawnShield(gs)
     # alpha beta pruning
     global counter
     counter += 1
@@ -380,27 +379,27 @@ def Score_By_Material(board):
 def QueenMobililty(engine):
     return len(engine.Queen_squares)
 
-def KingPawnShield(gs):
-    global KingNeighbourPawns
-    KingNeighbourPawns = 0
-    rows, cols = len(gs.board), len(gs.board[0])
+def countWhitePiecesOnKingSurroundingSquares(gs):
+    count = 0
+    
+    # get the king's position
     if gs.whitemove:
-        kingRow = gs.whiteKingLocation[0]
-        kingCol = gs.whiteKingLocation[1]
-        directions = [(0, -1), (0, 1), (-1, 0), (-1, -1), (-1, 1), (1, 0), (1, -1), (1, 1)]
-        for dr, dc in directions:
-            new_row, new_col = kingRow + dr, kingCol + dc
-            if 0 <= new_row < rows and 0 <= new_col < cols and gs.board[new_row][new_col] == "wp":
-                KingNeighbourPawns += 1
+        king_row, king_col = gs.blackKingLocation
     else:
-        kingRow = gs.blackKingLocation[0]
-        kingCol = gs.blackKingLocation[1]
-        directions = [(0, -1), (0, 1), (-1, 0), (-1, -1), (-1, 1), (1, 0), (1, -1), (1, 1)]
-        for dr, dc in directions:
-            new_row, new_col = kingRow + dr, kingCol + dc
-            if 0 <= new_row < rows and 0 <= new_col < cols and gs.board[new_row][new_col] == "bp":
-                KingNeighbourPawns += 1
-    return KingNeighbourPawns
+        king_row, king_col = gs.whiteKingLocation
+    
+    # check the 8 surrounding squares
+    for row in range(king_row-1, king_row+2):
+        for col in range(king_col-1, king_col+2):
+            if isOnBoard(row, col):
+                piece = gs.board[row][col]
+                if piece[0] == 'w':
+                    count += 1
+    print("White pieces on king surrounding squares",count)
+    return count
+
+def isOnBoard(row, col):
+    return row >= 0 and row < 8 and col >= 0 and col < 8
 
 def KingMobililty(engine):
     return len(engine.King_squares)

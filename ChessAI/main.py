@@ -361,6 +361,7 @@ def main():
                         # do clicks hogye toh bolenge make move
                         # so call the move class constructor
                         move = engine.Move(player_clicks[0], player_clicks[1], gs.board)
+
                         # print(move.getChessNotation())
 
                         # player_clicks[0] is our source
@@ -373,6 +374,7 @@ def main():
                                 gs.makeMove(valid_moves[i])
                                 print("Wpawns",gs.wPawns,gs.bPawns)
                                 AI.KingCastled(gs)
+                                # print("king neigbour",AI.countWhitePiecesOnKingSurroundingSquares(gs))
                                 # print("King castled",AI.KingCastled(gs))
                                 move_made = True
                                 animate = True
@@ -464,9 +466,9 @@ def main():
             print("Queen",AI.QueenMobililty(engine))
             print("King",AI.KingMobililty(engine))
             print("King castled",AI.KingCastled(gs))
-            print("King Neighbour Pawns",AI.KingPawnShield(gs))
             print("AI's turn")
             AIMove = AI.findBestMove(gs, valid_moves)
+            AI.countWhitePiecesOnKingSurroundingSquares(gs)
             if AIMove is None:
                 # if the AI has no valid moves
                 # certain engines make random moves then
@@ -494,6 +496,7 @@ def main():
         elif gs.stalemate:
             gameOver = True
             showtext(screen, "Stalemate", (screen_width / 2 - 100, screen_height / 2 - 10), 25)
+
         clock.tick(fps)
         p.display.flip()
         AI.KingNeighbourPawns=0
