@@ -407,3 +407,9 @@ def KingMobililty(engine):
 def KingCastled(gs):
     print("White King Castled",gs.wcastled)
     print("Black King Castled",gs.bcastled)
+
+def freedom(gs):
+    # if gs.whitemove:
+    #     return len(gs.getvalidmoves())
+    # else:
+        return len(gs.getvalidmoves())

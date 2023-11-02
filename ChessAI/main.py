@@ -469,6 +469,7 @@ def main():
             print("AI's turn")
             AIMove = AI.findBestMove(gs, valid_moves)
             AI.countWhitePiecesOnKingSurroundingSquares(gs)
+            print("fredom",AI.freedom(gs))
             if AIMove is None:
                 # if the AI has no valid moves
                 # certain engines make random moves then
