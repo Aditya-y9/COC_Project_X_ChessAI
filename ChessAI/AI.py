@@ -352,11 +352,9 @@ def ScoreBoard(gs):
                 if square[1] != "K":
                     piece_position_score = piecePositionScores[square][row][col]
                 if square[0] == "w":
-                    score += pieceScore[square[1]] + piece_position_score
-                    # +60*int(gs.wcastled)+20*int(freedom(gs))+0*int(KingPawnShield(gs))+(-7)*int(doublePawns(gs))+3*int(QueenMobililty(engine))+30*int(countWhitePiecesOnKingSurroundingSquares(gs))+30*int(KingMobililty(engine))
+                    score += pieceScore[square[1]] + piece_position_score + 0.6*int(gs.wcastled)+0.2*int(freedom(gs))+0*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(QueenMobililty(engine))+0.3*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(KingMobililty(engine))
                 if square[0] == "b":
-                    score -= pieceScore[square[1]] + piece_position_score
-                    # +60*int(gs.wcastled)+20*int(freedom(gs))+30*int(KingPawnShield(gs))+(-7)*int(doublePawns(gs))+3*int(QueenMobililty(engine))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+30*int(KingMobililty(engine))
+                    score -= pieceScore[square[1]] + piece_position_score +0.6*int(gs.wcastled)+0.2*int(freedom(gs))+0.3*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(QueenMobililty(engine))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(KingMobililty(engine))
 
     return score
 
