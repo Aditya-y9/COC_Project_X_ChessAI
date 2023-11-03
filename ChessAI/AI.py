@@ -89,7 +89,7 @@ CHECKMATE = 1000
 
 STALEMATE = 0
 
-DEPTH = 3
+DEPTH = 2
 
 
 
