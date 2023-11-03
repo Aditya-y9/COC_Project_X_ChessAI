@@ -89,7 +89,7 @@ CHECKMATE = 1000
 
 STALEMATE = 0
 
-DEPTH = 3
+DEPTH = 2
 
 
 
@@ -352,9 +352,9 @@ def ScoreBoard(gs):
                 if square[1] != "K":
                     piece_position_score = piecePositionScores[square][row][col]
                 if square[0] == "w":
-                    score += pieceScore[square[1]] + piece_position_score + 0.6*int(gs.wcastled)+0.2*int(freedom(gs))+0*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(QueenMobililty(engine))+0.3*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(KingMobililty(engine))
+                    score += pieceScore[square[1]] + piece_position_score + 0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0.3*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.2*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs))
                 if square[0] == "b":
-                    score -= pieceScore[square[1]] + piece_position_score +0.6*int(gs.wcastled)+0.2*int(freedom(gs))+0.3*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(QueenMobililty(engine))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(KingMobililty(engine))
+                    score -= (pieceScore[square[1]] + piece_position_score +0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0.3*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.2*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs)))
 
     return score
 
@@ -376,8 +376,8 @@ def Score_By_Material(board):
                 score -= pieceScore[square[1]]
     return score
 
-def QueenMobililty(engine):
-    return len(engine.Queen_squares)
+# def QueenMobililty(engine):
+#     return len(engine.Queen_squares)
 
 def countWhitePiecesOnKingSurroundingSquares(gs):
     count = 0
@@ -401,18 +401,18 @@ def countWhitePiecesOnKingSurroundingSquares(gs):
 def isOnBoard(row, col):
     return row >= 0 and row < 8 and col >= 0 and col < 8
 
-def KingMobililty(engine):
-    return len(engine.King_squares)
+# def KingMobililty(engine):
+#     return len(engine.King_squares)
 
 # def KingCastled(gs):
     # print("White King Castled",gs.wcastled)
     # print("Black King Castled",gs.bcastled)
 
-def freedom(gs):
-    # if gs.whitemove:
-    #     return len(gs.getvalidmoves())
-    # else:
-        return len(gs.getvalidmoves())
+# def freedom(gs):
+#     # if gs.whitemove:
+#     #     return len(gs.getvalidmoves())
+#     # else:
+#         return len(gs.getvalidmoves())
 
 def KingPawnShield(gs):
     global KingNeighbourPawns
