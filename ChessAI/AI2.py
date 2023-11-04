@@ -109,8 +109,14 @@ DEPTH = 2
     the score will be based on the check
     
 '''
-def findRandomMove(validMoves):
-    return validMoves[random.randint(0,len(validMoves)-1)]
+def findRandomMove(validMoves,gs):
+    if len(validMoves) == 0:
+        if gamestate.inCheck:
+            gs.checkmate = True
+        else:
+            gs.stalemate = True
+    else:
+        return validMoves[random.randint(0, len(validMoves)-1)] 
 
 
 

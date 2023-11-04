@@ -20,7 +20,7 @@ from engine import gamestate
 global KingNeighbourPawns
 KingNeighbourPawns = 0
 # to store material values of the pieces
-pieceScore = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 1}
+pieceScore = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 6, "p": 0.8}
 
 knightScores = [[0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0],
                  [0.1, 0.3, 0.5, 0.5, 0.5, 0.5, 0.3, 0.1],
@@ -62,7 +62,7 @@ pawnScores = [[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
                [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
                [0.3, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.3],
                [0.25, 0.25, 0.3, 0.45, 0.45, 0.3, 0.25, 0.25],
-               [0.2, 0.2, 0.2, 0.4, 0.4, 0.2, 0.2, 0.2],
+               [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
                [0.25, 0.15, 0.1, 0.2, 0.2, 0.1, 0.15, 0.25],
                [0.25, 0.3, 0.3, 0.0, 0.0, 0.3, 0.3, 0.25],
                [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]]
@@ -108,8 +108,15 @@ DEPTH = 2
     the score will be based on the check
     
 '''
-def findRandomMove(validMoves):
-    return validMoves[random.randint(0,len(validMoves)-1)]
+def findRandomMove(validMoves,gs):
+    if len(validMoves) == 0:
+        if gamestate.inCheck:
+            gs.checkmate = True
+        else:
+            gs.stalemate = True
+    else:
+        return validMoves[random.randint(0, len(validMoves)-1)] 
+
 
 
 
@@ -352,9 +359,9 @@ def ScoreBoard(gs):
                 if square[1] != "K":
                     piece_position_score = piecePositionScores[square][row][col]
                 if square[0] == "w":
-                    score += pieceScore[square[1]] + piece_position_score + 0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0.3*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.2*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs))
+                    score += pieceScore[square[1]] + piece_position_score + 0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0.3*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.02*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs))
                 if square[0] == "b":
-                    score -= (pieceScore[square[1]] + piece_position_score +0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0.3*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.2*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs)))
+                    score -= (pieceScore[square[1]] + piece_position_score +0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0.3*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.02*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs)))
 
     return score
 

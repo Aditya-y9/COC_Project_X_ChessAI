@@ -43,6 +43,8 @@ class gamestate:
             self.board[move.endRow][move.endCol] = move.pieceMoved[0] + user_choice
 
     def makeMove(self,move):
+        if move==None:
+            return
         # make the move and update the board
         self.board[move.startRow][move.startCol] = "--"
         self.board[move.endRow][move.endCol] = move.pieceMoved

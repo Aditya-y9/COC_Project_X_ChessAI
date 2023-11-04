@@ -474,8 +474,9 @@ def main():
                 # if the AI has no valid moves
                 # certain engines make random moves then
                 # checkmate and stalemate will be handled by the engine
-                AIMove = AI.findRandomMove(valid_moves)
+                AIMove = AI.findRandomMove(valid_moves,gs)
             # give it to our engine
+
             gs.makeMove(AIMove)
             move_made = True
             animate = True
