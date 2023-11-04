@@ -1,7 +1,7 @@
 # ChessAI
 
 
-### README.md file is its most basic version and will be updated soon as we progress with the project.
+### README.md file is at its most basic version and will be updated soon as we progress with the project.
 ### Thank you for your patience.
 
 
