@@ -16,11 +16,27 @@
 import random
 import engine
 from engine import gamestate
-
+import numpy
 global KingNeighbourPawns
 KingNeighbourPawns = 0
 # to store material values of the pieces
-pieceScore = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 6, "p": 0.8}
+pieceScore = {"K": 100, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 0.2
+              }
+
+
+
+
+# improvements
+
+# you can make an 2d array for the king positional weights by check if their are friendly pieces around the king
+
+# High values for check, checkmate and stalemate
+CHECKMATE = 1000
+
+STALEMATE = 0
+
+DEPTH = 2
+
 
 knightScores = [[0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0],
                  [0.1, 0.3, 0.5, 0.5, 0.5, 0.5, 0.3, 0.1],
@@ -77,21 +93,6 @@ piecePositionScores = {"wN": knightScores,
                          "bR": rookScores[::-1],
                          "wp": pawnScores,
                          "bp": pawnScores[::-1]}
-# for the position of the pieces
-# improvements
-
-# you can make an 2d array for the king positional weights by check if their are friendly pieces around the king
-
-
-
-# High values for check, checkmate and stalemate
-CHECKMATE = 1000
-
-STALEMATE = 0
-
-DEPTH = 2
-
-
 
 
 
