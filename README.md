@@ -1,41 +1,10 @@
-<style>
-    body{
-        background-color: #2b2b2b;
-        color: #f0f0f0;
-        font-family: "Cursive";
-        
-    }
-    p{
-        text-align: center;
-        font-size: 50px;
-        font-family: "Cursive";
-        font-weight: bold;
-        border: 2px solid #f0f0f0;
-        border-radius: 10px;
-        padding: 10px;
-        shadow: 10px 10px 10px #f0f0f0;
-
-    }
-    text{
-        font-size: 20px;
-        font-family: "Cursive";
-        font-weight: bold;
-    }
-    a{
-        color: #f0f0f0;
-        font-family: "Cursive";
-        font-size: 20px;
-        text-decoration: none;
-    }
-    
-</style>
-<p>
- ChessAI
-</p>
+# ChessAI
 
 
 ### README.md file is its most basic version and will be updated soon as we progress with the project.
 ### Thank you for your patience.
+
+
 
 ## About the Project
 
