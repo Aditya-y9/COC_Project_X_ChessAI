@@ -13,14 +13,15 @@
 # the score will be based on the number of moves available
 # the score will be based on the checkmate and stalemate
 # the score will be based on the check
+import time
 import random
 import engine
 from engine import gamestate
-import numpy
+import numpy as np
 global KingNeighbourPawns
 KingNeighbourPawns = 0
 # to store material values of the pieces
-pieceScore = {"K": 100, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 0.2
+pieceScore = {"K": 0, "Q": 1025, "R": 477, "B": 365, "N": 337, "p": 82
               }
 
 
@@ -35,53 +36,54 @@ CHECKMATE = 1000
 
 STALEMATE = 0
 
-DEPTH = 2
+DEPTH = 3
 
 
-knightScores = [[0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0],
-                 [0.1, 0.3, 0.5, 0.5, 0.5, 0.5, 0.3, 0.1],
-                 [0.2, 0.5, 0.6, 0.65, 0.65, 0.6, 0.5, 0.2],
-                 [0.2, 0.55, 0.65, 0.7, 0.7, 0.65, 0.55, 0.2],
-                 [0.2, 0.5, 0.65, 0.7, 0.7, 0.65, 0.5, 0.2],
-                 [0.2, 0.55, 0.6, 0.65, 0.65, 0.6, 0.55, 0.2],
-                 [0.1, 0.3, 0.5, 0.55, 0.55, 0.5, 0.3, 0.1],
-                 [0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0]]
+knightScores = np.array([[-167, -89, -34, -49,  61, -97, -15, -107],
+                         [-73, -41,  72,  36,  23,  62,   7,  -17],
+                         [-47,  60,  37,  65,  84, 129,  73,   44],
+                         [ -9,  17,  19,  53,  37,  69,  18,   22],
+                         [-13,   4,  16,  13,  28,  19,  21,   -8],
+                         [-23,  -9,  12,  10,  19,  17,  25,  -16],
+                         [-29, -53, -12,  -3,  -1,  18, -14,  -19],
+                         [-105, -21, -58, -33, -17, -28, -19,  -23]])
 
-bishopScores = [[0.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.0],
-                 [0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.2],
-                 [0.2, 0.4, 0.5, 0.6, 0.6, 0.5, 0.4, 0.2],
-                 [0.2, 0.5, 0.5, 0.6, 0.6, 0.5, 0.5, 0.2],
-                 [0.2, 0.4, 0.6, 0.6, 0.6, 0.6, 0.4, 0.2],
-                 [0.2, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.2],
-                 [0.2, 0.5, 0.4, 0.4, 0.4, 0.4, 0.5, 0.2],
-                 [0.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.0]]
+bishopScores = np.array([[-29,   4, -82, -37, -25, -42,   7,  -8],
+                         [-26,  16, -18, -13,  30,  59,  18, -47],
+                            [-16,  37,  43,  40,  35,  50,  37,  -2],
+                            [-4,  16,  13,  28,  19,  47,  15, -14],
+                            [-6,   5,  13,  13,  13,  12,  4,  -9],
+                            [0,  15,   15,  15,  14,  27,  18, -18],
+                            [-4,  15,  14,  15,  14,  15,  10, -18],
+                            [-19,   7,  -8, -19, -11, -16,   7, -26]])
+                         
 
-rookScores = [[0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
-               [0.5, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.5],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.0],
-               [0.25, 0.25, 0.25, 0.5, 0.5, 0.25, 0.25, 0.25]]
+rookScores = np.array([[32,  42,  32,  51, 63,  9,  31,  43],
+                       [27,  32,  58,  62, 80, 67,  26,  44],
+                       [-5,  19,  26,  36, 17, 45,  61,  16],
+                       [-24, -11,   7,  26, 24, 35,  -8, -20],
+                       [-36, -26, -12,  -1,  9, -7,   6, -23],
+                       [-45, -25, -16, -17,  3,  0,  -5, -33],
+                       [-44, -16, -20,  -9, -1, 11,  -6, -71],
+                       [-19, -13,   1,  17, 16,  7, -37, -26]])
 
-queenScores = [[0.0, 0.2, 0.2, 0.3, 0.3, 0.2, 0.2, 0.0],
-                [0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.2],
-                [0.2, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.2],
-                [0.3, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.3],
-                [0.4, 0.4, 0.5, 0.5, 0.5, 0.5, 0.4, 0.3],
-                [0.2, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.2],
-                [0.2, 0.4, 0.5, 0.4, 0.4, 0.4, 0.4, 0.2],
-                [0.0, 0.2, 0.2, 0.3, 0.3, 0.2, 0.2, 0.0]]
+queenScores = np.array([[    -28,   0,  29,  12,  59,  44,  43,  45],
+    [-24, -39,  -5,   1, -16,  57,  28,  54],
+    [-13, -17,   7,   8,  29,  56,  47,  57],
+    [-27, -27, -16, -16,  -1,  17,  -2,   1],
+   [  -9, -26,  -9, -10,  -2,  -4,   3,  -3],
+    [-14,   2, -11,  -2,  -5,   2,  14,   5],
+    [-35,  -8,  11,   2,   8,  15,  -3,   1],
+    [ -1, -18,  -9,  10, -15, -25, -31, -50]])
 
-pawnScores = [[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
-               [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
-               [0.3, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.3],
-               [0.25, 0.25, 0.3, 0.45, 0.45, 0.3, 0.25, 0.25],
-               [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
-               [0.25, 0.15, 0.1, 0.2, 0.2, 0.1, 0.15, 0.25],
-               [0.25, 0.3, 0.3, 0.0, 0.0, 0.3, 0.3, 0.25],
-               [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]]
+pawnScores = np.array([[ 0,   0,   0,   0,   0,   0,  0,   0],
+     [98, 134,  61,  95,  68, 126, 34, -11],
+     [-6,   7,  26,  31,  65,  56, 25, -20],
+    [-14,  13,   6,  21,  23,  12, 17, -23],
+    [-27,  -2,  -5,  12,  17,   6, 10, -25],
+    [-26,  -4,  -4, -10,   3,   3, 33, -12],
+    [-35,  -1, -20, -23, -15,  24, 38, -22],
+      [0,   0,   0,   0,   0,   0,  0,   0]])
 
 piecePositionScores = {"wN": knightScores,
                          "bN": knightScores[::-1],
@@ -209,6 +211,7 @@ Helper method to make the first recursive call
 '''
 
 def findBestMove(gs, validMoves):
+    start = time.time()
     global nextMove , counter
     # if we dont have next move
     # we will find the next move by random
@@ -216,7 +219,7 @@ def findBestMove(gs, validMoves):
     random.shuffle(validMoves)
     counter = 0
     # findMoveNegaMax(gs, validMoves, DEPTH, 1 if gs.whitemove else -1)
-    findMoveNegaMaxAlphaBeta(gs, validMoves, DEPTH,-CHECKMATE,CHECKMATE, 1 if gs.whitemove else -1)
+    findMoveNegaMaxAlphaBeta(gs, validMoves, DEPTH,-CHECKMATE,CHECKMATE, 1 if gs.whitemove else -1,start)
     print(counter)
     return nextMove
 
@@ -255,7 +258,7 @@ def findMoveMinMax(gs, validMoves, depth, whiteToMove):
             gs.undoMove()
         return minScore
 
-def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier):
+def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier,start):
     # alpha beta pruning
     global counter
     counter += 1
@@ -275,7 +278,7 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
         # during recursion
 
                                                     # because for our opponent alpha and beta will be inverted
-        score = -findMoveNegaMaxAlphaBeta(gs, nextMoves, depth - 1,-beta,-alpha,-turnMultiplier)
+        score = -findMoveNegaMaxAlphaBeta(gs, nextMoves, depth - 1,-beta,-alpha,-turnMultiplier,start)
         # if maxScore is greater than beta
         # we will prune the tree
         # if we get better move evlauation score
@@ -290,6 +293,8 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
             # pruning
             alpha = maxScore
         if alpha >= beta:
+            break
+        if time.time() - start > 6:
             break
         # we stop looking at the next moves
     return maxScore
@@ -360,9 +365,10 @@ def ScoreBoard(gs):
                 if square[1] != "K":
                     piece_position_score = piecePositionScores[square][row][col]
                 if square[0] == "w":
-                    score += pieceScore[square[1]] + piece_position_score + 0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0.3*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.02*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs))
+                    score += pieceScore[square[1]] + piece_position_score 
+                    
                 if square[0] == "b":
-                    score -= (pieceScore[square[1]] + piece_position_score +0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0.3*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.02*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs)))
+                    score -= (pieceScore[square[1]] + piece_position_score )
 
     return score
 

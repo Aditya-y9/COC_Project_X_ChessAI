@@ -7,6 +7,7 @@ import os
 # import tester as tt
 # import gtts
 import time
+import chess
 
 # # this function will read all persons' training images, detect face from each image
 # # used to load an image from a file
