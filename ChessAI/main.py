@@ -358,8 +358,8 @@ def main():
 
                             if move == valid_moves[i]:
                                 gs.makeMove(valid_moves[i])
-                                print("Wpawns",gs.wPawns,gs.bPawns)
-                                AI.KingCastled(gs)
+                                # print("Wpawns",gs.wPawns,gs.bPawns)
+                                # AI.KingCastled(gs)
                                 # print("king neigbour",AI.countWhitePiecesOnKingSurroundingSquares(gs))
                                 # print("King castled",AI.KingCastled(gs))
                                 move_made = True
@@ -448,20 +448,21 @@ def main():
 
         if not gameOver and not HumanTurn:
             # generate and store the AI move
-            print("Queen",AI.QueenMobililty(engine))
-            print("King",AI.KingMobililty(engine))
-            print("King castled",AI.KingCastled(gs))
-            print("AI's turn")
+            # print("Queen",AI.QueenMobililty(engine))
+            # print("King",AI.KingMobililty(engine))
+            # print("King castled",AI.KingCastled(gs))
+            # print("AI's turn")
             AIMove = AI.findBestMove(gs, valid_moves)
-            AI.countWhitePiecesOnKingSurroundingSquares(gs)
-            print("fredom",AI.freedom(gs))
-            print("King Neighbour Pawns",AI.KingPawnShield(gs))
+            # AI.countWhitePiecesOnKingSurroundingSquares(gs)
+            # print("fredom",AI.freedom(gs))
+            # print("King Neighbour Pawns",AI.KingPawnShield(gs))
             if AIMove is None:
                 # if the AI has no valid moves
                 # certain engines make random moves then
                 # checkmate and stalemate will be handled by the engine
-                AIMove = AI.findRandomMove(valid_moves)
+                AIMove = AI.findRandomMove(valid_moves,gs)
             # give it to our engine
+
             gs.makeMove(AIMove)
             move_made = True
             animate = True

@@ -16,11 +16,27 @@
 import random
 import engine
 from engine import gamestate
-
+import numpy
 global KingNeighbourPawns
 KingNeighbourPawns = 0
 # to store material values of the pieces
-pieceScore = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 1}
+pieceScore = {"K": 100, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 0.2
+              }
+
+
+
+
+# improvements
+
+# you can make an 2d array for the king positional weights by check if their are friendly pieces around the king
+
+# High values for check, checkmate and stalemate
+CHECKMATE = 1000
+
+STALEMATE = 0
+
+DEPTH = 2
+
 
 knightScores = [[0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0],
                  [0.1, 0.3, 0.5, 0.5, 0.5, 0.5, 0.3, 0.1],
@@ -62,7 +78,7 @@ pawnScores = [[0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
                [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
                [0.3, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.3],
                [0.25, 0.25, 0.3, 0.45, 0.45, 0.3, 0.25, 0.25],
-               [0.2, 0.2, 0.2, 0.4, 0.4, 0.2, 0.2, 0.2],
+               [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
                [0.25, 0.15, 0.1, 0.2, 0.2, 0.1, 0.15, 0.25],
                [0.25, 0.3, 0.3, 0.0, 0.0, 0.3, 0.3, 0.25],
                [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]]
@@ -77,21 +93,6 @@ piecePositionScores = {"wN": knightScores,
                          "bR": rookScores[::-1],
                          "wp": pawnScores,
                          "bp": pawnScores[::-1]}
-# for the position of the pieces
-# improvements
-
-# you can make an 2d array for the king positional weights by check if their are friendly pieces around the king
-
-
-
-# High values for check, checkmate and stalemate
-CHECKMATE = 1000
-
-STALEMATE = 0
-
-DEPTH = 3
-
-
 
 
 
@@ -108,8 +109,15 @@ DEPTH = 3
     the score will be based on the check
     
 '''
-def findRandomMove(validMoves):
-    return validMoves[random.randint(0,len(validMoves)-1)]
+def findRandomMove(validMoves,gs):
+    if len(validMoves) == 0:
+        if gamestate.inCheck:
+            gs.checkmate = True
+        else:
+            gs.stalemate = True
+    else:
+        return validMoves[random.randint(0, len(validMoves)-1)] 
+
 
 
 
@@ -352,9 +360,9 @@ def ScoreBoard(gs):
                 if square[1] != "K":
                     piece_position_score = piecePositionScores[square][row][col]
                 if square[0] == "w":
-                    score += pieceScore[square[1]] + piece_position_score
+                    score += pieceScore[square[1]] + piece_position_score + 0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0.3*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.02*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs))
                 if square[0] == "b":
-                    score -= pieceScore[square[1]] + piece_position_score
+                    score -= (pieceScore[square[1]] + piece_position_score +0.6*int(gs.wcastled)+0.2*int(len(gs.getvalidmoves()))+0.3*int(KingPawnShield(gs))+(-0.7)*int(doublePawns(gs))+0.03*int(len(engine.Queen_squares))+0*int(countWhitePiecesOnKingSurroundingSquares(gs))+0.3*int(len(engine.King_squares))+0.02*int(centrePawnCount(gs))+0.2*int(rookOnSeventh(gs))+0.2*int(bishopOnLarge(gs))+0.2*int(knightSupport(gs)))
 
     return score
 
@@ -376,8 +384,8 @@ def Score_By_Material(board):
                 score -= pieceScore[square[1]]
     return score
 
-def QueenMobililty(engine):
-    return len(engine.Queen_squares)
+# def QueenMobililty(engine):
+#     return len(engine.Queen_squares)
 
 def countWhitePiecesOnKingSurroundingSquares(gs):
     count = 0
@@ -395,24 +403,24 @@ def countWhitePiecesOnKingSurroundingSquares(gs):
                 piece = gs.board[row][col]
                 if piece[0] == 'w':
                     count += 1
-    print("White pieces on king surrounding squares",count)
+    # print("White pieces on king surrounding squares",count)
     return count
 
 def isOnBoard(row, col):
     return row >= 0 and row < 8 and col >= 0 and col < 8
 
-def KingMobililty(engine):
-    return len(engine.King_squares)
+# def KingMobililty(engine):
+#     return len(engine.King_squares)
 
-def KingCastled(gs):
-    print("White King Castled",gs.wcastled)
-    print("Black King Castled",gs.bcastled)
+# def KingCastled(gs):
+    # print("White King Castled",gs.wcastled)
+    # print("Black King Castled",gs.bcastled)
 
-def freedom(gs):
-    # if gs.whitemove:
-    #     return len(gs.getvalidmoves())
-    # else:
-        return len(gs.getvalidmoves())
+# def freedom(gs):
+#     # if gs.whitemove:
+#     #     return len(gs.getvalidmoves())
+#     # else:
+#         return len(gs.getvalidmoves())
 
 def KingPawnShield(gs):
     global KingNeighbourPawns
@@ -430,7 +438,7 @@ def KingPawnShield(gs):
                 piece = gs.board[row][col]
                 if piece[0] == 'w' and piece[1] == 'p':
                     KingNeighbourPawns += 1
-    print("King Neighbour Pawns",KingNeighbourPawns)
+    # print("King Neighbour Pawns",KingNeighbourPawns)
     return KingNeighbourPawns
 
 # determines the centre-pawn count at sq e4,d4,e5,d5
@@ -554,10 +562,11 @@ def knightSupport(gs):
     knightsupport = 0
     for r in range(8):
         for c in range(8):
-            if gs.board[r][c] == 'wN' and  (gs.board[r-1][c-1] == 'wp' or gs.board[r-1][c+1] == 'wp'):
-                knightsupport+=1
-            elif gs.board[r][c] == 'bN' and  (gs.board[r+1][c-1] == 'bp' or gs.board[r+1][c+1] == 'bp'):
-                knightsupport-=1
+            if r>0 and r<7 and c>0 and c<7:
+                if gs.board[r][c] == 'wN' and  (gs.board[r-1][c-1] == 'wp' or gs.board[r-1][c+1] == 'wp'):
+                    knightsupport+=1
+                elif gs.board[r][c] == 'bN' and  (gs.board[r+1][c-1] == 'bp' or gs.board[r+1][c+1] == 'bp'):
+                    knightsupport-=1
     return knightsupport
 
 # determine the score for a gamestate/board 
