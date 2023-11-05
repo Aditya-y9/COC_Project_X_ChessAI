@@ -21,7 +21,7 @@ import numpy as np
 global KingNeighbourPawns
 KingNeighbourPawns = 0
 # to store material values of the pieces
-pieceScore = {"K": 0, "Q": 1025, "R": 477, "B": 365, "N": 337, "p": 82
+pieceScore = {"K": 0, "Q": 1200, "R": 500, "B": 400, "N": 500, "p": 82
               }
 
 
@@ -36,8 +36,7 @@ CHECKMATE = 1000
 
 STALEMATE = 0
 
-DEPTH = 3
-
+DEPTH = 2
 
 knightScores = np.array([[-167, -89, -34, -49,  61, -97, -15, -107],
                          [-73, -41,  72,  36,  23,  62,   7,  -17],
@@ -294,8 +293,8 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier,
             alpha = maxScore
         if alpha >= beta:
             break
-        if time.time() - start > 6:
-            break
+        # if time.time() - start > 6:
+        #     break
         # we stop looking at the next moves
     return maxScore
 
@@ -365,10 +364,9 @@ def ScoreBoard(gs):
                 if square[1] != "K":
                     piece_position_score = piecePositionScores[square][row][col]
                 if square[0] == "w":
-                    score += pieceScore[square[1]] + piece_position_score 
-                    
+                    score += pieceScore[square[1]] + piece_position_score +15*int(gs.wcastled)+10*int(len(gs.getvalidmoves()))+15*int(KingPawnShield(gs))+(-35)*int(doublePawns(gs))+40*int(len(engine.Queen_squares))+20*int(countWhitePiecesOnKingSurroundingSquares(gs))+15*int(len(engine.King_squares))+10*int(knightSupport(gs))
                 if square[0] == "b":
-                    score -= (pieceScore[square[1]] + piece_position_score )
+                    score -= (pieceScore[square[1]] + piece_position_score +15*int(gs.bcastled)+10*int(len(gs.getvalidmoves()))+15*int(KingPawnShield(gs))+(-35)*int(doublePawns(gs))+40*int(len(engine.Queen_squares))+20*int(countWhitePiecesOnKingSurroundingSquares(gs))+15*int(len(engine.King_squares))+10*int(knightSupport(gs)))
 
     return score
 
@@ -461,8 +459,8 @@ def centrePawnCount(gs):
 # determines whether knight is on sq a1 to a8,a8 to h8,a1 to h1 or h1 to h8
 def knightPeriphery0(gs):
     kp0 = 0
-    kp0list = [(0,0),(1,0),(2,0),(3,0),(4,0),(5,0),(6,0),(7,0),(7,1),(7,2),(7,3),(7,4),(7,5),(7,6),
-               (7,7),(6,7),(5,7),(4,7),(3,7),(2,7),(1,7),(0,7),(0,6),(0,5),(0,4),(0,3),(0,2),(0,1)]
+    kp0list = np.array([(0,0),(1,0),(2,0),(3,0),(4,0),(5,0),(6,0),(7,0),(7,1),(7,2),(7,3),(7,4),(7,5),(7,6),
+               (7,7),(6,7),(5,7),(4,7),(3,7),(2,7),(1,7),(0,7),(0,6),(0,5),(0,4),(0,3),(0,2),(0,1)])
     for sq in kp0list:
         if gs.board[sq[0]][sq[1]] == 'wN' :
             kp0+=1
@@ -473,8 +471,8 @@ def knightPeriphery0(gs):
 # determines whether knight is on sq b2 to b7,b7 to g7,b2 to g2,g2 to g7
 def knightPeriphery1(gs):
     kp1 = 0
-    kp1list = [(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(6,2),(6,3),(6,4),(6,5),
-               (6,6),(5,6),(4,6),(3,6),(2,6),(1,6),(1,5),(1,4),(1,3),(1,2)]
+    kp1list = np.array([(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(6,2),(6,3),(6,4),(6,5),
+               (6,6),(5,6),(4,6),(3,6),(2,6),(1,6),(1,5),(1,4),(1,3),(1,2)])
     for sq in kp1list:
         if gs.board[sq[0]][sq[1]] == 'wN' :
             kp1+=1
@@ -485,8 +483,8 @@ def knightPeriphery1(gs):
 # determines whether knight is on sq c3 to c6,c6 to f6,c3 to f3,f3 to f6
 def knightPeriphery2(gs):
     kp2 = 0
-    kp2list = [(2,2),(3,2),(4,2),(5,2),(5,3),(5,4),
-               (5,5),(4,5),(3,5),(2,5),(2,4),(2,3)]
+    kp2list = np.array([(2,2),(3,2),(4,2),(5,2),(5,3),(5,4),
+               (5,5),(4,5),(3,5),(2,5),(2,4),(2,3)])
     for sq in kp2list:
         if gs.board[sq[0]][sq[1]] == 'wN' :
             kp2+=1
@@ -497,7 +495,7 @@ def knightPeriphery2(gs):
 # determines whether knight is on sq e4,d4,e5,d5
 def knightPeriphery3(gs):
     kp3 = 0
-    kp3list = [(3,3),(3,4),(4,3),(4,4)] # list of tuples for row-col of sq d5,e5,d4,e4 resp
+    kp3list = np.array([(3,3),(3,4),(4,3),(4,4)]) # list of tuples for row-col of sq d5,e5,d4,e4 resp
     for sq in kp3list:
         if gs.board[sq[0]][sq[1]] == 'wN' :
             kp3+=1
@@ -505,21 +503,16 @@ def knightPeriphery3(gs):
             kp3-=1
     return kp3
 
-# determines existence of double pawns
 def doublePawns(gs):
     doublepawn = 0
     for r in range(8):
         for c in range(8):
-            if gs.board[r][c] == 'wp':
-                row = r
-                for rows in range(row-1,0):
-                    if gs.board[rows][c] == 'wp':
-                        doublepawn+=1
-            elif gs.board[r][c] == 'bp':
-                row = r
-                for rows in range(row+1,7):
-                    if gs.board[rows][c] == 'bp':
-                        doublepawn-=1
+            piece = gs.board[r][c]
+            if piece == 'wp' or piece == 'bp':
+                for rows in range(r-1, -1, -1) if piece == 'wp' else range(r+1, 8):
+                    if gs.board[rows][c] == piece:
+                        doublepawn += 1 if piece == 'wp' else -1
+                        break
     return doublepawn
 
 
@@ -563,7 +556,6 @@ def bishopOnLarge(gs):
             bishopLarge+=1 
     return bishopLarge
 
-# determines whether knight is supported by a pawn ahead
 def knightSupport(gs):
     knightsupport = 0
     for r in range(8):
@@ -574,9 +566,9 @@ def knightSupport(gs):
                 elif gs.board[r][c] == 'bN' and  (gs.board[r+1][c-1] == 'bp' or gs.board[r+1][c+1] == 'bp'):
                     knightsupport-=1
     return knightsupport
-
 # determine the score for a gamestate/board 
 # using evaluation function parameters
+
 
 def evaluationFunction():
     pass
