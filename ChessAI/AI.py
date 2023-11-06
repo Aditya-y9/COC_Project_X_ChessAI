@@ -32,11 +32,11 @@ pieceScore = {"K": 0, "Q": 1200, "R": 500, "B": 400, "N": 500, "p": 82
 # you can make an 2d array for the king positional weights by check if their are friendly pieces around the king
 
 # High values for check, checkmate and stalemate
-CHECKMATE = 1000
+CHECKMATE = 100000
 
 STALEMATE = 0
 
-DEPTH = 2
+DEPTH = 3
 
 knightScores = np.array([[-167, -89, -34, -49,  61, -97, -15, -107],
                          [-73, -41,  72,  36,  23,  62,   7,  -17],
