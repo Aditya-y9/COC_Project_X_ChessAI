@@ -22,7 +22,7 @@ import numpy as np
 global KingNeighbourPawns
 KingNeighbourPawns = 0
 # to store material values of the pieces
-pieceScore = {"K": 0, "Q": 1200, "R": 500, "B": 400, "N": 500, "p": 82}
+pieceScore = {"K": 0, "Q": 1200, "R": 500, "B": 400, "N": 400, "p": 82}
 
 
 # improvements
@@ -36,6 +36,15 @@ STALEMATE = 0
 
 DEPTH = 2
 
+
+# to store the positional weights of the pieces
+# include the following positional weights
+# embed many parameters in them such as
+# piece map
+# central control
+# pawn structure
+# diagonal control
+# rook row column control
 knightScores = np.array(
     [
         [-167, -89, -34, -49, 61, -97, -15, -107],
@@ -114,21 +123,6 @@ piecePositionScores = {
     "wp": pawnScores,
     "bp": pawnScores[::-1],
 }
-
-
-"""
-    This function will evaluate the board and give it a score
-    for the opponent, the score will be negative
-    for the player, the score will be positive
-    for the opponent, the score will be negative
-    for the player, the score will be positive
-    the score will be based on the material on the board
-    the score will be based on the position of the pieces
-    the score will be based on the number of moves available
-    the score will be based on the checkmate and stalemate
-    the score will be based on the check
-    
-"""
 
 
 def findRandomMove(validMoves, gs):
@@ -245,9 +239,19 @@ def findBestMove(gs, validMoves):
     gs: gamestate
     validMoves: valid moves for the player
 
-
     return: bestMove: best move for the player
 
+    This function will evaluate the board and give it a score
+    for the opponent, the score will be negative
+    for the player, the score will be positive
+    for the opponent, the score will be negative
+    for the player, the score will be positive
+    the score will be based on the material on the board
+    the score will be based on the position of the pieces
+    the score will be based on the number of moves available
+    the score will be based on the checkmate and stalemate
+    the score will be based on the check
+    
     """
     start = time.time()
     global nextMove, counter
@@ -789,11 +793,3 @@ def knightSupport(gs):
                 ):
                     knightsupport -= 1
     return knightsupport
-
-
-# determine the score for a gamestate/board
-# using evaluation function parameters
-
-
-def evaluationFunction():
-    pass

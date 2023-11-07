@@ -3,11 +3,21 @@ Storing all the information about the current state of chess game.
 Determining valid moves at current state.
 It will keep move log.
 """
-# import AI
 
 
 class gamestate:
+    '''
+    Stores all the information about the current state of the chess game.
+    Determines the valid moves at the current state.
+    It will also keep a move log.
+    It can also undo moves
+    It can also recover original state of the game
+    '''
     def __init__(self):
+        '''
+        constructor
+        Initializes the board
+        '''
 
         self.board = [
             ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR"],
@@ -18,17 +28,33 @@ class gamestate:
             ["--", "--", "--", "--", "--", "--", "--", "--"],
             ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
             ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"]]
+        
+        # diciotnary to map the piece to its value
         self.moveFunctions = {"p": self.getPawnMoves, "R": self.getRookMoves, "N": self.getKnightMoves,
                               "B": self.getBishopMoves, "Q": self.getQueenMoves, "K": self.getKingMoves}
+        
+        # flag to determine whose turn it is
         self.whitemove = True
+
+        # empty list to initialize the move log
         self.moveLog = []
+
+        # king locations
         self.whiteKingLocation = (7, 4)
         self.blackKingLocation = (0, 4)
+
+        # checkmate and stalemate flags
         self.checkmate = False
         self.stalemate = False
+
+        # incheck flag to determine if the king is in check
         self.incheck = False
+
+        # pins and checks
         self.pins = []
         self.checks = []
+
+        # enpassant
         self.enpassantPossible = ()
         self.bPawns = 8
         self.wPawns = 8  # coordinates for the square where en-passant capture is possible
@@ -39,11 +65,22 @@ class gamestate:
         self.wcastled = False
         self.bcastled = False
 
-    def makePawnPromotion(self, move, user_choice):
+    def makePawnPromotion(self, move, user_choice="Q"):
+        '''
+        This function is used to make the pawn promotion move
+        Args:
+            move: the move made by the user
+            user_choice: the piece chosen by the user for the pawn promotion
+        '''
         if move.pawn_promotion:
             self.board[move.endRow][move.endCol] = move.pieceMoved[0] + user_choice
 
     def makeMove(self, move):
+        '''
+        This function is used to make the move
+        Args:
+            move: the move made by the user
+        '''
         if move == None:
             return
         # make the move and update the board
@@ -113,6 +150,9 @@ class gamestate:
         # pawn promotion
 
     def undoMove(self):
+        '''
+        This function is used to undo the move
+        '''
         # to make sure that there is a move to undo
         if len(self.moveLog) != 0:
             # pop returns and removes the last element from the list

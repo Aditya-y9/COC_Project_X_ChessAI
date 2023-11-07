@@ -46,11 +46,9 @@ def load_images():
     # load all images once as it is cpu heavy task
     pieces = ["wp", "wR", "wN", "wB", "wQ",
               "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
-    
 
     # image paths are already set in my directory as piece.png
     for piece in pieces:
-
 
         # load each image and store it in a dictionary
         image_path = (
@@ -87,9 +85,9 @@ def main():
          screen_height), p.HWSURFACE | p.DOUBLEBUF
     )
 
-
     moveLogFont = p.font.SysFont("Copperplategothic", 12, False, False)
 
+    # to load the highlight image
     global highlight
     highlight = p.transform.scale(
         p.image.load(
@@ -136,13 +134,6 @@ def main():
     # keep track of player clicks (two tuples: [(6, 4), (4, 4)])
 
     done = True
-    try:
-        p.mixer.init()
-        p.mixer.music.load("welcome1.mp3")
-        p.mixer.music.play()
-        # time.sleep(5)
-    except:
-        pass
     chess = p.transform.scale_by(
         p.image.load(
             r"ChessAI\Images\chess.jpg"
@@ -171,21 +162,6 @@ def main():
             (screen_height / 2 - 220, screen_height / 2 + 50),
             25,
         )
-
-        # try:
-        #     showtext(
-        #         screen,
-        #         tt.predicted_name + " is playing",
-        #         (screen_height / 2 - 111, screen_height / 2 - 240),
-        #         25,
-        #     )
-        # except:
-        #     showtext(
-        #         screen,
-        #         "User is playing",
-        #         (screen_height / 2 - 300, screen_height / 2 - 200),
-        #         25,
-        #     )
         p.display.flip()
         for event in p.event.get():
             if event.type == p.QUIT:
@@ -197,7 +173,7 @@ def main():
                 except:
                     pass
                 done = False
-                # showtext(screen, predicted_name + " is playing")
+
     playerone = True
     playertwo = False
     # if a human is playing white then playerone = True
@@ -509,6 +485,17 @@ def draw_game_state(screen, gs, valid_moves, sq_selected, moveLogFont):
 
 
 def animateMove(move, screen, board, clock, gs, moveLogFont):
+    '''
+    to animate the move
+    Args:
+    move: move object
+    screen: screen object
+    board: multi dim list
+    clock: clock object
+    gs: gamestate object
+    moveLogFont: font object
+
+    '''
     global colors
     colors = [p.Color("white"), p.Color("dark gray")]
     # colors = [p.Color("white"), p.Color("dark gray")]
