@@ -1,5 +1,6 @@
 import pygame as p
-import engine, AI
+import engine
+import AI
 import numpy as np
 import os
 import time
@@ -32,7 +33,8 @@ def load_images():
     and it will be cpu heavy task
     '''
     # load all images once as it is cpu heavy task
-    pieces = ["wp", "wR", "wN", "wB", "wQ", "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
+    pieces = ["wp", "wR", "wN", "wB", "wQ",
+              "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
     for piece in pieces:
         image_path = (
             r"ChessAI\images"
@@ -57,7 +59,8 @@ def main():
     animate = False
 
     screen = p.display.set_mode(
-        (screen_width + Move_log_panel_width, screen_height), p.HWSURFACE | p.DOUBLEBUF
+        (screen_width + Move_log_panel_width,
+         screen_height), p.HWSURFACE | p.DOUBLEBUF
     )
 
     moveLogFont = p.font.SysFont("Roboto", 14, False, False)
@@ -124,7 +127,8 @@ def main():
     screen.fill(p.Color("black"))
     while done:
         screen.blit(
-            chess, p.Rect(200 - 5 * sq_size + 180, 200 - 5 * sq_size + 200, 10, 10)
+            chess, p.Rect(200 - 5 * sq_size + 180, 200 -
+                          5 * sq_size + 200, 10, 10)
         )
         screen.blit(
             p.transform.scale_by(icon, 0.5),
@@ -183,7 +187,8 @@ def main():
     while running:
         # check if human is playing white and its his turn
         # or if human is playing black and its his turn
-        HumanTurn = (gs.whitemove and playerone) or (not gs.whitemove and playertwo)
+        HumanTurn = (gs.whitemove and playerone) or (
+            not gs.whitemove and playertwo)
 
         # lets keep a for loop to get events
         for event in p.event.get():
@@ -220,7 +225,8 @@ def main():
                     if len(player_clicks) == 2:
                         # do clicks hogye toh bolenge make move
                         # so call the move class constructor
-                        move = engine.Move(player_clicks[0], player_clicks[1], gs.board)
+                        move = engine.Move(
+                            player_clicks[0], player_clicks[1], gs.board)
 
                         # print(move.getChessNotation())
 
@@ -251,7 +257,8 @@ def main():
                                             ),
                                             0.2,
                                         ),
-                                        p.Rect(200 - sq_size, 200 - sq_size, 10, 10),
+                                        p.Rect(200 - sq_size, 200 -
+                                               sq_size, 10, 10),
                                     )
                                     showtext(
                                         screen,
@@ -338,7 +345,8 @@ def main():
             animate = True
         if move_made:
             if animate:
-                animateMove(gs.moveLog[-1], screen, gs.board, clock, gs, moveLogFont)
+                animateMove(gs.moveLog[-1], screen,
+                            gs.board, clock, gs, moveLogFont)
             valid_moves = gs.getvalidmoves()
             move_made = False
             animate = False
@@ -406,7 +414,8 @@ def HighlightSquares(screen, gs, valid_moves, sq_selected, moveLog):
             # surface takes a (x,y) tuple
             s = p.Surface((sq_size, sq_size))
 
-            s.set_alpha(100)  # transparency value --> 0 is transparent, 255 is opaque
+            # transparency value --> 0 is transparent, 255 is opaque
+            s.set_alpha(100)
             s.fill(p.Color("blue"))
             screen.blit(s, (column * sq_size, row * sq_size))
             # highlight the moves from that square
@@ -419,7 +428,8 @@ def HighlightSquares(screen, gs, valid_moves, sq_selected, moveLog):
                     # toh end square ko highlight karenge
                     highlight.set_alpha(220)
                     screen.blit(
-                        highlight, (moves.endCol * sq_size, moves.endRow * sq_size)
+                        highlight, (moves.endCol * sq_size,
+                                    moves.endRow * sq_size)
                     )
 
     # highlight the last move made by the user
@@ -435,7 +445,8 @@ def HighlightSquares(screen, gs, valid_moves, sq_selected, moveLog):
         # surface takes a (x,y) tuple
         s = p.Surface((sq_size, sq_size))
 
-        s.set_alpha(150)  # transparency value --> 0 is transparent, 255 is opaque
+        # transparency value --> 0 is transparent, 255 is opaque
+        s.set_alpha(150)
         s.fill(p.Color(255, 255, 0))
         screen.blit(s, (move.startCol * sq_size, move.startRow * sq_size))
         # highlight the moves from that square
@@ -515,14 +526,16 @@ def animateMove(move, screen, board, clock, gs, moveLogFont):
         if move.pieceCaptured != "--":
             if move.isEnpassantMove:
                 enpassantRow = (
-                    move.endRow + 1 if move.pieceCaptured[0] == "b" else move.endRow - 1
+                    move.endRow +
+                    1 if move.pieceCaptured[0] == "b" else move.endRow - 1
                 )
                 endSquare = p.Rect(
                     move.endCol * sq_size, enpassantRow * sq_size, sq_size, sq_size
                 )
             screen.blit(
                 images[move.pieceCaptured],
-                p.Rect(move.endCol * sq_size, move.endRow * sq_size, sq_size, sq_size),
+                p.Rect(move.endCol * sq_size, move.endRow *
+                       sq_size, sq_size, sq_size),
             )
         # draw moving piece
         screen.blit(
@@ -577,7 +590,8 @@ def drawboard(screen):
             # just draw rectangle (surface,color,)
             custom_img = p.Surface((sq_size, sq_size))
             screen.blit(
-                image, p.Rect(columns * sq_size, rows * sq_size, sq_size, sq_size)
+                image, p.Rect(columns * sq_size, rows *
+                              sq_size, sq_size, sq_size)
             )
 
             # p.draw.rect(screen, color, p.Rect(columns*sq_size,rows*sq_size, sq_size, sq_size))
@@ -596,7 +610,8 @@ def drawpieces(screen, board):
             if pieces != "--":
                 screen.blit(
                     images[pieces],
-                    p.Rect(columns * sq_size, rows * sq_size, sq_size, sq_size),
+                    p.Rect(columns * sq_size, rows *
+                           sq_size, sq_size, sq_size),
                 )
             # accessing our gs.board multi dim list by using [][]
             # to assign each square a piece
