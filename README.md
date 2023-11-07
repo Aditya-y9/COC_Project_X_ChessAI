@@ -40,9 +40,22 @@
 ## Tech Stack
 This project is built using the following technologies:
 <ul>
-    <li>Python</li>
-    <li>Pygame</li>
-    <li>Numpy</li>
+    <li>Python
+    <p>
+    Python is a programming language that lets you work quickly and integrate systems more effectively.
+    It is popular because of its clear syntax and readability.
+    </p>
+    </li>
+    <li>Pygame
+    <p>
+    Pygame is a set of Python modules designed for writing video games. It includes computer graphics and sound libraries that are designed to be used with the Python programming language. Pygame provides an easy-to-use interface for creating games and multimedia applications. It is cross-platform, which means that it can be used on different operating systems such as Windows, macOS, and Linux. Pygame is built on top of the SDL library, which provides low-level access to audio, keyboard, mouse, joystick, and graphics hardware. With Pygame, you can create 2D games, 3D games, and multimedia applications.Pygame is a set of Python modules designed for writing video games. It includes computer graphics and sound libraries that are designed to be used with the Python programming language. Pygame provides an easy-to-use interface for creating games and multimedia applications. It is cross-platform, which means that it can be used on different operating systems such as Windows, macOS, and Linux. Pygame is built on top of the SDL library, which provides low-level access to audio, keyboard, mouse, joystick, and graphics hardware. With Pygame, you can create 2D games, 3D games, and multimedia applications.
+    </p>
+    </li>
+    <li>Numpy
+    <p>
+    NumPy is a Python library used for working with arrays. It also has functions for working in domain of linear algebra, fourier transform, and matrices. NumPy was created in 2005 by Travis Oliphant. It is an open source project and you can use it freely. NumPy stands for Numerical Python.
+    </p>
+    </li>
 </ul>
 
 ## File Structure
@@ -57,7 +70,7 @@ This project is built using the following technologies:
 .
 ``` 
 ## Getting Started
-### Prerequisites
+### Dependencies
 <ul>
     <li>Python 3</li>
     <li>Pygame</li>
@@ -67,7 +80,8 @@ This project is built using the following technologies:
 
 ### Installation
 <ol>
-    <li>Clone the repository</li>
+    <li>Clone the repository
+    </li>
     <li>
     Select whether you want to play versus computer, against another player locally, or watch the game of two computers
     From the Appropriate flag in the main.py file
