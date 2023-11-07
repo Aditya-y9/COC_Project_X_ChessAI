@@ -9,7 +9,7 @@ Move_log_panel_width = 250
 Move_log_panel_height = screen_height
 screen_caption = "ChessAI"
 icon = p.image.load(
-    r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\icon.png"
+    r"ChessAI\images\icon.png"
 )
 
 
@@ -35,7 +35,7 @@ def load_images():
     pieces = ["wp", "wR", "wN", "wB", "wQ", "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
     for piece in pieces:
         image_path = (
-            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images"
+            r"ChessAI\images"
             + "\\"
             + piece
             + ".png"
@@ -65,7 +65,7 @@ def main():
     global highlight
     highlight = p.transform.scale(
         p.image.load(
-            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\Highlight.jpg"
+            r"ChessAI\images\Highlight.jpg"
         ).convert_alpha(),
         (sq_size, sq_size),
     )
@@ -117,7 +117,7 @@ def main():
         pass
     chess = p.transform.scale_by(
         p.image.load(
-            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\Images\chess.jpg"
+            r"ChessAI\Images\chess.jpg"
         ),
         0.25,
     )
@@ -247,7 +247,7 @@ def main():
                                     screen.blit(
                                         p.transform.scale_by(
                                             p.image.load(
-                                                r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\Images\PromotionMenu.jpg"
+                                                r"ChessAI\Images\PromotionMenu.jpg"
                                             ),
                                             0.2,
                                         ),
@@ -545,10 +545,10 @@ def drawboard(screen):
     # colors = [p.Color("white"), p.Color("dark gray")]
     images = [
         p.image.load(
-            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\ltb.jpg"
+            r"ChessAI\images\ltb.jpg"
         ).convert_alpha(),
         p.image.load(
-            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\dtb.jpg"
+            r"ChessAI\images\dtb.jpg"
         ).convert_alpha(),
     ]
 
