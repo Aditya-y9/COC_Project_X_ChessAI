@@ -1,19 +1,29 @@
 import pygame as p
 import engine
 import AI
-import numpy as np
-import os
-import time
 
+
+# pygame to display the board and pieces
+# engine to store the gamestate
+# AI to make the AI move
+
+
+# dimensions for the screen and the move log panel
 screen_width = screen_height = 550
+
 Move_log_panel_width = 250
+
 Move_log_panel_height = screen_height
+
+
+# window caption and icon
 screen_caption = "ChessAI"
 icon = p.image.load(
     r"ChessAI\images\icon.png"
 )
 
 
+# for the board
 dimensions = 8
 
 # making sqaures in the screen to display chess board boxes
@@ -22,6 +32,7 @@ sq_size = screen_height // dimensions
 fps = 30
 # to pass as an argument in clock.tick
 # adjust if game become laggy
+
 
 images = {}
 
@@ -35,7 +46,13 @@ def load_images():
     # load all images once as it is cpu heavy task
     pieces = ["wp", "wR", "wN", "wB", "wQ",
               "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
+    
+
+    # image paths are already set in my directory as piece.png
     for piece in pieces:
+
+
+        # load each image and store it in a dictionary
         image_path = (
             r"ChessAI\images"
             + "\\"
@@ -44,6 +61,7 @@ def load_images():
         )
 
         images[piece] = p.transform.scale(
+            # convert alpha to make the background transparent
             p.image.load(image_path).convert_alpha(), (sq_size, sq_size)
         )
 
@@ -54,16 +72,23 @@ def main():
     '''
     main driver for our code
     '''
+
+    # initialize pygame module
     p.init()
 
+    # initialize the flags
     animate = False
 
+    # initialize the screen
     screen = p.display.set_mode(
+        # p.HWSURFACE is used to get hardware acceleration for rendering
+        # p.DOUBLEBUF is used to enable double buffering
         (screen_width + Move_log_panel_width,
          screen_height), p.HWSURFACE | p.DOUBLEBUF
     )
 
-    moveLogFont = p.font.SysFont("Roboto", 14, False, False)
+
+    moveLogFont = p.font.SysFont("Copperplategothic", 12, False, False)
 
     global highlight
     highlight = p.transform.scale(
@@ -619,29 +644,32 @@ def drawpieces(screen, board):
 
 def drawMoveLog(screen, gs, font):
     '''
-    to draw the move log
-    Args:
-    screen: screen object
-    gs: gamestate object
-    font: font object
+    To draw the move log on the move log panel to the side
     '''
     moveLogRect = p.Rect(550, 0, 250, 550)
     p.draw.rect(screen, p.Color("black"), moveLogRect)
-    moveLog = gs.moveLog
     moveTexts = gs.moveLog
-    padding = 5
+    padding = 2
+    textX = padding
     textY = padding
-
+    counter = 0
+    maxTextWidth = 0
     for i in range(len(moveTexts)):
         text = moveTexts[i].getChessNotation()
         textObject = font.render(text, True, p.Color("white"))
-        textLocation = moveLogRect.move(padding, textY)
+        textLocation = moveLogRect.move(textX, textY)
         screen.blit(textObject, textLocation)
-        textY += textObject.get_height() + padding * 2
+        counter += 1
+        maxTextWidth = max(maxTextWidth, textObject.get_width())
+        textX += maxTextWidth + padding
+        if counter % 2 == 0 and not counter % 6 == 0:
+            textX += 10
+        if counter % 6 == 0:
+            textX = padding
+            textY += textObject.get_height() + padding
 
 
 # function to show a menu an ask the user the piece to promote to in pawn promotion
-
 
 def showtext(screen, text, location, fontsize):
     '''
