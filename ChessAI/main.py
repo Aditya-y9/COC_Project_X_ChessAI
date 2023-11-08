@@ -187,7 +187,7 @@ def main():
                     done = False
 
     playerone = True
-    playertwo = False
+    playertwo = True
     # if a human is playing white then playerone = True
     # if a AI is playing white then playerone = False
     # if a human is playing black then playertwo = True
@@ -276,8 +276,8 @@ def main():
                                     showtext(
                                         screen,
                                         "Enter the corresponding character of the piece you want to promote to :",
-                                        (200, 200),
-                                        12,
+                                        (screen_width/2-256, screen_height/2),
+                                        18,
                                     )
                                     p.display.flip()
                                     user_choice = ""
