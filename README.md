@@ -12,6 +12,8 @@
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#theory-and-approach">Theory and Approach</a></li>
+    <li><a href="#future-scope">Future Scope</a></li>
 
 
 ## About the Project
@@ -183,6 +185,57 @@ This project is built using the following technologies:
     <li>If Pawn Promotion occurs for the pawn of the human player, follow the instructions on the on-screen menu to do pawn promotion to your chosen piece</li>
     <li>Play the game until Checkmate or Stalemate occurs</li>
 
+</ul>
+
+## Theory And Approach
+
+#### Negamax Algorithm
+<strong><ins>Game Tree:</ins></strong> The algorithm starts by generating a game tree, which is a representation of all possible moves from the current position. Each node in the tree represents a possible game state, and each edge represents a move.
+
+<strong><ins>Evaluation Function:</ins></strong> For each leaf node (end game state), the algorithm uses an evaluation function to assign a numerical value. This value represents the "goodness" of the game state for the AI. In chess, the evaluation function might consider factors like material balance, king safety, pawn structure, etc.
+
+<strong><ins>Negation Principle:</ins></strong> The Negamax algorithm is based on the principle that the value of a position to a player is the negation of the value of that position to the other player. This simplifies the implementation of the algorithm, as it only needs to consider the perspective of the AI, not the opponent.
+
+<strong><ins>Search:</ins></strong> The algorithm performs a depth-first search of the game tree. When it reaches a leaf node, it propagates the score back up to the parent node, negating the score at each level. This is based on the assumption that each player will choose the move that maximizes their minimum score (hence "minimax").
+
+<strong><ins>The Best Move:</ins></strong> Once all scores are propagated, the AI chooses the move that leads to the highest score.
+
+#### Alpha Beta Pruning
+Alpha-beta pruning is an optimization technique for the Negmax algorithm. It reduces the number of nodes that need to be evaluated in the game tree by eliminating branches that don't need to be searched because they can't possibly influence the final decision.
+
+Here's how it works in the context of the provided code:
+
+<strong><ins>Alpha and Beta:</ins></strong> Alpha is the best value that the maximizer currently can guarantee at that level or above. Beta is the best value that the minimizer currently can guarantee at that level or above.
+
+<strong><ins>Pruning:</ins></strong>: During the search, the algorithm keeps track of the best scoring option found so far. If it finds a move that scores higher than what the opponent could potentially achieve (<ins>beta</ins>), it stops evaluating the remaining moves (<ins>break</ins>), as the opponent would never allow this situation to occur.
+
+<strong><ins>Updating Alpha:</ins></strong> If the score of the current move (<ins>maxScore</ins>) is greater than the current best (<ins>alpha</ins>), the best score is updated. This is because the maximizer has found a better move.
+
+<strong><ins>Score Negation:</ins></strong> The score is negated when passed to the recursive call because the perspective changes from maximizer to minimizer or vice versa.
+
+<strong><ins>Alpha Beta Inversion:</ins></strong> Alpha and beta values are inverted when passed to the recursive call because the roles of the maximizer and minimizer are swapped.
+
+In summary, alpha-beta pruning allows the algorithm to ignore parts of the search tree that are irrelevant to the final decision, which can greatly improve efficiency in games with large search trees, like chess.
+
+#### Pygame
+
+1. **Initialization**: Pygame is first initialized using `pygame.init()`. This function initializes all the modules required for Pygame.
+2. **Creating a Game Window**: Pygame creates a game window or screen using `pygame.display.set_mode()`. This is where all the game objects, animations, and text will be displayed.
+3. **Game Loop**: Pygame runs a game loop where the game events are continuously checked and game objects are updated and drawn on the game window.
+4. **Event Handling**: Pygame handles different types of events like keyboard input, mouse movement, button clicks, etc. These events are used to control the game characters or to trigger certain game actions.
+5. **Drawing and Updating Game Objects**: Pygame provides functions to draw game objects on the game window. It also provides functions to update the game window so that the changes become visible.
+6. **Sound and Music**: Pygame has modules to play sound effects and music. This adds to the overall game experience.
+7. **Timing**: Pygame provides a way to track and control time. This is used to control the speed of game characters or to introduce delay in certain game actions.
+8. **Collision Detection**: Pygame provides simple collision detection. This is used to detect when game characters or objects collide with each other.
+9. **Game Over**: Pygame provides functions to end the game and quit the game window.
+
+
+## Future Scope
+<ul>
+<li>
+More Use of Genetic Algorithm in The AI part</li>
+<li>Better tuning of Parameter weights</li>
+<li>A database to store player information</li>
 </ul>
 
 
