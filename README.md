@@ -136,8 +136,8 @@ This project is built using the following technologies:
 .
 ├── Notes
     |── RohanC1.pdf
-│   ├── AdityaC1P1.pdf
-│   ├── AdityaC1P2.pdf
+    ├── AdityaC1P1.pdf
+    ├── AdityaC1P2.pdf
 |── MiniProjects
     |── Aditya
         |── NatureOrientedGeneticAlgorithm
@@ -154,11 +154,11 @@ This project is built using the following technologies:
 |── README.md
 ├── CHESS_AI-PROJECT_REPORT.pdf
 ├── ChessAI
-│   ├── images
+    ├── images
        ├── ...
-│   ├── AI.py
-│   ├── engine.py
-│   ├── main.py
+    ├── AI.py
+    ├── engine.py
+    ├── main.py
 
 .
 ``` 
