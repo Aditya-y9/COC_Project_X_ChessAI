@@ -1,5 +1,22 @@
 <h1 style="text-align:center"> ChessAI </h1>
 
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/85e2aa95-1bfb-467f-ba0d-e7e296b0f49e" alt="animated" />
+</p>
+
+<p align="center">Home Screen</p>
+
+
+
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/df4df40b-a94b-41ce-919f-d022c4f9ba2d">
+</p>
+<p align="center">Our Chess Board</p>
+
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/05a6666d-c55c-4cac-944f-7690ec610cf5"/>
+</p>
+<p align="center">Chess Board With Pieces</p>
 
 ###### README.md file is at its most basic version and will be updated soon as we progress with the project.
 ### Thank you for your patience.
@@ -72,10 +89,18 @@
 This project is built using the following technologies:
 <ul>
     <li>Python</li>
-    <li>
+    <p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/802f19c6-b6b2-44a3-b04a-11b7ae36348b">
+</p>
+
+<li>
     Pygame
-    <ul>
-    <ul>
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/6082b663-abee-46ba-a51f-b0a8c16aa4cc">
+</p>
+
+<ul>
+<ul>
         <li>Pygame is a Python library that is commonly used for developing 2D games. It provides a set of modules that allow developers to create games and multimedia applications. Pygame is built on top of the Simple DirectMedia Layer (SDL) library, which provides low-level access to audio, keyboard, mouse, joystick, and graphics hardware.</li>
         <li>Pygame is a popular choice for game development because it is easy to learn and use, and it provides a lot of functionality out of the box. It includes modules for handling graphics, sound, input, and networking, among other things.</li>
         <li>In the context of the provided code excerpt, Pygame is being used to build a chess game.Pygame is a Python library that is commonly used for developing 2D games. It provides a set of modules that allow developers to create games and multimedia applications. Pygame is built on top of the Simple DirectMedia Layer (SDL) library, which provides low-level access to audio, keyboard, mouse, joystick, and graphics hardware.</li>
@@ -86,7 +111,11 @@ This project is built using the following technologies:
 <ul>
     </li>
     <li>Numpy
-    <ul>
+        <p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/3f695572-3d21-4d97-9d47-4122b85923d3">
+        </p>
+
+<ul>
     <li>NumPy, short for Numerical Python, is a fundamental package for scientific computing in Python.</li>
     <li>It provides support for arrays, matrices and a large library of high-level mathematical functions to operate on these arrays.</li>
     <li>NumPy's array object is more efficient and faster than Python's native list.</li>
