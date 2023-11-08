@@ -34,7 +34,8 @@ CHECKMATE = 100000
 
 STALEMATE = 0
 
-DEPTH = 0
+DEPTH = 3
+# initial depth can be zero but we get the depth from the user
 
 
 # to store the positional weights of the pieces
