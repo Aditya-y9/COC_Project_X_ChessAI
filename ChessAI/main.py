@@ -318,10 +318,17 @@ def main():
 
             elif event.type == p.KEYDOWN:
                 if event.key == p.K_z:
-                    gs.undoMove()
-                    move_made = True
-                    animate = False
-                    gameOver = False
+                    if HumanTurn:
+                        gs.undoMove()
+                        gs.undoMove()
+                        move_made = True
+                        animate = False
+                        gameOver = False
+                    else:
+                        gs.undoMove()
+                        move_made = True
+                        animate = False
+                        gameOver = False
                     # when the user undoes a move the valid moves change
                     # so change the flag variable to true
 
