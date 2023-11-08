@@ -1,4 +1,7 @@
 <h1 style="text-align:center"> ChessAI </h1>
+<p align="center">
+<img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/115ef908-24c8-4f61-9c20-ecab6fb383ec" alt="animated" height="300" width="500"  />
+</p>
 
 ## Index
 <ul>
