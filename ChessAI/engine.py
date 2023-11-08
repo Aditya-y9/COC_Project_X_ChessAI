@@ -303,13 +303,13 @@ class gamestate:
 
         if len(moves) == 0:
             if self.inCheck():
-                self.checkMate = True
+                self.checkmate = True
             else:
                 # TODO staleMate on repeated moves
-                self.staleMate = True
+                self.stalemate = True
         else:
-            self.checkMate = False
-            self.staleMate = False
+            self.checkmate = False
+            self.stalemate = False
 
         self.currentCastlingRights = temp_castle_rights
         return moves
