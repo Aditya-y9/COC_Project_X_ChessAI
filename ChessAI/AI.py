@@ -36,7 +36,7 @@ CHECKMATE = 100000
 
 STALEMATE = 0
 
-DEPTH = 2
+DEPTH = 3
 
 knightScores = np.array([[-167, -89, -34, -49,  61, -97, -15, -107],
                          [-73, -41,  72,  36,  23,  62,   7,  -17],

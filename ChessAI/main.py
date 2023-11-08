@@ -60,7 +60,7 @@ def main():
         (screen_width + Move_log_panel_width, screen_height), p.HWSURFACE | p.DOUBLEBUF
     )
 
-    moveLogFont = p.font.SysFont("Roboto", 14, False, False)
+    moveLogFont = p.font.SysFont(None, 14, False, False)
 
     global highlight
     highlight = p.transform.scale(
@@ -637,7 +637,7 @@ def showtext(screen, text, location, fontsize):
     location: tuple
     fontsize: int
     '''
-    font = p.font.SysFont("Copperplate gothic", fontsize, True, False)
+    font = p.font.SysFont(None, fontsize, True, False)
     textObject = font.render(text, False, p.Color("White"))
     location1 = p.Rect(location, location)
     screen.blit(textObject, location1)
