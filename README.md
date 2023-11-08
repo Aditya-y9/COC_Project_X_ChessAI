@@ -4,6 +4,14 @@
 ###### README.md file is at its most basic version and will be updated soon as we progress with the project.
 ### Thank you for your patience.
 
+## Index
+<ul>
+    <li><a href="#about-the-project">About the Project</a></li>
+    <li><a href="#tech-stack">Tech Stack</a></li>
+    <li><a href="#file-structure">File Structure</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#usage">Usage</a></li>
 
 
 ## About the Project
