@@ -451,29 +451,29 @@ def ScoreBoard(gs):
                     score += (
                         pieceScore[square[1]]
                         + piece_position_score
-                        + 15 * int(gs.wcastled)
-                        + 10 * int(len(gs.getvalidmoves()))
-                        + 15 * int(KingPawnShield(gs))
-                        + (-35) * int(doublePawns(gs))
-                        + 40 * int(len(engine.Queen_squares))
-                        + 20 *
-                        int(countWhitePiecesOnKingSurroundingSquares(gs))
-                        + 15 * int(len(engine.King_squares))
-                        + 10 * int(knightSupport(gs))
+                        # + 15 * int(gs.wcastled)
+                        # + 10 * int(len(gs.getvalidmoves()))
+                        # + 15 * int(KingPawnShield(gs))
+                        # + (-35) * int(doublePawns(gs))
+                        # + 40 * int(len(engine.Queen_squares))
+                        # + 20 *
+                        # int(countWhitePiecesOnKingSurroundingSquares(gs))
+                        # + 15 * int(len(engine.King_squares))
+                        # + 10 * int(knightSupport(gs))
                     )
                 if square[0] == "b":
                     score -= (
                         pieceScore[square[1]]
                         + piece_position_score
-                        + 15 * int(gs.bcastled)
-                        + 10 * int(len(gs.getvalidmoves()))
-                        + 15 * int(KingPawnShield(gs))
-                        + (-35) * int(doublePawns(gs))
-                        + 40 * int(len(engine.Queen_squares))
-                        + 20 *
-                        int(countWhitePiecesOnKingSurroundingSquares(gs))
-                        + 15 * int(len(engine.King_squares))
-                        + 10 * int(knightSupport(gs))
+                        # + 15 * int(gs.bcastled)
+                        # + 10 * int(len(gs.getvalidmoves()))
+                        # + 15 * int(KingPawnShield(gs))
+                        # + (-35) * int(doublePawns(gs))
+                        # + 40 * int(len(engine.Queen_squares))
+                        # + 20 *
+                        # int(countWhitePiecesOnKingSurroundingSquares(gs))
+                        # + 15 * int(len(engine.King_squares))
+                        # + 10 * int(knightSupport(gs))
                     )
 
     return score
