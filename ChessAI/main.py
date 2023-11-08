@@ -1,65 +1,151 @@
 import pygame as p
-import engine
-import AI
+import engine , AI
+import cv2
+import numpy as np
+import os
+import main1 as m
+import tester as tt
+import gtts
+import time
+
+# # this function will read all persons' training images, detect face from each image
+# # used to load an image from a file
+# test_img = cv2.imread(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\Images\Akshay.jpg")
+# # vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\video\Video.mp4")
+# # running = True
+# # while running:
+# #     success, frame = vid.read()
+# #     resized_img = cv2.resize(frame, (1000,700))
+# #     faces_detected, gray_img = m.faceDetection(resized_img)
+# #     for(x,y,w,h) in faces_detected:
+# #         cv2.rectangle(resized_img, (x,y), (x+w, y+h), (255,102,0), thickness=2, lineType=8, shift=0)
+# #     cv2.imshow("face detection tutorial", resized_img)
+# #     cv2.waitKey(1)
+
+# #     if cv2.waitKey(1) & 0xFF == ord('q'):
+# #         break
+# # vid.release()
+# # cv2.destroyAllWindows()
+
+# # detect faces from test image
+
+# # collect the rectangles returned by faceDetection function
+# # # collect the gray image returned by faceDetection function
+# faces_detected, gray_img = m.faceDetection(test_img)
+
+# # print("faces_detected:", faces_detected)
+
+# # for(x,y,w,h) in faces_detected:
+# #     cv2.rectangle(test_img, (x,y), (x+w, y+h), (255,102,0), thickness=2, lineType=2, shift=0
+
+# # resized_img = cv2.resize(test_img, (1000,700))
+# # cv2.imshow("face detection tutorial", resized_img)
+# # cv2.waitKey(0)
+# # cv2.destroyAllWindows()
+
+# # faces, faceID = m.labels_for_training_data(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\TrainingImages")
+# face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+# face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\trainingData2.yml")
+# # face_recognizer = m.train_classifier(faces, faceID)
+
+# # to save the trained model
+# # run this only once
+# # will save the trained model in trainingData.yml file
+# # face_recognizer.save("trainingData2.yml")
 
 
-# pygame to display the board and pieces
-# engine to store the gamestate
-# AI to make the AI move
+# # face_recognizer=cv2.face.LBPHFaceRecognizer_create()
+# # face_recognizer.read(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\trainingData1.yml")
 
 
-# dimensions for the screen and the move log panel
+# name = {0:"Ranbir", 1:"Aditya", 2:"Akshay"}
+
+# vid = cv2.VideoCapture(r"C:\Users\MSHOME\Desktop\Newfolder\FaceRecognition\video\Video.mp4")
+# # vid = cv2.VideoCapture(5)
+
+# while True:
+#     ret, test_img = vid.read()
+#     faces_detected, gray_img = m.faceDetection(test_img)
+
+#     for(x,y,w,h) in faces_detected:
+#         cv2.rectangle(test_img, (x,y), (x+w, y+h), (255,102,0), thickness=2, lineType=2, shift=0)
+
+#     resized_img = cv2.resize(test_img, (540,720))
+#     cv2.imshow("face detection tutorial", resized_img)
+#     cv2.waitKey(1)
+
+#     for faces in faces_detected:
+#         (x,y,w,h) = faces
+#         # extracting region of interest
+#         roi_gray = gray_img[y:y+h, x:x+h]
+#         # predicting the label of given image
+#         # confidence is the accuracy of the prediction
+#         # confidence is a number between 0 and 100
+#         # the lower the value, the more accurate the prediction
+#         # label 0 or 1
+#         # confidence value lower than its more accurate
+#         # 35 is the threshold value for confidence
+#         label, confidence = face_recognizer.predict(roi_gray)
+
+#         print("confidence:", confidence)
+#         print("label:", label)
+#         m.draw_rect(test_img, faces)
+
+#         # extract the name from the dictionary
+#         predicted_name = name[label]
+#         if(confidence>37):
+#             continue
+
+
+#         m.put_text(test_img, predicted_name, x, y)
+
+
+#     resized_img = cv2.resize(test_img, (540,720))
+#     cv2.imshow("face detection tutorial", resized_img)
+#     if cv2.waitKey(10) == ord('q'):
+#         break
+
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# square window for our game.
+# can change screen size from here
 screen_width = screen_height = 550
-
-Move_log_panel_width = 250
-
-Move_log_panel_height = screen_height
-
-
-# window caption and icon
+Move_log_Panel_width = 250
+Move_log_Panel_height = screen_height
 screen_caption = "ChessAI"
 icon = p.image.load(
-    r"ChessAI\images\icon.png"
+    r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images\icon.png"
 )
 
+# rows and columns
 
-# for the board
 dimensions = 8
 
 # making sqaures in the screen to display chess board boxes
 sq_size = screen_height // dimensions
 
+
+
 fps = 30
 # to pass as an argument in clock.tick
 # adjust if game become laggy
 
-
 images = {}
 
-
 def load_images():
-    '''
-    to load all the images once
-    so that we dont have to load them again and again
-    and it will be cpu heavy task
-    '''
+
     # load all images once as it is cpu heavy task
-    pieces = ["wp", "wR", "wN", "wB", "wQ",
-              "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
-
-    # image paths are already set in my directory as piece.png
+    pieces = ["wp", "wR", "wN", "wB", "wQ", "wK", "bp", "bR", "bN", "bB", "bQ", "bK"]
     for piece in pieces:
-
-        # load each image and store it in a dictionary
         image_path = (
-            r"ChessAI\images"
+            r"C:\Users\MSHOME\Desktop\Newfolder\COC_Project_X_ChessAI\ChessAI\images"
             + "\\"
             + piece
             + ".png"
         )
 
         images[piece] = p.transform.scale(
-            # convert alpha to make the background transparent
             p.image.load(image_path).convert_alpha(), (sq_size, sq_size)
         )
 
@@ -67,23 +153,48 @@ def load_images():
 
 
 def main():
-    '''
-    main driver for our code
-    '''
-
-    # initialize pygame module
     p.init()
-
-    # initialize the flags
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # initializing the pygame modules
     animate = False
 
-    # initialize the screen
-    screen = p.display.set_mode(
-        # p.HWSURFACE is used to get hardware acceleration for rendering
-        # p.DOUBLEBUF is used to enable double buffering
-        (screen_width + Move_log_panel_width,
-         screen_height), p.HWSURFACE | p.DOUBLEBUF
+    text = (
+        "We have detected that user"
+        + tt.predicted_name
+        + " is playing. Press any key to start the game"
     )
+    language = "en"
+    myobj = gtts.gTTS(text=text, lang=language, slow=False)
+    myobj.save("welcome1.mp3")
+    # Playing the converted file
+    # time.sleep(4)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    # os.system("welcome.mp3")
+
+    # setting screen with sizes
+
+    # closing our face detection window
+    cv2.destroyAllWindows()
+
+    screen = p.display.set_mode(
+        (screen_width + Move_log_Panel_width, screen_height), p.HWSURFACE | p.DOUBLEBUF
+    )
+
+    welcome = "Welcome," + tt.predicted_name + "to ChessAI"
+    language = "en"
+    myobj1 = gtts.gTTS(text=welcome, lang=language, slow=False)
+    myobj1.save("welcome.mp3")
+    # Playing the converted file
+    p.mixer.music.load("welcome.mp3")
+
+    invalid = "Invalid move"
+    language = "en"
+    myobj2 = gtts.gTTS(text=invalid, lang=language, slow=False)
+    myobj2.save("invalid.mp3")
+
 
     moveLogFont = p.font.SysFont("Copperplategothic", 12, False, False)
 
