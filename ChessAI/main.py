@@ -187,7 +187,7 @@ def main():
                     done = False
 
     playerone = True
-    playertwo = True
+    playertwo = False
     # if a human is playing white then playerone = True
     # if a AI is playing white then playerone = False
     # if a human is playing black then playertwo = True
