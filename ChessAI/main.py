@@ -143,23 +143,23 @@ def main():
     screen.fill(p.Color("black"))
     while done:
         screen.blit(
-            chess, p.Rect(200 - 5 * sq_size + 180, 200 -
+            chess, p.Rect(200 - 5 * sq_size + 260, 200 -
                           5 * sq_size + 200, 10, 10)
         )
         screen.blit(
             p.transform.scale_by(icon, 0.5),
-            p.Rect(470 - 5 * sq_size + 15, screen_height / 2 - 270, 10, 10),
+            p.Rect(470 - 5 * sq_size + 100, screen_height / 2 - 270, 10, 10),
         )
         showtext(
             screen,
             "Welcome to ChessAI",
-            (screen_height / 2 - 230, screen_height / 2 - 10),
+            (screen_height / 2 - 120, screen_height / 2 - 10),
             40,
         )
         showtext(
             screen,
-            "Press any key to start the game",
-            (screen_height / 2 - 220, screen_height / 2 + 50),
+            "Press E for easy mode, Press H for hard mode",
+            (screen_height / 2 - 200, screen_height / 2 + 50),
             25,
         )
         p.display.flip()
@@ -167,12 +167,24 @@ def main():
             if event.type == p.QUIT:
                 p.quit()
             if event.type == p.KEYDOWN:
-                try:
-                    p.mixer.music.load("welcome.mp3")
-                    p.mixer.music.play()
-                except:
-                    pass
-                done = False
+                if event.key == p.K_e:
+                    AI.DEPTH = 2
+                    done = False
+                    try:
+                        p.mixer.music.load("welcome.mp3")
+                        p.mixer.music.play()
+                    except:
+                        pass
+                    done = False
+                elif event.key == p.K_h:
+                    AI.DEPTH = 3
+                    done = False
+                    try:
+                        p.mixer.music.load("welcome.mp3")
+                        p.mixer.music.play()
+                    except:
+                        pass
+                    done = False
 
     playerone = True
     playertwo = False

@@ -34,7 +34,7 @@ CHECKMATE = 100000
 
 STALEMATE = 0
 
-DEPTH = 2
+DEPTH = 0
 
 
 # to store the positional weights of the pieces
