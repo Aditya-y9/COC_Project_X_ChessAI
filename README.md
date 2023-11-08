@@ -1,5 +1,24 @@
 <h1 style="text-align:center"> ChessAI </h1>
 
+## Index
+<ul>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#about-the-project">About the Project</a></li>
+    <li><a href="#tech-stack">Tech Stack</a></li>
+    <li><a href="#file-structure">File Structure</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#theory-and-approach">Theory and Approach</a></li>
+    <li><a href="#future-scope">Future Scope</a></li>
+  
+## Demo
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/8b88e1c7-14c4-41bc-89e4-63fb4c08e287" alt="animated" height="300" width="500" />
+</p>
+<p align="center" font-size="30px">AI Move</p>
+
+
 <p align="center">
   <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/85e2aa95-1bfb-467f-ba0d-e7e296b0f49e" alt="animated" />
 </p>
@@ -18,19 +37,6 @@
 </p>
 <p align="center">Chess Board With Pieces</p>
 
-###### README.md file is at its most basic version and will be updated soon as we progress with the project.
-### Thank you for your patience.
-
-## Index
-<ul>
-    <li><a href="#about-the-project">About the Project</a></li>
-    <li><a href="#tech-stack">Tech Stack</a></li>
-    <li><a href="#file-structure">File Structure</a></li>
-    <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#theory-and-approach">Theory and Approach</a></li>
-    <li><a href="#future-scope">Future Scope</a></li>
 
 
 ## About the Project
