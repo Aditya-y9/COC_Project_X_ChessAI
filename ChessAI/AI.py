@@ -22,7 +22,7 @@ import numpy as np
 global KingNeighbourPawns
 KingNeighbourPawns = 0
 # to store material values of the pieces
-pieceScore = {"K": 0, "Q": 1200, "R": 500, "B": 400, "N": 400, "p": 82}
+pieceScore = {"K": 0, "Q": 1200, "R": 500, "B": 400, "N": 500, "p": 82}
 
 
 # improvements
