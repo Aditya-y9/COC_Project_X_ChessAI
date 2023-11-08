@@ -111,6 +111,13 @@ piecePositionScores = {"wN": knightScores,
     
 '''
 def findRandomMove(validMoves,gs):
+    '''
+    pick a random valid move
+    Args:
+        validMoves: list of valid moves
+    Return:
+        a random valid move
+    '''
     if len(validMoves) == 0:
         if gamestate.inCheck:
             gs.checkmate = True
