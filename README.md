@@ -86,9 +86,8 @@
             Knight Support
             </li>
         </li> 
-
-    Based on these factors, the AI assigns an evaluation score to each gamestate. 
-    Then the AI uses the NegMax algorithm with alpha-beta pruning to determine the best move at each gamestate.
+Based on these factors, the AI assigns an evaluation score to each gamestate. 
+Then the AI uses the NegMax algorithm with alpha-beta pruning to determine the best move at each gamestate.
 </text>
 
 ## Tech Stack
@@ -136,15 +135,27 @@ This project is built using the following technologies:
 ```
 .
 ├── Notes
-    |── RohanCourse1
-│   ├── AdityaCourse1
-|── Other Projects
+    |── RohanC1.pdf
+│   ├── AdityaC1P1.pdf
+│   ├── AdityaC1P2.pdf
+|── MiniProjects
     |── Aditya
         |── NatureOrientedGeneticAlgorithm
+            |──code
+               ├── main.py
+               |──...
+        |── Flappy Bird
+            |──... 
     |── Rohan
-        |── Sheakspeare Problem
+        |── Genetic_Monkey_Shakespeare_Simulation
+            |──...
+        |── Snake Game
+            |──...
 |── README.md
+├── CHESS_AI-PROJECT_REPORT.pdf
 ├── ChessAI
+│   ├── images
+       ├── ...
 │   ├── AI.py
 │   ├── engine.py
 │   ├── main.py
