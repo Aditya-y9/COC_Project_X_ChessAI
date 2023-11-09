@@ -23,7 +23,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/85e2aa95-1bfb-467f-ba0d-e7e296b0f49e" alt="animated" />
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/85e2aa95-1bfb-467f-ba0d-e7e296b0f49e" alt="animated" height="400" width="500" />
 </p>
 
 <p align="center">Home Screen</p>
@@ -31,12 +31,12 @@
 
 
 <p align="center">
-  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/df4df40b-a94b-41ce-919f-d022c4f9ba2d">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/df4df40b-a94b-41ce-919f-d022c4f9ba2d" height="400" width="400">
 </p>
 <p align="center">Our Chess Board</p>
 
 <p align="center">
-  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/05a6666d-c55c-4cac-944f-7690ec610cf5"/>
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/05a6666d-c55c-4cac-944f-7690ec610cf5" height="400" width="400"/>
 </p>
 <p align="center">Chess Board With Pieces</p>
 
@@ -98,13 +98,13 @@ This project is built using the following technologies:
 <ul>
     <li>Python</li>
     <p align="center">
-  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/802f19c6-b6b2-44a3-b04a-11b7ae36348b">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/802f19c6-b6b2-44a3-b04a-11b7ae36348b" height="200" width="250">
 </p>
 
 <li>
     Pygame
 <p align="center">
-  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/6082b663-abee-46ba-a51f-b0a8c16aa4cc">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/6082b663-abee-46ba-a51f-b0a8c16aa4cc" height="150" width="300">
 </p>
 
 <ul>
@@ -120,7 +120,7 @@ This project is built using the following technologies:
     </li>
     <li>Numpy
         <p align="center">
-  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/3f695572-3d21-4d97-9d47-4122b85923d3">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/3f695572-3d21-4d97-9d47-4122b85923d3" height="150" width="300">
         </p>
 
 <ul>
