@@ -34,7 +34,7 @@ CHECKMATE = 100000
 
 STALEMATE = 0
 
-DEPTH = 3
+DEPTH = 2
 # initial depth can be zero but we get the depth from the user
 
 
