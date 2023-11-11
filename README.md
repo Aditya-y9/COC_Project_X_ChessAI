@@ -16,6 +16,13 @@
     <li><a href="#future-scope">Future Scope</a></li>
   
 ## Demo
+
+
+#### Demo Video Link:
+https://drive.google.com/file/d/1-EqixFDe9Iy7AqRsp5VVrwxX8uG5FjgJ/view?usp=sharing
+
+### Demo GIF
+
 <p align="center">
   <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/8b88e1c7-14c4-41bc-89e4-63fb4c08e287" alt="animated" height="300" width="500" />
 </p>
