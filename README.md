@@ -27,12 +27,40 @@ https://drive.google.com/file/d/1-EqixFDe9Iy7AqRsp5VVrwxX8uG5FjgJ/view?usp=shari
   <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/8b88e1c7-14c4-41bc-89e4-63fb4c08e287" alt="animated" height="300" width="500" />
 </p>
 <p align="center" font-size="30px">AI Move</p>
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/cf3fa0e0-7ae3-41f7-8ba0-999008fbb4df" alt="animated" height="300" width="500" />
+</p>
+<p align="center" font-size="30px">Undo Move</p>
 
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/427b5d64-2c3e-4071-9133-fccd046eecde" alt="animated" height="300" width="500" />
+</p>
+<p align="center" font-size="30px">Castling Move</p>
+
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/cd4a66a9-60a7-43fc-8bb0-537a86dc5643" alt="animated" height="300" width="500" />
+</p>
+<p align="center" font-size="30px">Checkmate</p>
+
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/1fa851f8-890b-4bf6-bad7-7475cefe94e0" alt="animated" height="300" width="500" />
+</p>
+<p align="center" font-size="30px">Stalemate</p>
+
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/8e7c4da2-f77e-4428-b40a-cc96faff0039" alt="animated" height="300" width="500" />
+</p>
+<p align="center" font-size="30px">Enpassant Capture</p>
+
+
+<p align="center">
+  <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/5d5e1dd8-5805-4fe6-9ccc-e8b6db1fc8db" alt="animated" height="300" width="500" />
+</p>
+<p align="center" font-size="30px">Reset Game</p>
 
 <p align="center">
   <img src="https://github.com/Aditya-y9/COC_Project_X_ChessAI/assets/122613756/85e2aa95-1bfb-467f-ba0d-e7e296b0f49e" alt="animated" height="400" width="500" />
 </p>
-
 <p align="center">Home Screen</p>
 
 
